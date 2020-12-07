@@ -25,12 +25,12 @@ import { getProfileById } from "../../store/modules/list/actions";
 function CardUserCall({ data }) {
   const dispatch = useDispatch();
 
-  function handleVideoCall() {
-    // VComm.getInstance().makeCall(data.userId, data.displayName, true);
-    VComm.getInstance().makeCall(30, "Romulo Costa", true);
+  // function handleVideoCall() {
+  //   // VComm.getInstance().makeCall(data.userId, data.displayName, true);
+  //   VComm.getInstance().makeCall(30, "Romulo Costa", true);
 
-    history.push("/calls/incall");
-  }
+  //   history.push("/calls/incall");
+  // }
 
   function handleShowProfile() {
     dispatch(getProfileById(data.userId));
@@ -68,7 +68,7 @@ function CardUserCall({ data }) {
         </Flex>
       </Flex>
       <Flex mt="20px">
-        <Button
+        {/* <Button
           backgroundColor="white"
           width="22px"
           height="22px"
@@ -79,7 +79,7 @@ function CardUserCall({ data }) {
 
         <Button backgroundColor="white" width="22px" height="22px">
           <Icon as={MdCall} size="22px" color="black" />
-        </Button>
+        </Button> */}
 
         <Button
           backgroundColor="white"

@@ -20,7 +20,7 @@ import Content from "../../components/Contacts/Content";
 import BodyBar from "../../components/Contacts/BodyBar";
 import SideBar from "../../components/Contacts/Sidebar";
 
-export default function CallContacts() {
+export default function ProfContacts() {
   return (
     // <Flex backgroundColor="white" flex="1">
     //   <Heading color="black">teste</Heading>

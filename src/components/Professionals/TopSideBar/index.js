@@ -14,7 +14,7 @@ function TopSideBar() {
         mt="6px"
         color="#252423s"
       >
-        Chamadas
+        Profissionais
       </Heading>
     </Flex>
   );

@@ -25,8 +25,8 @@ const customTheme = {
     ...theme.colors,
     purple: {
       ...theme.colors.purple,
-      500: "#801857",
-      600: "#a92765",
+      500: "#315395",
+      600: "#6E8BC6",
     },
     gray: {
       ...theme.colors.gray,
@@ -40,3 +40,36 @@ const customTheme = {
 };
 
 export default customTheme;
+
+
+// export default {
+//   background: '#fff',
+
+//   primary: '#6E8BC6',
+//   primary1: '#9ab1df',
+//   primary2: '#315395',
+//   primary3: '#4a6aa9',
+//   primary4: '#ccd9f3',
+//   alert: '#fa375a',
+//   background2: '#E5E5E5',
+//   primaryLigth: '#B4CBEB',
+//   primaryLigther: '#D8D8E6',
+//   // primaryDark: '#7F1856',
+//   secondary: '#E2823C',
+//   tirthy: '#A58A8D',
+//   white: '#FFF',
+//   light: '#f0f0f0',
+//   grayLigther: '#F2F1F3',
+//   grayLigth: '#C6BDDB',
+//   gray: '#958FA3',
+//   grayMedium: '#625C70',
+//   grayDark: '#312E38',
+//   black: '#000',
+//   backgroundColorNotification: 'rgba(107, 139, 200, 0.1)',
+//   transparent: 'transparent',
+
+//   bree: 'BreeSerif-Regular',
+
+//   primaryBorder: 4,
+//   secondBorder: 8,
+// };

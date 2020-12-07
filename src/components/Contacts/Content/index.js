@@ -101,12 +101,12 @@ function Content() {
   return (
     <Accordion defaultIndex={[0]} allowMultiple={true}>
       <AccordionItem>
-        <AccordionHeader>
+        {/* <AccordionHeader>
           <Box flex="1" textAlign="left">
             Usuários Alto Risco
           </Box>
           <AccordionIcon />
-        </AccordionHeader>
+        </AccordionHeader> */}
         <AccordionPanel pb={4} pt="20px" backgroundColor="#f1f0ef">
           <Grid
             templateColumns="1fr 1fr 1fr 1fr 1fr"

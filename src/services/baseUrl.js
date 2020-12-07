@@ -7,6 +7,7 @@ const baseUrl = {
   // QUIZ: "https://qna-dev.bellamaterna.net.br",
   COMM: "https://v-comm-dev.bellamaterna.net.br/",
   // PROGRAM: "https://programs-dev.bellamaterna.net.br",
+  TERAPIA_BELLA: 'https://terapia-bella-dev.bellamaterna.net.br',
 
   // PROD
   // AUTH: "https://authorization-prod.bellamaterna.net.br",

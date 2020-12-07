@@ -7,8 +7,8 @@ import Route from "./route";
 import SignIn from "../pages/SignIn";
 
 import Dashboard from "../pages/Dashboard";
-import LastCalls from "../pages/LastCalls";
-import CallContacts from "../pages/CallContacts";
+import AddProfessionals from "../pages/AddProfessionals";
+import ProfContacts from "../pages/ProfContacts";
 import Call from "../pages/Call";
 import CallHistory from "../pages/CallHistory";
 
@@ -48,8 +48,8 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
       {/* <Route path="/calls" exact component={Calls} isPrivate /> */}
-      <Route path="/calls/lastcalls" exact component={LastCalls} isPrivate />
-      <Route path="/calls/contacts" exact component={CallContacts} isPrivate />
+      <Route path="/professionals/contacts" exact component={ProfContacts} isPrivate />
+      <Route path="/professionals/contacts/add" exact component={AddProfessionals} isPrivate />
       <Route path="/calls/incall" exact component={Call} isPrivate />
       <Route path="/calls/history" exact component={CallHistory} isPrivate />
 

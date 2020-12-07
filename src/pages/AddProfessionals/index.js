@@ -12,14 +12,14 @@ import {
 
 import Header from "../../components/Header";
 import Menu from "../../components/Menu";
-import TopSidebar from "../../components/Calls/TopSideBar";
-import Content from "../../components/Calls/Content";
-import BodyBar from "../../components/Calls/BodyBar";
-import SidebarCalls from "../../components/Calls/Sidebar";
+import TopSidebar from "../../components/Professionals/TopSideBar";
+import Content from "../../components/Professionals/Content";
+import BodyBar from "../../components/Professionals/BodyBar";
+import SidebarProfessionals from "../../components/Professionals/Sidebar";
 
 import Vcomm, { API } from "../../services/vcoom";
 
-export default function LastCalls() {
+export default function AddProfessionals() {
   const profile = useSelector((state) => state.auth.profile);
 
   const vcomm = Vcomm.getInstance();
@@ -51,7 +51,7 @@ export default function LastCalls() {
     >
       <TopSidebar />
 
-      <SidebarCalls />
+      <SidebarProfessionals />
 
       <Content />
 

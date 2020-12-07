@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   allProfile: "",
   validDoc: true,
   validEmail: true,
+  birthError: false,
   emailError: false,
   passwordError: false,
   docError: false,
@@ -173,6 +174,14 @@ export default function auth(state = INITIAL_STATE, action) {
       }
       case "@auth/CLEAR_EMAIL_ERROR": {
         draft.emailError = false;
+        break;
+      }
+      case '@auth/SET_BIRTH_ERROR': {
+        draft.birthError = true;
+        break;
+      }
+      case '@auth/CLEAR_BIRTH_ERROR': {
+        draft.birthError = false;
         break;
       }
       case "@auth/CLEAR_BABY_ID": {

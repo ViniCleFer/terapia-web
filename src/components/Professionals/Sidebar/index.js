@@ -16,7 +16,7 @@ function SideBar({ props }) {
   return (
     <Flex gridArea="sidebar" bg="red" flex="1" backgroundColor="white">
       <ButtonGroup spacing={4} width="360px">
-        <Button
+        {/* <Button
           as="button"
           width="360px"
           rounded="0"
@@ -28,13 +28,13 @@ function SideBar({ props }) {
           _focus={{
             bg: "#eae8e6",
           }}
-          onClick={() => history.push("/calls/lastcalls")}
+          onClick={() => history.push("/professionals")}
         >
           <Icon as={MdCall} size="20px" color="black" mr="10px" ml="5px" />
           <Heading fontWeight="400" fontSize="16px" color="black">
             Discagem rápida
           </Heading>
-        </Button>
+        </Button> */}
         <Button
           as="button"
           width="360px"
@@ -50,14 +50,14 @@ function SideBar({ props }) {
           _focus={{
             bg: "#eae8e6",
           }}
-          onClick={() => history.push("/calls/contacts")}
+          onClick={() => history.push("/professionals/contacts")}
         >
           <Icon as={MdPerson} size="20px" color="black" mr="10px" ml="5px" />
           <Heading fontWeight="400" fontSize="16px" color="black">
             Contatos
           </Heading>
         </Button>
-        <Button
+        {/* <Button
           as="button"
           width="360px"
           rounded="0"
@@ -84,7 +84,7 @@ function SideBar({ props }) {
           <Heading fontWeight="400" fontSize="16px" color="black">
             Histórico
           </Heading>
-        </Button>
+        </Button> */}
       </ButtonGroup>
     </Flex>
   );

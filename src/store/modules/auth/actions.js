@@ -51,3 +51,77 @@ export function setActiveCallData(data) {
     payload: { data },
   };
 }
+
+export function requestCreateProfile({
+  userId,
+  uid,
+  name,
+  doc,
+  email,
+  birthdateValid,
+  phoneNumber,
+  avatar,
+  address,
+  number,
+  complement,
+  neighborhood,
+  state,
+  city,
+  cep,
+}) {
+  return {
+    type: '@auth/REQUEST_CREATE_PROFILE',
+    payload: {
+      userId,
+      uid,
+      name,
+      doc,
+      email,
+      birthdateValid,
+      phoneNumber,
+      avatar,
+      address,
+      number,
+      complement,
+      neighborhood,
+      state,
+      city,
+      cep,
+    },
+  };
+}
+
+export function clearDocError() {
+  return {
+    type: '@auth/CLEAR_DOC_ERROR',
+    payload: {},
+  };
+}
+
+export function setValidDoc(status) {
+  return {
+    type: '@auth/SET_VALID_DOC',
+    payload: {status},
+  };
+}
+
+export function setBirthError() {
+  return {
+    type: '@auth/SET_BIRTH_ERROR',
+    payload: {},
+  };
+}
+
+export function clearBirthError() {
+  return {
+    type: '@auth/CLEAR_BIRTH_ERROR',
+    payload: {},
+  };
+}
+
+export function setValidEmail(status) {
+  return {
+    type: '@auth/SET_VALID_EMAIL',
+    payload: {status},
+  };
+}

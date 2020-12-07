@@ -40,7 +40,7 @@ function Menu({ children }) {
               bg: "purple.600",
               shadow: "none",
             }}
-            onClick={() => history.push("/calls/lastcalls")}
+            onClick={() => history.push("/professionals")}
           >
             <Icon as={MdCall} size="24px" color="white" />
             <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">

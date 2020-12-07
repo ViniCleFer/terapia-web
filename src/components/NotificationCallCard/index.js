@@ -48,13 +48,13 @@ function NotificationCallCard() {
       flexDirection="column"
       flex="1"
     >
-      <Heading fontWeight="500" fontSize="18px" fontWeight="400" color="black">
-        {callData?.profile.name}
+      <Heading fontWeight="500" fontSize="18px" color="black">
+        {callData?.profile?.name}
       </Heading>
       <Heading
         fontWeight="500"
         fontSize="16px"
-        fontWeight="400"
+      
         color="black"
         mt="5px"
       >
