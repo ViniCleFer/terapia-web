@@ -1,10 +1,10 @@
 import React from "react";
 import PropType from "prop-types";
 import Header from "../../../components/Header";
-import Sidebar from "../../../components/Calls/Sidebar";
+// import Sidebar from "../../../components/Professionals/Sidebar";
 import Menu from "../../../components/Menu";
 
-import { Grid, Flex, Heading } from "@chakra-ui/core";
+// import { Grid, Flex, Heading } from "@chakra-ui/core";
 
 import { Wrapper, Content } from "./styles";
 

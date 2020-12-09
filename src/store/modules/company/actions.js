@@ -1,4 +1,4 @@
-import { firebaseDatabase } from "../../../config/firebase";
+// import { firebaseDatabase } from "../../../config/firebase";
 
 export function getCompanyInfo(company_id) {
   return {
@@ -204,16 +204,16 @@ export function createContract(
   };
 }
 
-export const getArduinoData = (feederId) => {
-  let firebaseData;
-  return (dispatch) => {
-    firebaseDatabase.ref("/Feeder").on("value", (snapshot) => {
-      firebaseData = snapshot.val();
+// export const getArduinoData = (feederId) => {
+//   let firebaseData;
+//   return (dispatch) => {
+//     firebaseDatabase.ref("/Feeder").on("value", (snapshot) => {
+//       firebaseData = snapshot.val();
 
-      dispatch({
-        type: "@company/SET_ARDUINO_DATA",
-        payload: { firebaseData },
-      });
-    });
-  };
-};
+//       dispatch({
+//         type: "@company/SET_ARDUINO_DATA",
+//         payload: { firebaseData },
+//       });
+//     });
+//   };
+// };

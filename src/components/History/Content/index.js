@@ -1,16 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
-  Flex,
   Heading,
-  Box,
-  Accordion,
-  AccordionIcon,
-  AccordionItem,
-  AccordionHeader,
-  AccordionPanel,
 } from "@chakra-ui/core";
 
 import { getHistoryCalls } from "../../../store/modules/list/actions";

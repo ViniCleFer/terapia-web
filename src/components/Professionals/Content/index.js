@@ -1,17 +1,19 @@
-import React, {useState, useEffect, useCallback, useRef} from "react";
-import { Grid, Flex, Heading, Button, Textarea, Text, Input } from "@chakra-ui/core";
-import { useToasts } from "react-toast-notifications";
+import React, {useState, useEffect} from "react";
+import { Grid, Flex, Heading, Button, Text, Input } from "@chakra-ui/core";
+// import { useToasts } from "react-toast-notifications";
 import {useSelector, useDispatch} from 'react-redux';
-import axios from 'axios';
-
-import { toast } from "react-toastify";
-import NotificationCard from "../../NotificationCallCard";
-import {Formik, Form, Field} from 'formik';
+// import axios from 'axios';
+import { mask } from 'remask'
+// import { toast } from "react-toastify";
+// import NotificationCard from "../../NotificationCallCard";
+import {Formik, Form} from 'formik';
 import * as yup from 'yup';
 
 import { requestCreateProfile,
   clearDocError,
   setBirthError,
+  clearEmailError,
+  clearPhoneError,
   clearBirthError, } from '../../../store/modules/auth/actions';
 
 import { getSubjectsRequest } from '../../../store/modules/specialty/actions';
@@ -20,11 +22,13 @@ import DocHelper from '../../../helpers/docValidate';
 import DateHelper from '../../../helpers/dateValidate';
 
 import ChakraInput from "../../ChakraInput";
+import ChakraTextarea from "../../ChakraTextarea";
 
 import { 
   SubjectView,
   SubjectTouchable,
   SubjectText,
+  // TextAlert,
  } from './styles';
 
 export function modal() {
@@ -40,6 +44,8 @@ export default function Content() {
 
   const userId = useSelector((state) => state.auth.userId);
 
+  const phoneError = useSelector(state => state.auth.phoneError);
+  const emailError = useSelector(state => state.auth.emailError);
   const isValidDocReducer = useSelector(state => state.auth.validDoc);
   const isValidEmailRecucer = useSelector(state => state.auth.validEmail);
   // const availableButtons = useSelector(
@@ -48,19 +54,21 @@ export default function Content() {
 
   const [avatar, setAvatar] = useState('');
   const [doc, setDoc] = useState('');
+  const [phone, setPhone] = useState('');
+  const [birth, setBirth] = useState({});
   const [fmcToken, setFmcToken] = useState('');
 
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [disabledSubmit, setDisableSubmit] = useState('');
   const [emailReason, setEmailReason] = useState('');
   const [isValidDoc, setIsValidDoc] = useState(true);
-  const [address, setAdress] = useState('');
-  const [number, setNumber] = useState('');
-  const [complement, setComplement] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [state, setState] = useState('');
-  const [city, setCity] = useState('');
-  const [cep, setCep] = useState('');
+  // const [address, setAdress] = useState('');
+  // const [number, setNumber] = useState('');
+  // const [complement, setComplement] = useState('');
+  // const [neighborhood, setNeighborhood] = useState('');
+  // const [state, setState] = useState('');
+  // const [city, setCity] = useState('');
+  // const [cep, setCep] = useState('');
   const [graduates, setGraduates] = useState([]);
   const [experiences, setExperiences] = useState([]);
   const [specialties, setSpecialties] = useState([]);
@@ -119,37 +127,49 @@ export default function Content() {
   }
 
 
-  async function validateCep() {
-    const testi = cep.replace('-', '');
-    const response = await axios.get(`https://viacep.com.br/ws/${testi}/json`);
-    setAdress(response.data.logradouro);
-    setNeighborhood(response.data.bairro);
-    setState(response.data.uf);
-    setCity(response.data.localidade);
-  }
+  // async function validateCep() {
+  //   const testi = cep.replace('-', '');
+  //   const response = await axios.get(`https://viacep.com.br/ws/${testi}/json`);
+  //   setAdress(response.data.logradouro);
+  //   setNeighborhood(response.data.bairro);
+  //   setState(response.data.uf);
+  //   setCity(response.data.localidade);
+  // }
 
   const initialValues = {
     doc: "",
     name: "",
     email: "",
     birthDate: "",
-    phoneNumber: "",
-    address: "",
-    number: "",
-    complement: "",
-    neighborhood: "",
-    state: "",
-    city: "",
-    cep: "",
+    phone: "",
+    about: "",
+    docDescription: "",
+    docValue: "",
+    value: "",
+    college: "",
+    especialty: "",
     avatar: "",
     specialties: "",
   };
 
   const validationSchema = yup.object().shape({
+    name: yup.string().required('Preencha o nome'),
+    email: yup
+      .string()
+      .email('E-mail inválido')
+      .required('Preencha seu E-mail')
+      .test('text', 'E-mail já cadastrado na nossa base de dados', text => {
+        if ((text && emailError) || emailError) {
+          return false;
+        } else {
+          return true;
+        }
+      }),
     doc: yup
       .string()
       .required('Preencha o CPF')
       .test('doc', 'Esse CPF está inválido', async (document) => {
+        
         if (document && document.length === 14) {
           const existDoc = await validateCpf(document);
 
@@ -158,73 +178,133 @@ export default function Content() {
       }),
     birthDate: yup
       .string()
-      .test('date', 'Essa data está inválida', (date) => {
+      .required('Preencha a data de nascimento')
+      .test('date', 'O profissional deve ser maior de 18 anos.', (date) => {
+        setBirth(date)
         if (date) {
-          if (DateHelper.isDate(date)) {
-            if (DateHelper.limitBornDateMayoritValidation(date)) {
-              dispatch(clearBirthError());
-              return true;
-            }
-            dispatch(setBirthError());
+          if (DateHelper.limitBornDateMayoritValidation(date)) {
             return true;
           }
+          dispatch(setBirthError());
           return false;
         }
         return true;
       }),
-    nome: yup.string().required('Preencha seu nome'),
-    email: yup
-      .string()
-      .email('E-mail inválido')
-      .required('Preencha seu E-mail'),
-    specialties: yup.string().test('text', 'Essa data está inválida', (text) => {
+    phone: yup.string().required('Preencha o telefone').test('text', 'Telefone já cadastrado na nossa base de dados.', text => {
+      if (phoneError) {
+        return false;
+      } else {
+        return true;
+      }
+    }),
+    about: yup.string().required('Escreva sobre o profissonal'),
+    docDescription: yup.string().required('Preencha o tipo do documento'),
+    docValue: yup.string().required('Preencha o número do documento'),
+    value: yup.string().required('Preencha o valor por consulta'),
+    college: yup.string().required('Preencha a formação'),
+    especialty: yup.string().required('Preencha a experiência profissional'),
+    specialties: yup.string().test('text', 'Escolha ao menos uma especialidade.', (text) => {
       if (text) {
         setSearch(text);
         setDisplay(true);
         return true;
+      } else if (specialties.length > 0) {
+        setDisplay(false);
+        return true;
+      } else {
+        setDisplay(false);
+        return false;
       }
-      setDisplay(false);
-      return true;
     }),
   });
 
-  async function onSubmit(data) {
+  function onSubmit(data) {
     dispatch(
       requestCreateProfile({
-        name: data.nome,
+        name: data.name,
         doc: data.doc,
         email: data.email,
         birthDate: data.birthDate,
-        phoneNumber: data.phoneNumber,
+        phoneNumber: data.phone,
         avatar: data.avatar,
-        address,
-        number,
-        complement,
-        neighborhood,
-        state,
-        city,
-        cep,
-        fmcToken,
+        address: '',
+        number: '',
+        complement: '',
+        neighborhood: '',
+        state: '',
+        city: '',
+        cep: '',
+        description: data.about,
+        docValue: data.docValue,
+        docDescription: data.docDescription,
+        value: data.value,
+        pageUrl: data.pageUrl,
+        videoUrl: data.videoUrl,
+        graduates: graduates,
+        experiences: experiences,
+        specialties: specialties.map(ii => ii.id),
       })
     );
 
-    toast.success("Cadastro Realizado com Sucesso");
-    alert("Cadastro Realizado com Sucesso");
+    // toast.success("Cadastro Realizado com Sucesso");
+    // alert("Cadastro Realizado com Sucesso");
 
-    window.location.reload();
-    return false;
+    // window.location.reload();
+    // return false;
   }
 
   function hanldeGraduate(gradItem) {
+    // let newArrGrad = graduates;
+
+    // newArrGrad.push({
+    //   college: gradItem,
+    // });
+
+    // setGraduates(newArrGrad);
     setGraduates([...graduates, gradItem]);
+
   }
 
   function handleExperience(experItem) {
     setExperiences([...experiences, experItem]);
+
+    // "experiences": [
+    //   {
+    //       "especialty": "Manjo de X"
+    //   },
+    //   {
+    //       "especialty": "Manjo de Y"
+    //   },
+    //   {
+    //       "especialty": "Manjo de Z"
+    //   }
+    // ],
   }
 
   function handleSpecialty(specialItem) {
-    setSpecialties([...specialties, specialItem]);
+    const especials = specialties.find(spec => spec.id === specialItem.id);
+    if (especials) {
+      setSearch('');
+      return;
+    } else {
+      setSpecialties([...specialties, specialItem]);
+      setSearch('');
+    }
+
+    // "specialties": [
+    //   {
+    //       "id": 1
+    //   },
+    //   {
+    //       "id": 2
+    //   },
+    //   {
+    //       "id": 3
+    //   },
+    //   {
+    //       "id": 4
+    //   }
+    // ]
   }
 
   const setProfi = (sub) => {
@@ -234,17 +314,39 @@ export default function Content() {
     handleSpecialty(sub)
   };
 
+  useEffect(() => {
+    console.log(graduates);
+  }, [graduates]);
+
+  const handleCancelGraduate = (graduate) => {
+    const graduats = graduates.filter((grads) => (grads !== graduate));
+    setGraduates(graduats);
+  };
+
+  const handleCancelExperience = (expiriences) => {
+    setExperiences(experiences.filter(special => special !== expiriences));
+  };
+
   const handleCancelSpecialty = (especialtyId) => {
     setSpecialties(specialties.filter(special => special.id !== especialtyId));
   };
 
+  const handleCpf = (num) => {
+    setDoc(mask(num.target.value, ['999.999.999-99']));
+  };
+
+  const handlePhone = (numPhone) => {
+    setPhone(mask(numPhone.target.value, ['(99) 99999-9999']));
+  };
+  
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
-      enableReinitialize={false}>
-      {({ values, handleChange, handleBlur, handleSubmit, errors, isSubmitting }) => (
+      enableReinitialize={false}
+      >
+      {({ values, handleChange, handleBlur, handleSubmit, setFieldTouched, isSubmitting, errors }) => (
         <Form onSubmit={handleSubmit}>
           <Grid
             templateColumns="1fr 1fr 1fr "
@@ -258,13 +360,13 @@ export default function Content() {
               </Heading>
               <ChakraInput
                 name="name"
-                align="center"
-                onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.name}
                 type="text"
                 placeholder="Nome Completo"
                 errorBorderColor="crimson"
+                align="center"
+                onBlur={() => setFieldTouched('name')}
                 width="400px"
               />
             </Flex>
@@ -276,7 +378,9 @@ export default function Content() {
             <ChakraInput
               name="email"
               align="center"
-              onBlur={handleBlur}
+              onBlur={() => (
+                setFieldTouched('email'), dispatch(clearEmailError())
+              )}
               onChange={handleChange}
               value={values.email}
               type="text"
@@ -290,16 +394,21 @@ export default function Content() {
              CPF
             </Heading>
 
-            <ChakraInput
+            <Input
               name="doc"
               align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.doc}
+              onBlur={() => (
+                setFieldTouched('doc'), dispatch(clearDocError())
+              )}
+              // onChange={handleChange}
+              // value={values.doc}
+              onChange={handleCpf}
+              value={doc}
               type="text"
               placeholder="555.555.555-55"
               errorBorderColor="crimson"
               width="400px"
+              mt="15px"
             />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
@@ -310,7 +419,9 @@ export default function Content() {
             <ChakraInput
               name="birthDate"
               align="center"
-              onBlur={handleBlur}
+              onBlur={() => (
+                setFieldTouched('birthDate'), dispatch(clearBirthError())
+              )}
               onChange={handleChange}
               value={values.birthDate}
               type="date"
@@ -324,16 +435,20 @@ export default function Content() {
               Telefone
             </Heading>
 
-            <ChakraInput
+            <Input
               name="phone"
               align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.phone}
+              error={errors.phone}
+              onBlur={() => (
+                setFieldTouched('phoneNumber'), dispatch(clearPhoneError())
+              )}
+              onChange={handlePhone}
+              value={phone}
               type="phone"
               placeholder="DD-XXXXX-XXXX"
               errorBorderColor="crimson"
               width="400px"
+              mt="15px"
             />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
@@ -516,15 +631,16 @@ export default function Content() {
                 Sobre
               </Heading>
 
-              <Textarea
+              <ChakraTextarea
                 name="about"
-                id="about"
-                value={values.about}
+                onBlur={handleBlur}
                 onChange={handleChange}
+                value={values.about}
                 placeholder="Sobre o profissional"
                 size="sm"
                 height="50px"
-                mt="20px"
+                errorBorderColor="crimson"
+                width="1410px"
               />
             </Flex>
           </Grid>
@@ -656,12 +772,14 @@ export default function Content() {
               </Flex>
 
               <Flex direction="column" p="5px">
-                {graduates.map(graduate => (
-                  <Flex direction="row" p="5px" align="center">
+                {graduates.map((graduate, index) => (
+                  <Flex key={index} direction="row" p="5px" align="center">
                     <Text>{graduate}</Text>
-                    <Button height="15px" width="0px" onClick={() => {}} background="#6E8BC6" variant="solid" color="#fff" mt="2px" ml="10px">
-                      x
-                    </Button>
+                    <button style={{
+                      background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
+                    }} onClick={() => handleCancelGraduate(graduate)} type="button">
+                      <p style={{paddingBottom: 5}}>x</p>
+                    </button>
                   </Flex>
                 ))}
               </Flex>
@@ -690,12 +808,14 @@ export default function Content() {
             </Flex>
 
             <Flex direction="column" p="5px">
-              {experiences.map(experience => (
-                <Flex direction="row" p="5px" align="center">
+              {experiences.map((experience, index) => (
+                <Flex key={index} direction="row" p="5px" align="center">
                   <Text>{experience}</Text>
-                  <Button height="15px" width="0px" onClick={() => {}} background="#6E8BC6" variant="solid" color="#fff" mt="2px" ml="10px">
+                  <button style={{
+                      background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
+                    }} onClick={() => handleCancelExperience(experience)}>
                     x
-                  </Button>
+                  </button>
                 </Flex>
               ))}
             </Flex>
@@ -717,7 +837,7 @@ export default function Content() {
                 align="center"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.specialties}
+                value={search}
                 type="text"
                 placeholder="Ansiedade"
                 errorBorderColor="crimson"
@@ -751,13 +871,13 @@ export default function Content() {
             )}
 
             <Flex direction="row" pl="15px" mt="-5px">
-              {specialties.map(specialty => (
-                <Flex direction="row" p="5px" align="center" border="1px" borderColor="gray.400" borderRadius="4px" mr="5px" >
-                  <Text>{specialty.description}</Text>
-                  <Button height="15px" width="0px" onClick={() => handleCancelSpecialty(specialty.id)} background="#6E8BC6" variant="solid" color="#fff" mt="2px" ml="10px">
-                    x
-                  </Button>
-                </Flex>
+              {specialties.map((specialty, index) => (
+                  <Flex key={index} direction="row" p="5px" align="center" border="1px" borderColor="gray.400" borderRadius="4px" mr="5px" justifyContent="flex-start" >
+                    <Text>{specialty.description}</Text>
+                    <button style={{
+                      background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
+                    }} onClick={() => handleCancelSpecialty(specialty.id)}>x</button>
+                  </Flex>
               ))}
             </Flex>
           
@@ -770,6 +890,7 @@ export default function Content() {
               isLoading={isSubmitting}
               type="submit"
               onClick={handleSubmit}
+              _disabled={disabledSubmit}
             >
               Submit
             </Button>

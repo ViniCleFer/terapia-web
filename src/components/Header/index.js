@@ -1,22 +1,17 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 
-import logo from "../../assets/logoBella.png";
+// import logo from "../../assets/logoBella.png";
 import {
-  Grid,
   Flex,
   Heading,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  MenuGroup,
   MenuDivider,
-  MenuOptionGroup,
-  MenuItemOption,
   Button,
   Image,
-  Box,
   Icon,
 } from "@chakra-ui/core";
 

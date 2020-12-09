@@ -21,6 +21,7 @@ const INITIAL_STATE = {
   emailError: false,
   passwordError: false,
   docError: false,
+  phoneError: false,
   domain: "",
   tenant: "",
   activationCodeId: "",
@@ -182,6 +183,14 @@ export default function auth(state = INITIAL_STATE, action) {
       }
       case '@auth/CLEAR_BIRTH_ERROR': {
         draft.birthError = false;
+        break;
+      }
+      case '@auth/SET_PHONE_ERROR': {
+        draft.phoneError = true;
+        break;
+      }
+      case '@auth/CLEAR_PHONE_ERROR': {
+        draft.phoneError = false;
         break;
       }
       case "@auth/CLEAR_BABY_ID": {

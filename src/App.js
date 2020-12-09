@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
 // import { PersistGate } from 'redux-persist/integration/react';
 // import { Provider } from 'react-redux';
@@ -11,7 +11,7 @@ import { Global, css } from "@emotion/core";
 import NotificationCard from "../src/components/NotificationCallCard";
 import {
   ToastProvider,
-  useToasts,
+  // useToasts,
   DefaultToast,
 } from "react-toast-notifications";
 
@@ -24,7 +24,7 @@ import { store, persistor } from "./store";
 
 import GlobalStyle from "./styles/global";
 
-import VComm, { API } from "../src/services/vcoom";
+// import VComm, { API } from "../src/services/vcoom";
 
 const StyleForChakra = css`
   .js-focus-visible :focus:not([data-focus-visible-added]) {

@@ -1,25 +1,25 @@
 import React from "react";
-import history from "../../services/history";
+// import history from "../../services/history";
 import { useDispatch } from "react-redux";
 import {
-  Grid,
+  // Grid,
   Flex,
   Heading,
-  Box,
+  // Box,
   Avatar,
   Icon,
   AvatarBadge,
   Button,
 } from "@chakra-ui/core";
 import {
-  MdCall,
+  // MdCall,
   MdCheck,
-  MdVideocam,
-  MdAccessTime,
+  // MdVideocam,
+  // MdAccessTime,
   MdMoreHoriz,
 } from "react-icons/md";
 
-import VComm from "../../../src/services/vcoom";
+// import VComm from "../../../src/services/vcoom";
 import { getProfileById } from "../../store/modules/list/actions";
 
 function CardUserCall({ data }) {

@@ -20,7 +20,7 @@ export default function RouterWrapper({
   }
 
   if (signed && !isPrivate) {
-    return <Redirect to="/professionals" />;
+    return <Redirect to="/professionals/contacts" />;
   }
 
   const Layout = signed ? DefaultLayout : AuthLayout;

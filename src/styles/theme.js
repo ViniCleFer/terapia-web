@@ -1,4 +1,4 @@
-import { theme, DefaultTheme } from "@chakra-ui/core";
+import { theme } from "@chakra-ui/core";
 
 const customTheme = {
   ...theme,
@@ -35,6 +35,9 @@ const customTheme = {
       700: "#202024",
       800: "#121214",
       900: "#eae8e6",
+    },
+    alert: {
+      404: '#fa375a',
     },
   },
 };

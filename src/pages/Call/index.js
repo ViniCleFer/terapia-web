@@ -7,31 +7,31 @@ import "./styles.css";
 
 // import Modal from "react-modal";
 import {
-  Grid,
+  // Grid,
   Flex,
   Heading,
-  TabPanels,
-  TabPanel,
+  // TabPanels,
+  // TabPanel,
   Divider,
-  AspectRatioBox,
+  // AspectRatioBox,
   Button,
   Icon,
 } from "@chakra-ui/core";
 
-import Header from "../../components/Header";
-import Menu from "../../components/Menu";
-import TopSidebar from "../../components/Calls/TopSideBar";
-import Content from "../../components/Calls/Content";
-import BodyBar from "../../components/Calls/BodyBar";
-import SidebarCalls from "../../components/Calls/Sidebar";
+// import Header from "../../components/Header";
+// import Menu from "../../components/Menu";
+// import TopSidebar from "../../components/Professionals/TopSideBar";
+// import Content from "../../components/Professionals/Content";
+// import BodyBar from "../../components/Professionals/BodyBar";
+// import SidebarCalls from "../../components/Professionals/Sidebar";
 
 import {
-  MdCall,
-  MdCheck,
+  // MdCall,
+  // MdCheck,
   MdVideocam,
   MdVideocamOff,
-  MdAccessTime,
-  MdVideoCall,
+  // MdAccessTime,
+  // MdVideoCall,
   MdMic,
   MdCallEnd,
   MdMicOff,

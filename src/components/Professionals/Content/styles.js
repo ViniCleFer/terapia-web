@@ -35,3 +35,12 @@ export const SubjectText = styled.p`
   align-items: flex-start;
   margin-left: 2%;
 `;
+
+
+export const TextAlert = styled.p`
+  font-size: 12px;
+  margin-top: 2px;
+  margin-bottom: 1.5px;
+  width: 80%;
+  color: ${theme.colors.alert[404]}
+`;

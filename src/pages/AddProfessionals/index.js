@@ -3,15 +3,15 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   Grid,
-  Flex,
-  Heading,
-  TabPanels,
-  TabPanel,
-  Divider,
+  // Flex,
+  // Heading,
+  // TabPanels,
+  // TabPanel,
+  // Divider,
 } from "@chakra-ui/core";
 
-import Header from "../../components/Header";
-import Menu from "../../components/Menu";
+// import Header from "../../components/Header";
+// import Menu from "../../components/Menu";
 import TopSidebar from "../../components/Professionals/TopSideBar";
 import Content from "../../components/Professionals/Content";
 import BodyBar from "../../components/Professionals/BodyBar";

@@ -1,16 +1,16 @@
 import React from "react";
 import {
-  Grid,
+  // Grid,
   Flex,
-  ButtonGroup,
-  Button,
+  // ButtonGroup,
+  // Button,
   Icon,
   Heading,
   Tabs,
   TabList,
   Tab,
-  TabPanel,
-  TabPanels,
+  // TabPanel,
+  // TabPanels,
 } from "@chakra-ui/core";
 import { MdNotifications, MdCall, MdEventNote } from "react-icons/md";
 import history from "../../services/history";

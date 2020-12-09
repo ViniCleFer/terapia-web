@@ -1,7 +1,7 @@
 import { all, takeLatest, call, put } from "redux-saga/effects";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import api from "../../../services/api";
-import history from "../../../services/history";
+// import history from "../../../services/history";
 import {
   setCompanyData,
   setTanksByCompany,
@@ -14,7 +14,7 @@ import {
   setContractByCompany,
   setDataChart,
 } from "./actions";
-import firebase from "../../../config/firebase";
+// import firebase from "../../../config/firebase";
 
 export function* getCompanyInfo({ payload }) {
   try {

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Grid,
-  Flex,
-  Heading,
+  // Flex,
+  // Heading,
   Box,
   Accordion,
   AccordionIcon,
@@ -20,70 +20,70 @@ import {
 
 import CardUserCall from "../../../components/CardUserCall";
 
-const users = [
-  {
-    avatar: "https://api.adorable.io/avatars/285/ab1111ott@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-    userId: "30",
-    displayName: "Romulo Costa",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/ab312ott@adorable.png",
-    name: "Lucas Tumolo",
-    status: "Ausente",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/aboczctt@adorable.png",
-    name: "Marcel Pratte",
-    status: "Ao telefone",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abo867tt@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abovvtt@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abot12t@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abosdtt@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abot1t@adorable.png",
-    name: "Lucas Tumolo",
-    status: "Ausente",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/aabott@adorable.png",
-    name: "Marcel Pratte",
-    status: "Ao telefone",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abotht@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abotlt@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-  {
-    avatar: "https://api.adorable.io/avatars/285/abo1tt@adorable.png",
-    name: "Romulo Costa",
-    status: "Disponivel",
-  },
-];
+// const users = [
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/ab1111ott@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//     userId: "30",
+//     displayName: "Romulo Costa",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/ab312ott@adorable.png",
+//     name: "Lucas Tumolo",
+//     status: "Ausente",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/aboczctt@adorable.png",
+//     name: "Marcel Pratte",
+//     status: "Ao telefone",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abo867tt@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abovvtt@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abot12t@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abosdtt@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abot1t@adorable.png",
+//     name: "Lucas Tumolo",
+//     status: "Ausente",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/aabott@adorable.png",
+//     name: "Marcel Pratte",
+//     status: "Ao telefone",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abotht@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abotlt@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+//   {
+//     avatar: "https://api.adorable.io/avatars/285/abo1tt@adorable.png",
+//     name: "Romulo Costa",
+//     status: "Disponivel",
+//   },
+// ];
 
 function Content() {
   const dispatch = useDispatch();

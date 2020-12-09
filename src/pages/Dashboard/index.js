@@ -6,15 +6,15 @@ import {} from "./styles";
 // import Modal from "react-modal";
 import {
   Grid,
-  Flex,
-  Heading,
-  TabPanels,
-  TabPanel,
-  Divider,
+  // Flex,
+  // Heading,
+  // TabPanels,
+  // TabPanel,
+  // Divider,
 } from "@chakra-ui/core";
 
-import Header from "../../components/Header";
-import Menu from "../../components/Menu";
+// import Header from "../../components/Header";
+// import Menu from "../../components/Menu";
 // import TopSidebar from "../../components/Calls/TopSideBar";
 // import Content from "../../components/Calls/Content";
 // import BodyBar from "../../components/Calls/BodyBar";

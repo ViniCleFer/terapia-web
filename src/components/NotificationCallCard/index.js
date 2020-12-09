@@ -2,25 +2,16 @@ import React from "react";
 
 // import { Container } from './styles';
 import {
-  Grid,
+  // Grid,
   Flex,
-  ButtonGroup,
   Button,
   Icon,
   Heading,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanel,
-  TabPanels,
-  AvatarBadge,
   Avatar,
 } from "@chakra-ui/core";
 import { useSelector } from "react-redux";
 import {
-  MdNotifications,
   MdCall,
-  MdEventNote,
   MdVideocam,
   MdCallEnd,
 } from "react-icons/md";

@@ -53,12 +53,10 @@ export function setActiveCallData(data) {
 }
 
 export function requestCreateProfile({
-  userId,
-  uid,
   name,
   doc,
   email,
-  birthdateValid,
+  birthDate,
   phoneNumber,
   avatar,
   address,
@@ -68,16 +66,23 @@ export function requestCreateProfile({
   state,
   city,
   cep,
+  description,
+  docValue,
+  docDescription,
+  value,
+  pageUrl,
+  videoUrl,
+  graduates,
+  experiences,
+  specialties,
 }) {
   return {
     type: '@auth/REQUEST_CREATE_PROFILE',
     payload: {
-      userId,
-      uid,
       name,
       doc,
       email,
-      birthdateValid,
+      birthDate,
       phoneNumber,
       avatar,
       address,
@@ -87,6 +92,15 @@ export function requestCreateProfile({
       state,
       city,
       cep,
+      description,
+      docValue,
+      docDescription,
+      value,
+      pageUrl,
+      videoUrl,
+      graduates,
+      experiences,
+      specialties,
     },
   };
 }
@@ -123,5 +137,97 @@ export function setValidEmail(status) {
   return {
     type: '@auth/SET_VALID_EMAIL',
     payload: {status},
+  };
+}
+
+// export function requestCreateProfessionalProfile({
+//   description,
+//   docValue,
+//   docDescription,
+//   value,
+//   pageUrl,
+//   videoUrl,
+//   profileId,
+//   graduates,
+//   experiences,
+//   specialties,
+// }) {
+//   return {
+//     type: '@auth/REQUEST_CREATE_PROFESSIONAL_PROFILE',
+//     payload: {
+//       description,
+//       docValue,
+//       docDescription,
+//       value,
+//       pageUrl,
+//       videoUrl,
+//       profileId,
+//       graduates,
+//       experiences,
+//       specialties,
+//     },
+//   };
+// }
+
+export function clearEmailError() {
+  return {
+    type: '@auth/CLEAR_EMAIL_ERROR',
+    payload: {},
+  };
+}
+
+export function cancelLoading() {
+  return {
+    type: '@CANCEL_LOADING',
+    payload: {},
+  };
+}
+
+export function docError() {
+  return {
+    type: '@auth/DOC_ERROR',
+    payload: {},
+  };
+}
+
+export function emailError() {
+  return {
+    type: '@auth/EMAIL_ERROR',
+    payload: {},
+  };
+}
+
+export function failureAutenticationCode(status) {
+  return {
+    type: '@auth/FAILURE_AUTENTICATION_CODE',
+    payload: {status},
+  };
+}
+
+export function setFCMToken(fcmToken, userId) {
+  return {
+    type: '@auth/SET_FCM_TOKEN',
+    payload: {fcmToken, userId},
+  };
+}
+
+export function setUserId(token, userId) {
+  return {
+    type: '@auth/SET_USERID',
+    payload: {userId, token},
+  };
+}
+
+export function setPhoneError() {
+  return {
+    type: '@auth/SET_PHONE_ERROR',
+    payload: {},
+  };
+}
+
+export function clearPhoneError() {
+  return {
+    type: '@auth/CLEAR_PHONE_ERROR',
+    payload: {},
   };
 }

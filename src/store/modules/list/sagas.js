@@ -1,6 +1,6 @@
 import { all, takeLatest, call, put } from "redux-saga/effects";
-import { toast } from "react-toastify";
-import qs from "qs-stringify";
+// import { toast } from "react-toastify";
+// import qs from "qs-stringify";
 import axios from "axios";
 import history from "../../../services/history";
 import {
@@ -9,7 +9,7 @@ import {
   setHistoryCalls,
   setProfileById,
 } from "./actions";
-import { getCompanyInfo } from "../company/actions";
+// import { getCompanyInfo } from "../company/actions";
 import baseUrl from "../../../services/baseUrl";
 
 export function* getUsersHighRisk({ payload }) {

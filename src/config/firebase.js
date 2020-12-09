@@ -1,15 +1,16 @@
-// import firebase from "firebase";
+import firebase from "firebase";
 
-// const config = {
-//   apiKey: "AIzaSyDOLechu-Sgg64NvuCAH5J5j7A5Vs2s284",
-//   authDomain: "grower-data.firebaseapp.com",
-//   databaseURL: "https://grower-data.firebaseio.com",
-//   projectId: "grower-data",
-//   storageBucket: "grower-data.appspot.com",
-//   messagingSenderId: "472903666719",
-//   appId: "1:472903666719:web:e70497094529ac5252992a",
-//   measurementId: "G-R0VWCLGMYP",
-// };
+const firebaseConfig = firebase.initializeApp({
+  apiKey: 'AIzaSyB7KSCe4LkYB0HE3NO7tRG2CjXHSAWcKp4',
+  authDomain: 'terapiaapp-ccd8d.firebaseapp.com',
+  databaseURL: 'https://terapiaapp-ccd8d.firebaseio.com',
+  projectId: 'terapiaapp-ccd8d',
+  storageBucket: 'terapiaapp-ccd8d.appspot.com',
+  messagingSenderId: '677940691541',
+  appId: '1:677940691541:web:d3f5047a8b4a8eebe30adc',
+  measurementId: 'G-V9RR57R2N2',
+});
 
 // export const firebaseImpl = firebase.initializeApp(config);
 // export const firebaseDatabase = firebase.database();
+export default firebaseConfig;

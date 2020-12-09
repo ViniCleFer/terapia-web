@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Flex, Heading } from "@chakra-ui/core";
+import { Flex, Heading } from "@chakra-ui/core";
 
 // import { Container } from './styles';
 
@@ -18,7 +18,6 @@ function BodyBar() {
       <Heading
         fontWeight="500"
         fontSize="24px"
-        fontWeight="400"
         mt="6px"
         color="black"
       >

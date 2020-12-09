@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Form, Input } from "@rocketseat/unform";
+import { Input } from "@rocketseat/unform";
 import { darken } from "polished";
 
 export const Container = styled.div`

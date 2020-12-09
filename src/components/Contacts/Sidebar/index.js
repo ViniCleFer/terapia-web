@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Grid,
   Flex,
   Heading,
   ButtonGroup,
@@ -9,7 +8,7 @@ import {
 } from "@chakra-ui/core";
 import history from "../../../services/history";
 
-import { MdBuild, MdCall, MdPerson, MdAccessTime } from "react-icons/md";
+import { MdPerson} from "react-icons/md";
 // import { Container } from './styles';
 
 function SideBar({ props }) {

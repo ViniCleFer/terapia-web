@@ -28,10 +28,10 @@ export default class DocHelper {
       soma += parseInt(cpf.charAt(i)) * (10 - i);
     }
     let resto = 11 - (soma % 11);
-    if (resto == 10 || resto == 11) {
+    if (resto === 10 || resto === 11) {
       resto = 0;
     }
-    if (resto != parseInt(cpf.charAt(9))) {
+    if (resto !== parseInt(cpf.charAt(9))) {
       return false;
     }
     soma = 0;
@@ -39,10 +39,10 @@ export default class DocHelper {
       soma += parseInt(cpf.charAt(i)) * (11 - i);
     }
     resto = 11 - (soma % 11);
-    if (resto == 10 || resto == 11) {
+    if (resto === 10 || resto === 11) {
       resto = 0;
     }
-    if (resto != parseInt(cpf.charAt(10))) {
+    if (resto !== parseInt(cpf.charAt(10))) {
       return false;
     }
     return true;

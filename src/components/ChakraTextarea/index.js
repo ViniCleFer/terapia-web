@@ -2,20 +2,20 @@
 import React from "react";
 import { Field } from "formik";
 import {
-  Input,
+  Textarea,
   FormControl,
   FormLabel,
   FormErrorMessage
 } from "@chakra-ui/core";
 
-function ChakraInput(props) {
-  const { label, name, validate, onBlur, ...rest } = props;
+function ChakraTextarea(props) {
+  const { label, name, ...rest } = props;
   return (
-    <Field name={name} validate={validate}>
+    <Field name={name}>
       {({ field, form }) => (
-        <FormControl onBlur={onBlur} isInvalid={form.errors[name] && form.touched[name]}>
+        <FormControl isInvalid={form.errors[name] && form.touched[name]}>
           <FormLabel htmlFor={name}>{label}</FormLabel>
-          <Input id={name} {...rest} {...field} />
+          <Textarea id={name} {...rest} {...field} />
           <FormErrorMessage mb="-5px">{form.errors[name]}</FormErrorMessage>
         </FormControl>
       )}
@@ -23,4 +23,4 @@ function ChakraInput(props) {
   );
 }
 
-export default ChakraInput;
+export default ChakraTextarea;

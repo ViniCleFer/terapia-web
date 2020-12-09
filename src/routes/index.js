@@ -12,7 +12,7 @@ import ProfContacts from "../pages/ProfContacts";
 import Call from "../pages/Call";
 import CallHistory from "../pages/CallHistory";
 
-import { useToasts } from "react-toast-notifications";
+// import { useToasts } from "react-toast-notifications";
 import VComm from "../../src/services/vcoom";
 import NotificationCard from "../components/NotificationCallCard";
 import { toast } from "react-toastify";
@@ -24,7 +24,7 @@ import { setActiveCallData } from "../store/modules/auth/actions.js";
 export default function Routes() {
   const dispatch = useDispatch();
   const vcomm = VComm.getInstance();
-  const { addToast } = useToasts();
+  // const { addToast } = useToasts();
 
   function onDataReceived(data) {
     dispatch(setActiveCallData(data));
