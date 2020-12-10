@@ -55,6 +55,7 @@ export default function Content() {
   const [avatar, setAvatar] = useState('');
   const [doc, setDoc] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneValid, setPhoneValid] = useState('');
   const [birth, setBirth] = useState({});
   const [fmcToken, setFmcToken] = useState('');
 
@@ -222,10 +223,10 @@ export default function Content() {
     dispatch(
       requestCreateProfile({
         name: data.name,
-        doc: data.doc,
+        doc,
         email: data.email,
         birthDate: data.birthDate,
-        phoneNumber: data.phone,
+        phoneNumber: phoneValid,
         avatar: data.avatar,
         address: '',
         number: '',
@@ -338,6 +339,18 @@ export default function Content() {
   const handlePhone = (numPhone) => {
     setPhone(mask(numPhone.target.value, ['(99) 99999-9999']));
   };
+
+  useEffect(() => {
+    if (phone.length === 15) {
+
+      const newTel = `+55${phone.substr(1, 2)}${phone.substr(
+        5,
+        12,
+      )}`;
+
+      setPhoneValid(newTel.replace('-', ''));
+    }
+  }, [phone]);
   
   return (
     <Formik
@@ -695,7 +708,7 @@ export default function Content() {
               onBlur={handleBlur}
               onChange={handleChange}
               value={values.value}
-              type="text"
+              type="number"
               placeholder="R$ 150,00"
               errorBorderColor="crimson"
               width="400px"

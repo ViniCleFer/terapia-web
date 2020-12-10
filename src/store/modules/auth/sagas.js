@@ -129,7 +129,7 @@ export function* requestCreateProfile({payload}) {
   try {
     const responsePhone = yield call(
       axios.get,
-      `${baseUrl.TERAPIA_BELLA}/profile/phone/+55${payload.phoneNumber}`,
+      `${baseUrl.TERAPIA_BELLA}/profile/phone/${payload.phoneNumber}`,
     );
 
     if (responsePhone.status === 200) {
