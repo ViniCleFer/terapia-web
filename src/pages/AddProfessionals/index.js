@@ -42,7 +42,7 @@ export default function AddProfessionals() {
     <Grid
       height="100vh"
       width="100vw"
-      templateColumns="360px 1fr"
+      templateColumns="260px 1fr"
       templateRows="60px 1fr"
       templateAreas="
       ' topsidebar bodybar'

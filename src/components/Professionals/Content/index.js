@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from "react";
 import { Grid, Flex, Heading, Button, Text, Input } from "@chakra-ui/core";
 // import { useToasts } from "react-toast-notifications";
@@ -8,6 +9,7 @@ import { mask } from 'remask'
 // import NotificationCard from "../../NotificationCallCard";
 import {Formik, Form} from 'formik';
 import * as yup from 'yup';
+// import {v4 as uuid} from 'uuid';
 
 import { requestCreateProfile,
   clearDocError,
@@ -21,6 +23,8 @@ import { getSubjectsRequest } from '../../../store/modules/specialty/actions';
 import DocHelper from '../../../helpers/docValidate';
 import DateHelper from '../../../helpers/dateValidate';
 
+import theme from '../../../styles/theme';
+
 import ChakraInput from "../../ChakraInput";
 import ChakraTextarea from "../../ChakraTextarea";
 
@@ -30,6 +34,7 @@ import {
   SubjectText,
   // TextAlert,
  } from './styles';
+// import { availableButtons } from "../../../store/modules/commons/actions";
 
 export function modal() {
   return (
@@ -46,8 +51,8 @@ export default function Content() {
 
   const phoneError = useSelector(state => state.auth.phoneError);
   const emailError = useSelector(state => state.auth.emailError);
-  const isValidDocReducer = useSelector(state => state.auth.validDoc);
-  const isValidEmailRecucer = useSelector(state => state.auth.validEmail);
+  // const isValidDocReducer = useSelector(state => state.auth.validDoc);
+  // const isValidEmailRecucer = useSelector(state => state.auth.validEmail);
   // const availableButtons = useSelector(
   //   state => state.commons.availableButtons,
   // );
@@ -56,13 +61,13 @@ export default function Content() {
   const [doc, setDoc] = useState('');
   const [phone, setPhone] = useState('');
   const [phoneValid, setPhoneValid] = useState('');
-  const [birth, setBirth] = useState({});
-  const [fmcToken, setFmcToken] = useState('');
+  // const [birth, setBirth] = useState({});
+  // const [fmcToken, setFmcToken] = useState('');
 
-  const [isValidEmail, setIsValidEmail] = useState(true);
-  const [disabledSubmit, setDisableSubmit] = useState('');
-  const [emailReason, setEmailReason] = useState('');
-  const [isValidDoc, setIsValidDoc] = useState(true);
+  // const [isValidEmail, setIsValidEmail] = useState(true);
+  // const [disabledSubmit, setDisableSubmit] = useState('');
+  // const [emailReason, setEmailReason] = useState('');
+  // const [isValidDoc, setIsValidDoc] = useState(true);
   // const [address, setAdress] = useState('');
   // const [number, setNumber] = useState('');
   // const [complement, setComplement] = useState('');
@@ -73,6 +78,10 @@ export default function Content() {
   const [graduates, setGraduates] = useState([]);
   const [experiences, setExperiences] = useState([]);
   const [specialties, setSpecialties] = useState([]);
+
+  const [newGraduates, setNewGraduates] = useState();
+  const [newExperiences, setNewExperiences] = useState();
+
   
   const [display, setDisplay] = useState(false);
 
@@ -88,28 +97,28 @@ export default function Content() {
   //   toast(<NotificationCard />, { autoClose: false, closeOnClick: false });
   // }
 
-  useEffect(() => {
-    if (!isValidDocReducer) {
-      setDisableSubmit(true);
-      setIsValidDoc(false);
-    } else {
-      setDisableSubmit(false);
-      setIsValidDoc(true);
-    }
-  }, [isValidDocReducer]);
+  // useEffect(() => {
+  //   if (!isValidDocReducer) {
+  //     setDisableSubmit(true);
+  //     setIsValidDoc(false);
+  //   } else {
+  //     setDisableSubmit(false);
+  //     setIsValidDoc(true);
+  //   }
+  // }, [isValidDocReducer]);
 
-  useEffect(() => {
-    if (!isValidEmailRecucer) {
-      setDisableSubmit(true);
-      setIsValidEmail(false);
-      setEmailReason(
-        'E-mail já cadastrado em nossa base de dados, efetue seu login',
-      );
-    } else {
-      setDisableSubmit(false);
-      setIsValidEmail(true);
-    }
-  }, [isValidEmailRecucer]);
+  // useEffect(() => {
+  //   if (!isValidEmailRecucer) {
+  //     setDisableSubmit(true);
+  //     setIsValidEmail(false);
+  //     setEmailReason(
+  //       'E-mail já cadastrado em nossa base de dados, efetue seu login',
+  //     );
+  //   } else {
+  //     setDisableSubmit(false);
+  //     setIsValidEmail(true);
+  //   }
+  // }, [isValidEmailRecucer]);
 
   useEffect(() => {
     dispatch(getSubjectsRequest());
@@ -170,7 +179,6 @@ export default function Content() {
       .string()
       .required('Preencha o CPF')
       .test('doc', 'Esse CPF está inválido', async (document) => {
-        
         if (document && document.length === 14) {
           const existDoc = await validateCpf(document);
 
@@ -181,7 +189,6 @@ export default function Content() {
       .string()
       .required('Preencha a data de nascimento')
       .test('date', 'O profissional deve ser maior de 18 anos.', (date) => {
-        setBirth(date)
         if (date) {
           if (DateHelper.limitBornDateMayoritValidation(date)) {
             return true;
@@ -220,67 +227,64 @@ export default function Content() {
   });
 
   function onSubmit(data) {
-    dispatch(
-      requestCreateProfile({
-        name: data.name,
-        doc,
-        email: data.email,
-        birthDate: data.birthDate,
-        phoneNumber: phoneValid,
-        avatar: data.avatar,
-        address: '',
-        number: '',
-        complement: '',
-        neighborhood: '',
-        state: '',
-        city: '',
-        cep: '',
-        description: data.about,
-        docValue: data.docValue,
-        docDescription: data.docDescription,
-        value: data.value,
-        pageUrl: data.pageUrl,
-        videoUrl: data.videoUrl,
-        graduates: graduates,
-        experiences: experiences,
-        specialties: specialties.map(ii => ii.id),
-      })
-    );
-
-    // toast.success("Cadastro Realizado com Sucesso");
-    // alert("Cadastro Realizado com Sucesso");
-
-    // window.location.reload();
-    // return false;
+    alert('clicou função OnSunmit', data)
+    // dispatch(
+    //   requestCreateProfile({
+    //     name: data.name,
+    //     doc,
+    //     email: data.email,
+    //     birthDate: data.birthDate,
+    //     phoneNumber: phoneValid,
+    //     avatar,
+    //     address: '',
+    //     number: '',
+    //     complement: '',
+    //     neighborhood: '',
+    //     state: '',
+    //     city: '',
+    //     cep: '',
+    //     description: data.about,
+    //     docValue: data.docValue,
+    //     docDescription: data.docDescription,
+    //     value: data.value,
+    //     pageUrl: data.pageUrl,
+    //     videoUrl: data.videoUrl,
+    //     graduates: newGraduates,
+    //     experiences: newExperiences,
+    //     specialties,
+    //   })
+    // );
   }
 
   function hanldeGraduate(gradItem) {
-    // let newArrGrad = graduates;
-
-    // newArrGrad.push({
-    //   college: gradItem,
-    // });
-
-    // setGraduates(newArrGrad);
     setGraduates([...graduates, gradItem]);
-
   }
+
+  useEffect(() => {
+    if (graduates) {
+      const kk = graduates.map(it => (
+        {college: it}
+      ))
+      
+      setNewGraduates(kk)
+    }
+
+  }, [graduates]);
 
   function handleExperience(experItem) {
     setExperiences([...experiences, experItem]);
-
-    // "experiences": [
-    //   {
-    //       "especialty": "Manjo de X"
-    //   },
-    //   {
-    //       "especialty": "Manjo de Y"
-    //   },
-    //   {
-    //       "especialty": "Manjo de Z"
-    //   }
-    // ],
   }
+
+  useEffect(() => {
+    if (experiences) {
+      const kk = experiences.map(espec => (
+        {especialty: espec}
+      ))
+      
+      setNewExperiences(kk)
+    }
+
+  }, [graduates]);
 
   function handleSpecialty(specialItem) {
     const especials = specialties.find(spec => spec.id === specialItem.id);
@@ -291,21 +295,6 @@ export default function Content() {
       setSpecialties([...specialties, specialItem]);
       setSearch('');
     }
-
-    // "specialties": [
-    //   {
-    //       "id": 1
-    //   },
-    //   {
-    //       "id": 2
-    //   },
-    //   {
-    //       "id": 3
-    //   },
-    //   {
-    //       "id": 4
-    //   }
-    // ]
   }
 
   const setProfi = (sub) => {
@@ -314,10 +303,6 @@ export default function Content() {
     setSearch('');
     handleSpecialty(sub)
   };
-
-  useEffect(() => {
-    console.log(graduates);
-  }, [graduates]);
 
   const handleCancelGraduate = (graduate) => {
     const graduats = graduates.filter((grads) => (grads !== graduate));
@@ -342,25 +327,32 @@ export default function Content() {
 
   useEffect(() => {
     if (phone.length === 15) {
-
       const newTel = `+55${phone.substr(1, 2)}${phone.substr(
         5,
         12,
       )}`;
-
       setPhoneValid(newTel.replace('-', ''));
     }
   }, [phone]);
+
+  const handleAvatar = (fileImage) => {
+    setAvatar(fileImage);
+  };
+
+  // useEffect(() => {
+  //   console.log({avatar})
+
+  // }, [avatar])
   
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={() => alert('teste')}
       enableReinitialize={false}
       >
-      {({ values, handleChange, handleBlur, handleSubmit, setFieldTouched, isSubmitting, errors }) => (
-        <Form onSubmit={handleSubmit}>
+      {({ values, handleChange, handleBlur, handleSubmit, setFieldTouched, isSubmitting, errors ,isValid}) => (
+        <>
           <Grid
             templateColumns="1fr 1fr 1fr "
             // gridAutoRows="150px"
@@ -402,21 +394,21 @@ export default function Content() {
               width="400px"
             />
           </Flex>
-          <Flex direction="column" align="flex-start" width="400px" padding="10px">
+          {/* <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
              CPF
             </Heading>
 
-            <Input
+            <ChakraInput
               name="doc"
               align="center"
               onBlur={() => (
                 setFieldTouched('doc'), dispatch(clearDocError())
               )}
-              // onChange={handleChange}
-              // value={values.doc}
-              onChange={handleCpf}
-              value={doc}
+              onChange={handleChange}
+              value={() => handleCpf(values.doc)}
+              // onChange={handleCpf}
+              // value={doc}
               type="text"
               placeholder="555.555.555-55"
               errorBorderColor="crimson"
@@ -456,7 +448,7 @@ export default function Content() {
                 setFieldTouched('phoneNumber'), dispatch(clearPhoneError())
               )}
               onChange={handlePhone}
-              value={phone}
+              value={values.phone}
               type="phone"
               placeholder="DD-XXXXX-XXXX"
               errorBorderColor="crimson"
@@ -469,164 +461,23 @@ export default function Content() {
               Avatar
             </Heading>
 
-            <ChakraInput
+            <Input
               name="avatar"
               align="center"
               padding="6px"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.avatar}
+              // onBlur={handleBlur}
+              onChange={handleAvatar}
+              // value={avatar}
               type="file"
               accept="image/*"
-              placeholder="DD-XXXXX-XXXX"
               errorBorderColor="crimson"
               width="400px"
+              mt="15px"
             />
-          </Flex>
+          </Flex> */}
           </Grid>
+          
           {/* <Flex  
-            backgroundColor="#f1f0ef"
-            direction="column" align="flex-start" padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="600" size="md"padding="5px" mb="-15px">
-              Endereço
-            </Heading>
-          </Flex>
-          <Flex 
-            backgroundColor="#f1f0ef"
-            direction="column" align="flex-start"  padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-                CEP
-              </Heading>
-
-              <ChakraInput
-                name="cep"
-                align="center"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.cep}
-                type="text"
-                placeholder="11111-111"
-                errorBorderColor="crimson"
-                width="400px"
-              />
-          </Flex>
-          <Grid
-            templateColumns="1fr 1fr 1fr "
-            // gridAutoRows="150px"
-            gap={3}
-            backgroundColor="#f1f0ef"
-          >
-            <Flex direction="column" align="flex-start" width="400px" padding="10px">
-              <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-                Rua
-              </Heading>
-
-              <ChakraInput
-                name="address"
-                align="center"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.address}
-                type="text"
-                placeholder="Rua, Avendida, etc..."
-                errorBorderColor="crimson"
-                width="400px"
-              />
-            </Flex>
-            <Flex direction="column" align="flex-start" width="400px" padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-              Número
-            </Heading>
-
-            <ChakraInput
-              name="number"
-              align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.number}
-              type="text"
-              placeholder="Número"
-              errorBorderColor="crimson"
-              width="400px"
-            />
-          </Flex>
-          <Flex direction="column" align="flex-start" width="400px" padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-             Complemento
-            </Heading>
-
-            <ChakraInput
-              name="complement"
-              align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.complement}
-              type="text"
-              placeholder="Casa, apartamento, etc..."
-              errorBorderColor="crimson"
-              width="400px"
-            />
-          </Flex>
-          </Grid>
-          <Grid
-            templateColumns="1fr 1fr 1fr "
-            // gridAutoRows="150px"
-            gap={3}
-            backgroundColor="#f1f0ef"
-          >
-            <Flex direction="column" align="flex-start" width="400px" padding="10px">
-              <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-                Bairro
-              </Heading>
-
-              <ChakraInput
-                name="neighborhood"
-                align="center"
-                onBlur={handleBlur}
-                onChange={handleChange}
-                value={values.neighborhood}
-                type="text"
-                placeholder="Bairro"
-                errorBorderColor="crimson"
-                width="400px"
-              />
-            </Flex>
-            <Flex direction="column" align="flex-start" width="400px" padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-              Cidade
-            </Heading>
-
-            <ChakraInput
-              name="city"
-              align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.city}
-              type="text"
-              placeholder="Cidade"
-              errorBorderColor="crimson"
-              width="400px"
-            />
-          </Flex>
-          <Flex direction="column" align="flex-start" width="400px" padding="10px">
-            <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
-             Estado
-            </Heading>
-
-            <ChakraInput
-              name="state"
-              align="center"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.state}
-              type="text"
-              placeholder="Ex: SP"
-              errorBorderColor="crimson"
-              width="400px"
-            />
-          </Flex>
-          </Grid> */}
-          <Flex  
             backgroundColor="#f1f0ef"
             direction="column" align="flex-start" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="600" size="md"padding="5px" mb="-15px">
@@ -653,7 +504,7 @@ export default function Content() {
                 size="sm"
                 height="50px"
                 errorBorderColor="crimson"
-                width="1410px"
+                width="770%"
               />
             </Flex>
           </Grid>
@@ -894,85 +745,178 @@ export default function Content() {
               ))}
             </Flex>
           
-          </Grid>
+          </Grid> */}
           <Flex backgroundColor="#f1f0ef" justifyContent="center" pb="15px">
-            <Button
+            {/* <Button
               width="400px"
               mt={4}
-              colorScheme="teal"
               isLoading={isSubmitting}
               type="submit"
               onClick={handleSubmit}
-              _disabled={disabledSubmit}
+              background={theme.colors.purple[600]}
+              color={theme.colors.white}
             >
-              Submit
+              Cadastrar
+            </Button> */}
+            <Button
+              // width="400px"
+              // mt={4}
+              // isLoading={isSubmitting}
+              type="submit"
+              onClick={onSubmit}
+              // background={theme.colors.purple[600]}
+              // color={theme.colors.white}
+            >
+              Cadastrar
             </Button>
           </Flex>
           
-        </Form>
+        </>
       )}
     </Formik>
     
   );
 }
 
+// <Flex  
+//   backgroundColor="#f1f0ef"
+//   direction="column" align="flex-start" padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="600" size="md"padding="5px" mb="-15px">
+//     Endereço
+//   </Heading>
+// </Flex>
+// <Flex 
+//   backgroundColor="#f1f0ef"
+//   direction="column" align="flex-start"  padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//       CEP
+//     </Heading>
 
+//     <ChakraInput
+//       name="cep"
+//       align="center"
+//       onBlur={handleBlur}
+//       onChange={handleChange}
+//       value={values.cep}
+//       type="text"
+//       placeholder="11111-111"
+//       errorBorderColor="crimson"
+//       width="400px"
+//     />
+// </Flex>
+// <Grid
+//   templateColumns="1fr 1fr 1fr "
+//   // gridAutoRows="150px"
+//   gap={3}
+//   backgroundColor="#f1f0ef"
+// >
+//   <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//     <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//       Rua
+//     </Heading>
 
-// avatar1,
-// name,
-// doc,
-// email,
-// healthCardNumber,
-// birthdateValid,
-// phoneNumber,
-// address,
-// number,
-// complement,
-// neighborhood,
-// state,
-// city,
-// cep,
-// values.password,
-// fmcToken,
+//     <ChakraInput
+//       name="address"
+//       align="center"
+//       onBlur={handleBlur}
+//       onChange={handleChange}
+//       value={values.address}
+//       type="text"
+//       placeholder="Rua, Avendida, etc..."
+//       errorBorderColor="crimson"
+//       width="400px"
+//     />
+//   </Flex>
+//   <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//     Número
+//   </Heading>
 
-// {
-//   "description": "Description",
-//   "docValue": "1234/6",
-//   "docDescription": "CRP",
-//   "value": 50,
-//   "videoUrl": "https://google.com",
-//   "profileId": 831,
-//   "graduates": [
-//       {
-//           "college": "Faculdade federal"
-//       },
-//       {
-//           "college": "Faculdade de estadual"
-//       }
-//   ],
-//   "experiences": [
-//       {
-//           "especialty": "Manjo de X"
-//       },
-//       {
-//           "especialty": "Manjo de Y"
-//       },
-//       {
-//           "especialty": "Manjo de Z"
-//       }
-//   ],
-//   "specialties": [
-//       {
-//           "id": 1
-//       },
-//       {
-//           "id": 2
-//       },
-//       {
-//           "id": 3
-//       },
-//       {
-//           "id": 4
-//       }
-//   ]
-// }
+//   <ChakraInput
+//     name="number"
+//     align="center"
+//     onBlur={handleBlur}
+//     onChange={handleChange}
+//     value={values.number}
+//     type="text"
+//     placeholder="Número"
+//     errorBorderColor="crimson"
+//     width="400px"
+//   />
+// </Flex>
+// <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//    Complemento
+//   </Heading>
+
+//   <ChakraInput
+//     name="complement"
+//     align="center"
+//     onBlur={handleBlur}
+//     onChange={handleChange}
+//     value={values.complement}
+//     type="text"
+//     placeholder="Casa, apartamento, etc..."
+//     errorBorderColor="crimson"
+//     width="400px"
+//   />
+// </Flex>
+// </Grid>
+// <Grid
+//   templateColumns="1fr 1fr 1fr "
+//   // gridAutoRows="150px"
+//   gap={3}
+//   backgroundColor="#f1f0ef"
+// >
+//   <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//     <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//       Bairro
+//     </Heading>
+
+//     <ChakraInput
+//       name="neighborhood"
+//       align="center"
+//       onBlur={handleBlur}
+//       onChange={handleChange}
+//       value={values.neighborhood}
+//       type="text"
+//       placeholder="Bairro"
+//       errorBorderColor="crimson"
+//       width="400px"
+//     />
+//   </Flex>
+//   <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//     Cidade
+//   </Heading>
+
+//   <ChakraInput
+//     name="city"
+//     align="center"
+//     onBlur={handleBlur}
+//     onChange={handleChange}
+//     value={values.city}
+//     type="text"
+//     placeholder="Cidade"
+//     errorBorderColor="crimson"
+//     width="400px"
+//   />
+// </Flex>
+// <Flex direction="column" align="flex-start" width="400px" padding="10px">
+//   <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
+//    Estado
+//   </Heading>
+
+//   <ChakraInput
+//     name="state"
+//     align="center"
+//     onBlur={handleBlur}
+//     onChange={handleChange}
+//     value={values.state}
+//     type="text"
+//     placeholder="Ex: SP"
+//     errorBorderColor="crimson"
+//     width="400px"
+//   />
+// </Flex>
+// </Grid>

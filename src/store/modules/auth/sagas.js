@@ -1,7 +1,8 @@
 import { all, takeLatest, call, put } from "redux-saga/effects";
 import { toast } from "react-toastify";
-import qs from "qs-stringify";
+// import qs from "qs-stringify";
 import axios from "axios";
+import {v4 as uuid} from 'uuid';
 
 // import api from '../../../services/api';
 import apiTerapia from '../../../services/apiTerapia';
@@ -40,7 +41,7 @@ export function* signIn({ payload }) {
 
     const response = yield call(
       axios.post,
-      `${baseUrl.AUTH}/user/login/web`,
+      `${baseUrl.TERAPIA_AUTH}/user/login/web`,
       data
     );
 
@@ -52,14 +53,14 @@ export function* signIn({ payload }) {
 
     if (response.status === 200) {
       try {
-        const res = yield call(axios.get, `${baseUrl.BELLA}/profile/${userId}`);
+        const res = yield call(axios.get, `${baseUrl.TERAPIA_BELLA}/profile/${userId}`);
 
         console.tron.log(res.data);
         if (res.status === 200) {
           yield put(signInSuccess(token, refresh_token));
           yield put(setSigned());
           yield put(saveProfile(res.data));
-          history.push("/professionals");
+          history.push("/professionals/contacts");
         }
       } catch (error) {
         console.tron.log(error);
@@ -116,9 +117,17 @@ export function* requestCreateProfile({payload}) {
 
   console.tron.log({payload});
 
-  if (payload.avatar === '') {
-    payload.avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.name}`;
-  }
+  const handleAvatar = async (fileImage) => {
+    const file = fileImage.target.files[0];
+    const id = uuid();
+    const handleImage = firebase.storage().ref('avatar').child(id);
+    await handleImage.put(file);
+    handleImage.getDownloadURL().then(url => {
+      return payload.avatar = url;
+    })
+  };
+
+  const specialties = payload.specialties.map(specialty => specialty.id);
 
   // firebase.auth().onAuthStateChanged((user) => {
   //   if (user) {
@@ -145,20 +154,20 @@ export function* requestCreateProfile({payload}) {
           break;
         case 404:
           console.tron.log(error.response, 'erro 404, bora');
-          // try {
-          //   const responseEmail = yield call(
-          //     axios.get,
-          //     `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email/${payload.email}`,
-          //   );
-          //   console.tron.log({responseEmail});
-          //   if (responseEmail.status === 200) {
-          //     try {
-          //       const responseDoc = yield call(
-          //         axios.get,
-          //         `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc/${payload.doc}`,
-          //       );
-          //       console.tron.log({responseDoc});
-          //       if (responseDoc.status === 200) {
+          try {
+            const responseEmail = yield call(
+              axios.get,
+              `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email/${payload.email}`,
+            );
+            console.tron.log({responseEmail});
+            if (responseEmail.status === 200) {
+              try {
+                const responseDoc = yield call(
+                  axios.get,
+                  `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc/${payload.doc}`,
+                );
+                console.tron.log({responseDoc});
+                if (responseDoc.status === 200) {
                   try {
                     const responseSignUp = yield call(apiTerapia.post, `${baseUrl.TERAPIA_AUTH}/signup`, {
                       email: payload.email,
@@ -169,15 +178,6 @@ export function* requestCreateProfile({payload}) {
                     });
                     if (responseSignUp.status === 200) {
                       try {
-                        // const data = qs({
-                        //   grant_type: 'password',
-                        //   // username: 'user1@teste.com',
-                        //   username: payload.email,
-                        //   password: '1234567',
-                        // });
-
-                        // console.tron.log(data, 'data');
-        
                         const responseToken = yield call(
                           axios.post,
                           `${baseUrl.TERAPIA_AUTH}/user/login/web`,
@@ -185,13 +185,6 @@ export function* requestCreateProfile({payload}) {
                             email: payload.email,
                             password: '1234567',
                           }
-                          // {
-                          //   headers: {
-                          //     Accept: '*/*',
-                          //     'Content-Type': 'application/x-www-form-urlencoded',
-                          //     Authorization: 'Basic bW9iaWxlOmJlbGxhQDIwMTk=',
-                          //   },
-                          // },
                         );
 
                         console.tron.log(responseToken, 'response');
@@ -209,10 +202,16 @@ export function* requestCreateProfile({payload}) {
         
                         if (responseToken.status === 200) {
                           yield put(setFCMToken(payload.fmcToken, userId));
+
+                          if (payload.avatar === '') {
+                            payload.avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.name}`;
+                          } else {
+                            handleAvatar(payload.avatar);
+                          }
+
                           try {
                             axios.defaults.headers.Authorization = `Bearer ${token}`;
                             const responseProfile = yield call(
-                              // nome, doc, email, userId, activationCodeId
                               axios.post,
                               `${baseUrl.TERAPIA_BELLA}/profile`,
                               {
@@ -231,15 +230,15 @@ export function* requestCreateProfile({payload}) {
         
                             console.tron.log(responseProfile, 'responseProfile')
         
-                            // if (responseProfile) {
-                            //   yield call(
-                            //     axios.put,
-                            //     `${baseUrl.TERAPIA_AUTH}/user/register-status/${userId}`,
-                            //     {
-                            //       registerStatus: 'COMPLETE',
-                            //     },
-                            //   );
-                            // }
+                            if (responseProfile) {
+                              yield call(
+                                axios.put,
+                                `${baseUrl.TERAPIA_AUTH}/user/register-status/${userId}`,
+                                {
+                                  registerStatus: 'COMPLETE',
+                                },
+                              );
+                            }
                             yield put(availableButtons(true));
 
                             const { id: profileId } = responseProfile.data;
@@ -248,7 +247,6 @@ export function* requestCreateProfile({payload}) {
 
                               try {
                                 const responseProfProfile = yield call(
-                                  // nome, doc, email, userId, activationCodeId
                                   axios.post,
                                   `${baseUrl.TERAPIA_BELLA}/professional`,
                                   {
@@ -261,12 +259,13 @@ export function* requestCreateProfile({payload}) {
                                     profileId,
                                     graduates: payload.graduates,
                                     experiences: payload.experiences,
-                                    specialties: payload.specialties,
+                                    specialties,
                                   },
                                 );
   
                                 if (responseProfProfile.status === 200) {
                                   toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
+                                  window.location.reload();
                                 }
                                 yield put(availableButtons(true));
                               } catch(error) {
@@ -343,63 +342,63 @@ export function* requestCreateProfile({payload}) {
                       }
                     }
                   }
-                // }
-            //   } catch (error) {
-            //     yield put(cancelLoading());
-            //     yield put(availableButtons(true));
-            //     console.tron.log(error.response, 'API AUTH DOC requestCreateProfile');
+                }
+              } catch (error) {
+                yield put(cancelLoading());
+                yield put(availableButtons(true));
+                console.tron.log(error.response, 'API AUTH DOC requestCreateProfile');
         
-            //     if (error.response) {
-            //       switch (error.response.status) {
-            //         case 500:
-            //           break;
-            //         case 404:
-            //           yield put(failureAutenticationCode('404'));
-            //           break;
-            //         case 400:
-            //           yield put(failureAutenticationCode('400'));
-            //           break;
-            //         case 409:
-            //           yield put(cancelLoading());
-            //           yield put(docError());
-            //           toast.error("Falha no Cadastro, CPF já cadastrado na nossa base de dados.");
-            //           break;
-            //         case 401:
-            //           yield put(failureAutenticationCode('401'));
-            //           break;
-            //         default:
-            //           break;
-            //       }
-            //     }
-            //   }
-            // }
-          // } catch (error) {
-          //   yield put(availableButtons(true));
-          //   yield put(cancelLoading());
-          //   console.tron.log(error.response, 'API AUTH EMAIL requestCreateProfile');
+                if (error.response) {
+                  switch (error.response.status) {
+                    case 500:
+                      break;
+                    case 404:
+                      yield put(failureAutenticationCode('404'));
+                      break;
+                    case 400:
+                      yield put(failureAutenticationCode('400'));
+                      break;
+                    case 409:
+                      yield put(cancelLoading());
+                      yield put(docError());
+                      toast.error("Falha no Cadastro, CPF já cadastrado na nossa base de dados.");
+                      break;
+                    case 401:
+                      yield put(failureAutenticationCode('401'));
+                      break;
+                    default:
+                      break;
+                  }
+                }
+              }
+            }
+          } catch (error) {
+            yield put(availableButtons(true));
+            yield put(cancelLoading());
+            console.tron.log(error.response, 'API AUTH EMAIL requestCreateProfile');
         
-          //   if (error.response) {
-          //     switch (error.response.status) {
-          //       case 500:
-          //         break;
-          //       case 404:
-          //         yield put(emailError());
-          //         break;
-          //       case 400:
-          //         yield put(failureAutenticationCode('400'));
-          //         break;
-          //       case 409:
-          //         toast.error("Falha no Cadastro, E-mail já cadastrado na nossa base de dados.");
-          //         yield put(emailError());
-          //         break;
-          //       case 401:
-          //         yield put(failureAutenticationCode('401'));
-          //         break;
-          //       default:
-          //         break;
-          //     }
-          //   }
-          // }
+            if (error.response) {
+              switch (error.response.status) {
+                case 500:
+                  break;
+                case 404:
+                  yield put(emailError());
+                  break;
+                case 400:
+                  yield put(failureAutenticationCode('400'));
+                  break;
+                case 409:
+                  toast.error("Falha no Cadastro, E-mail já cadastrado na nossa base de dados.");
+                  yield put(emailError());
+                  break;
+                case 401:
+                  yield put(failureAutenticationCode('401'));
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
           break;
         case 400:
           break;
