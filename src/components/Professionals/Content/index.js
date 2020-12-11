@@ -97,6 +97,7 @@ export default function Content() {
 
   const [newGraduates, setNewGraduates] = useState();
   const [newExperiences, setNewExperiences] = useState();
+  const [newSpecialties, setNewSpecialties] = useState();
 
   
   const [display, setDisplay] = useState(false);
@@ -171,7 +172,7 @@ export default function Content() {
     videoUrl,
     graduates: newGraduates,
     experiences: newExperiences,
-    specialties,
+    specialties: newSpecialties,
     });
 
     if (!disabledSubmit &&
@@ -203,13 +204,16 @@ export default function Content() {
           videoUrl,
           graduates: newGraduates,
           experiences: newExperiences,
-          specialties,
+          specialties: newSpecialties,
         })
       );
     }
   }
 
   function hanldeGraduate(gradItem) {
+    if (!gradItem) {
+      return
+    }
     setErrorCollege(false);
     setCollege('');
     setGraduates([...graduates, gradItem]);
@@ -251,6 +255,16 @@ export default function Content() {
       setSearch('');
     }
   }
+
+  useEffect(() => {
+    if (specialties) {
+      const kk = specialties.map(espec => (
+        {id: espec.id}
+      ))
+      
+      setNewSpecialties(kk)
+    }
+  }, [specialties]);
 
   const setProfi = (sub) => {
     setErrorEspecialties(false)
@@ -339,7 +353,6 @@ export default function Content() {
   function handleBirthError() {
     dispatch(clearBirthError())
     const birthString = JSON.stringify(birthDate);
-    console.log(birthString.length);
     if (birthString.length === 12) {
       if (DateHelper.limitBornDateMayoritValidation(birthDate)) {
         setErrorBirth(false);
@@ -378,7 +391,7 @@ export default function Content() {
   }
 
   function handleCollegeError() {
-    newGraduates.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
+    newGraduates.length > 0 && college.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
   }
 
   function handleSpecialtyError() {

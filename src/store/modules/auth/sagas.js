@@ -127,7 +127,9 @@ export function* requestCreateProfile({payload}) {
     })
   };
 
-  const specialties = payload.specialties.map(specialty => specialty.id);
+  // const specialties = payload.specialties.map(specialty => {
+  //   id: specialty.id
+  // });
 
   // firebase.auth().onAuthStateChanged((user) => {
   //   if (user) {
@@ -158,14 +160,14 @@ export function* requestCreateProfile({payload}) {
           try {
             const responseEmail = yield call(
               axios.get,
-              `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email/${payload.email}`,
+              `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email?email=${payload.email}`,
             );
             console.tron.log({responseEmail});
             if (responseEmail.status === 200) {
               try {
                 const responseDoc = yield call(
                   axios.get,
-                  `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc/${payload.doc}`,
+                  `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc?doc=${payload.doc}`,
                 );
                 console.tron.log({responseDoc});
                 if (responseDoc.status === 200) {
@@ -217,7 +219,6 @@ export function* requestCreateProfile({payload}) {
                               `${baseUrl.TERAPIA_BELLA}/profile`,
                               {
                                 userId,
-                                uId: 'web',
                                 name: payload.name,
                                 doc: payload.doc,
                                 email: payload.email,
@@ -226,49 +227,60 @@ export function* requestCreateProfile({payload}) {
                                 photoUrl: payload.avatar,
                                 domainId,
                                 tenantId,
+                                address: [
+                                  {
+                                    address: payload.address,
+                                    number: payload.number,
+                                    complement: payload.complement,
+                                    neighborhood: payload.neighborhood,
+                                    state: payload.state,
+                                    city: payload.city,
+                                    zipCode: payload.cep,
+                                  },
+                                ],
                               },
                             );
         
-                            console.tron.log(responseProfile, 'responseProfile')
-        
-                            if (responseProfile) {
-                              yield call(
-                                axios.put,
-                                `${baseUrl.TERAPIA_AUTH}/user/register-status/${userId}`,
-                                {
-                                  registerStatus: 'COMPLETE',
-                                },
-                              );
-                            }
+                            // if (responseProfile) {
+                            //   yield call(
+                            //     axios.put,
+                            //     `${baseUrl.TERAPIA_AUTH}/user/register-status/${userId}`,
+                            //     {
+                            //       registerStatus: 'COMPLETE',
+                            //     },
+                            //   );
+                            // }
+
                             yield put(availableButtons(true));
 
                             const { id: profileId } = responseProfile.data;
 
                             if (responseProfile.status === 201) {
-
                               try {
                                 const responseProfProfile = yield call(
                                   axios.post,
                                   `${baseUrl.TERAPIA_BELLA}/professional`,
                                   {
-                                    description: payload.about,
+                                    description: payload.description,
                                     docValue: payload.docValue,
                                     docDescription: payload.docDescription,
-                                    value: payload.value,
+                                    value: Number(payload.value),
                                     pageUrl: payload.pageUrl,
                                     videoUrl: payload.videoUrl,
                                     profileId,
                                     graduates: payload.graduates,
                                     experiences: payload.experiences,
-                                    specialties,
+                                    specialties: payload.specialties,
                                   },
                                 );
   
                                 if (responseProfProfile.status === 200) {
+                                  yield put(cancelLoading());
                                   toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
                                   window.location.reload();
                                 }
                                 yield put(availableButtons(true));
+                                yield put(cancelLoading());
                               } catch(error) {
                                 console.tron.log(error.response, 'Error responseProfProfile');
                                 yield put(cancelLoading());
@@ -407,6 +419,9 @@ export function* requestCreateProfile({payload}) {
           break;
         case 400:
           yield put(cancelLoading());
+          break;
+        case 'Network':
+          console.tron.log('Possível erro de CORS');
           break;
         default:
           break;
