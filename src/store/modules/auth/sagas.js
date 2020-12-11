@@ -151,6 +151,7 @@ export function* requestCreateProfile({payload}) {
     if (error.response) {
       switch (error.response.status) {
         case 500:
+          yield put(cancelLoading());
           break;
         case 404:
           console.tron.log(error.response, 'erro 404, bora');
@@ -270,6 +271,7 @@ export function* requestCreateProfile({payload}) {
                                 yield put(availableButtons(true));
                               } catch(error) {
                                 console.tron.log(error.response, 'Error responseProfProfile');
+                                yield put(cancelLoading());
                                 yield put(availableButtons(true));
                                 if (error.response) {
                                   switch (error.response.status) {
@@ -288,6 +290,7 @@ export function* requestCreateProfile({payload}) {
                           } catch (error) {
                             console.tron.log(error, 'Error responseProfile');
                             yield put(availableButtons(true));
+                            yield put(cancelLoading());
                             if (error.response) {
                               console.tron.log(error.response);
                               switch (error.response.status) {
@@ -306,6 +309,7 @@ export function* requestCreateProfile({payload}) {
                       } catch (error) {
                         console.tron.log(error, 'Error responseToken');
                         console.log(error, 'Error responseToken');
+                        yield put(cancelLoading());
                         yield put(availableButtons(true));
                         if (error.response) {
                           switch (error.response.status) {
@@ -323,6 +327,7 @@ export function* requestCreateProfile({payload}) {
                     }
                   } catch (error) {
                     console.tron.log(error.response, 'Error responseSignUp');
+                    yield put(cancelLoading());
                     yield put(availableButtons(true));
                     if (error.response) {
                       switch (error.response.status) {
@@ -401,6 +406,7 @@ export function* requestCreateProfile({payload}) {
           }
           break;
         case 400:
+          yield put(cancelLoading());
           break;
         default:
           break;

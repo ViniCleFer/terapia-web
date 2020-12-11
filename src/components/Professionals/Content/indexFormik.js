@@ -1,14 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from "react";
-import { Grid, Flex, Heading, Button, Text, Input, Textarea, FormControl, FormErrorMessage} from "@chakra-ui/core";
+import { Grid, Flex, Heading, Button, Text, Input } from "@chakra-ui/core";
 // import { useToasts } from "react-toast-notifications";
 import {useSelector, useDispatch} from 'react-redux';
 // import axios from 'axios';
 import { mask } from 'remask'
 // import { toast } from "react-toastify";
 // import NotificationCard from "../../NotificationCallCard";
-// import {Formik, Form, Field} from 'formik';
-// import * as yup from 'yup';
+import {Formik, Form} from 'formik';
+import * as yup from 'yup';
 // import {v4 as uuid} from 'uuid';
 
 import { requestCreateProfile,
@@ -16,10 +16,7 @@ import { requestCreateProfile,
   setBirthError,
   clearEmailError,
   clearPhoneError,
-  clearBirthError,
-  cancelLoading,
-  // docError,
-} from '../../../store/modules/auth/actions';
+  clearBirthError, } from '../../../store/modules/auth/actions';
 
 import { getSubjectsRequest } from '../../../store/modules/specialty/actions';
 
@@ -28,8 +25,8 @@ import DateHelper from '../../../helpers/dateValidate';
 
 import theme from '../../../styles/theme';
 
-// import ChakraInput from "../../ChakraInput";
-// import ChakraTextarea from "../../ChakraTextarea";
+import ChakraInput from "../../ChakraInput";
+import ChakraTextarea from "../../ChakraTextarea";
 
 import { 
   SubjectView,
@@ -39,13 +36,13 @@ import {
  } from './styles';
 // import { availableButtons } from "../../../store/modules/commons/actions";
 
-// export function modal() {
-//   return (
-//     <Flex>
-//       <Heading>teste</Heading>
-//     </Flex>
-//   );
-// }
+export function modal() {
+  return (
+    <Flex>
+      <Heading>teste</Heading>
+    </Flex>
+  );
+}
 
 export default function Content() {
   const dispatch = useDispatch();
@@ -54,34 +51,21 @@ export default function Content() {
 
   const phoneError = useSelector(state => state.auth.phoneError);
   const emailError = useSelector(state => state.auth.emailError);
-  const validDoc = useSelector(state => state.auth.validDoc);
-  const birthError = useSelector(state => state.auth.birthError);
-  const loading = useSelector(state => state.auth.loading);
+  // const isValidDocReducer = useSelector(state => state.auth.validDoc);
   // const isValidEmailRecucer = useSelector(state => state.auth.validEmail);
   // const availableButtons = useSelector(
   //   state => state.commons.availableButtons,
   // );
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState('');
   const [doc, setDoc] = useState('');
-  const [birthDate, setBirthDate] = useState({});
   const [phone, setPhone] = useState('');
   const [phoneValid, setPhoneValid] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [description, setDescription] = useState('');
-  const [docValue, setDocValue] = useState('');
-  const [docDescription, setDocDescription] = useState('');
-  const [value, setValue] = useState('');
-  const [pageUrl, setPageUrl] = useState('');
-  const [videoUrl, setVideoUrl] = useState('');
-  const [college, setCollege] = useState('');
-  const [specialty, setSpecialty] = useState('');
-
+  // const [birth, setBirth] = useState({});
   // const [fmcToken, setFmcToken] = useState('');
 
   // const [isValidEmail, setIsValidEmail] = useState(true);
-  const [disabledSubmit, setDisableSubmit] = useState(false);
+  // const [disabledSubmit, setDisableSubmit] = useState('');
   // const [emailReason, setEmailReason] = useState('');
   // const [isValidDoc, setIsValidDoc] = useState(true);
   // const [address, setAdress] = useState('');
@@ -106,18 +90,35 @@ export default function Content() {
 
   const [search, setSearch] = useState('');
 
-  const [errorName, setErrorName] = useState(false);
-  const [errorEmail, setErrorEmail] = useState(false);
-  const [errorDoc, setErrorDoc] = useState(false);
-  const [errorBirth, setErrorBirth] = useState(false);
-  const [errorPhone, setErrorPhone] = useState(false);
-  const [errorDescription, setErrorDescription] = useState(false);
-  const [errorDocValue, setErrorDocValue] = useState(false);
-  const [errorDocDescription, setErrorDocDescription] = useState(false);
-  const [errorValue, setErrorValue] = useState(false);
-  const [errorCollege, setErrorCollege] = useState(false);
-  const [errorSpecialty, setErrorSpecialty] = useState(false);
-  const [errorEspecialties, setErrorEspecialties] = useState(false);
+  // const { addToast } = useToasts();
+
+  // function handleModal() {
+  //   // addToast("teste", { appearance: "error" });
+  //   toast(<NotificationCard />, { autoClose: false, closeOnClick: false });
+  // }
+
+  // useEffect(() => {
+  //   if (!isValidDocReducer) {
+  //     setDisableSubmit(true);
+  //     setIsValidDoc(false);
+  //   } else {
+  //     setDisableSubmit(false);
+  //     setIsValidDoc(true);
+  //   }
+  // }, [isValidDocReducer]);
+
+  // useEffect(() => {
+  //   if (!isValidEmailRecucer) {
+  //     setDisableSubmit(true);
+  //     setIsValidEmail(false);
+  //     setEmailReason(
+  //       'E-mail já cadastrado em nossa base de dados, efetue seu login',
+  //     );
+  //   } else {
+  //     setDisableSubmit(false);
+  //     setIsValidEmail(true);
+  //   }
+  // }, [isValidEmailRecucer]);
 
   useEffect(() => {
     dispatch(getSubjectsRequest());
@@ -135,83 +136,127 @@ export default function Content() {
     return false;
   }
 
-  function onSubmit() {
-    handleNameError();
-    handleEmailError();
-    handleDocError();
-    handleBirthError();
-    handlePhoneError();
-    handleDescriptionError();
-    handleDocDescriptionError();
-    handleDocValueError();
-    handleValueError();
-    handleCollegeError();
-    handleSpecialtyError();
-    handleEspecialtiesError();
 
-    console.log('clicou função OnSunmit', {
-    name,
-    doc,
-    email,
-    birthDate,
-    phoneNumber: phoneValid,
-    avatar,
-    address: '',
-    number: '',
-    complement: '',
-    neighborhood: '',
-    state: '',
-    city: '',
-    cep: '',
-    description,
-    docValue,
-    docDescription,
-    value,
-    pageUrl,
-    videoUrl,
-    graduates: newGraduates,
-    experiences: newExperiences,
-    specialties,
-    });
+  // async function validateCep() {
+  //   const testi = cep.replace('-', '');
+  //   const response = await axios.get(`https://viacep.com.br/ws/${testi}/json`);
+  //   setAdress(response.data.logradouro);
+  //   setNeighborhood(response.data.bairro);
+  //   setState(response.data.uf);
+  //   setCity(response.data.localidade);
+  // }
 
-    if (!disabledSubmit &&
-        !errorName && !errorEmail && !errorDoc &&
-        !errorBirth && !errorPhone && !errorDescription &&
-        !errorDocDescription && !errorDocValue && !errorValue &&
-        !errorCollege && !errorSpecialty && !errorEspecialties
-      ) {
-      dispatch(
-        requestCreateProfile({
-          name,
-          doc,
-          email,
-          birthDate,
-          phoneNumber: phoneValid,
-          avatar,
-          address: '',
-          number: '',
-          complement: '',
-          neighborhood: '',
-          state: '',
-          city: '',
-          cep: '',
-          description,
-          docValue,
-          docDescription,
-          value,
-          pageUrl,
-          videoUrl,
-          graduates: newGraduates,
-          experiences: newExperiences,
-          specialties,
-        })
-      );
-    }
+  const initialValues = {
+    doc: "",
+    name: "",
+    email: "",
+    birthDate: "",
+    phone: "",
+    about: "",
+    docDescription: "",
+    docValue: "",
+    value: "",
+    college: "",
+    especialty: "",
+    avatar: "",
+    specialties: "",
+  };
+
+  const validationSchema = yup.object().shape({
+    name: yup.string().required('Preencha o nome'),
+    email: yup
+      .string()
+      .email('E-mail inválido')
+      .required('Preencha seu E-mail')
+      .test('text', 'E-mail já cadastrado na nossa base de dados', text => {
+        if ((text && emailError) || emailError) {
+          return false;
+        } else {
+          return true;
+        }
+      }),
+    doc: yup
+      .string()
+      .required('Preencha o CPF')
+      .test('doc', 'Esse CPF está inválido', async (document) => {
+        if (document && document.length === 14) {
+          const existDoc = await validateCpf(document);
+
+          return existDoc;
+        }
+      }),
+    birthDate: yup
+      .string()
+      .required('Preencha a data de nascimento')
+      .test('date', 'O profissional deve ser maior de 18 anos.', (date) => {
+        if (date) {
+          if (DateHelper.limitBornDateMayoritValidation(date)) {
+            return true;
+          }
+          dispatch(setBirthError());
+          return false;
+        }
+        return true;
+      }),
+    phone: yup.string().required('Preencha o telefone').test('text', 'Telefone já cadastrado na nossa base de dados.', text => {
+      if (phoneError) {
+        return false;
+      } else {
+        return true;
+      }
+    }),
+    about: yup.string().required('Escreva sobre o profissonal'),
+    docDescription: yup.string().required('Preencha o tipo do documento'),
+    docValue: yup.string().required('Preencha o número do documento'),
+    value: yup.string().required('Preencha o valor por consulta'),
+    college: yup.string().required('Preencha a formação'),
+    especialty: yup.string().required('Preencha a experiência profissional'),
+    specialties: yup.string().test('text', 'Escolha ao menos uma especialidade.', (text) => {
+      if (text) {
+        setSearch(text);
+        setDisplay(true);
+        return true;
+      } else if (specialties.length > 0) {
+        setDisplay(false);
+        return true;
+      } else {
+        setDisplay(false);
+        return false;
+      }
+    }),
+  });
+
+  function onSubmit(data) {
+    alert('clicou função OnSunmit', data)
+    // dispatch(
+    //   requestCreateProfile({
+    //     name: data.name,
+    //     doc,
+    //     email: data.email,
+    //     birthDate: data.birthDate,
+    //     phoneNumber: phoneValid,
+    //     avatar,
+    //     address: '',
+    //     number: '',
+    //     complement: '',
+    //     neighborhood: '',
+    //     state: '',
+    //     city: '',
+    //     cep: '',
+    //     description: data.about,
+    //     docValue: data.docValue,
+    //     docDescription: data.docDescription,
+    //     value: data.value,
+    //     pageUrl: data.pageUrl,
+    //     videoUrl: data.videoUrl,
+    //     graduates: newGraduates,
+    //     experiences: newExperiences,
+    //     specialties,
+    //   })
+    // );
   }
 
   function hanldeGraduate(gradItem) {
-    setErrorCollege(false);
-    setCollege('');
     setGraduates([...graduates, gradItem]);
   }
 
@@ -223,11 +268,10 @@ export default function Content() {
       
       setNewGraduates(kk)
     }
+
   }, [graduates]);
 
   function handleExperience(experItem) {
-    setErrorSpecialty(false);
-    setSpecialty('');
     setExperiences([...experiences, experItem]);
   }
 
@@ -239,7 +283,8 @@ export default function Content() {
       
       setNewExperiences(kk)
     }
-  }, [experiences]);
+
+  }, [graduates]);
 
   function handleSpecialty(specialItem) {
     const especials = specialties.find(spec => spec.id === specialItem.id);
@@ -253,7 +298,6 @@ export default function Content() {
   }
 
   const setProfi = (sub) => {
-    setErrorEspecialties(false)
     setSearch(sub.description);
     setDisplay(false);
     setSearch('');
@@ -295,146 +339,20 @@ export default function Content() {
     setAvatar(fileImage);
   };
 
-  useEffect(() => {
-    // console.log(JSON.stringify(birthDate))
-    if (search.length > 0) {
-      setDisplay(true)
-    }
+  // useEffect(() => {
+  //   console.log({avatar})
 
-  }, [search])
-
-  function handleNameError() {
-    name.length > 0 ? setErrorName(false) : setErrorName(true)
-  }
-
-  function handleEmailError() {
-    dispatch(clearEmailError());
-    function validateEmail(text) {
-      var re = /\S+@\S+\.\S+/;
-      return re.test(text);
-    }
-
-    if (email.length > 0 && validateEmail(email)) {
-      setErrorEmail(false)
-    } else {
-      setErrorEmail(true)
-    }
-  }
-
-  async function handleDocError() {
-    dispatch(clearDocError())
-    if (doc.length === 14) {
-      const existDoc = await validateCpf(doc);
-
-      if (existDoc) {
-        setErrorDoc(false);
-      } else {
-        setErrorDoc(true)
-      }
-    } else {
-      setErrorDoc(true)
-    }
-  }
-
-  function handleBirthError() {
-    dispatch(clearBirthError())
-    const birthString = JSON.stringify(birthDate);
-    console.log(birthString.length);
-    if (birthString.length === 12) {
-      if (DateHelper.limitBornDateMayoritValidation(birthDate)) {
-        setErrorBirth(false);
-      } else {
-        dispatch(setBirthError());
-        setErrorBirth(true);
-      }
-    } else {
-      setErrorBirth(true);
-    }
-  }
-
-  function handlePhoneError() {
-    dispatch(clearPhoneError());
-    if (phone.length === 15) {
-      setErrorPhone(false)
-    } else {
-      setErrorPhone(true)
-    }
-  }
-
-  function handleDescriptionError() {
-    description.length > 0 ? setErrorDescription(false) : setErrorDescription(true)
-  }
-
-  function handleDocDescriptionError() {
-    docDescription.length > 0 ? setErrorDocDescription(false) : setErrorDocDescription(true)
-  }
-
-  function handleDocValueError() {
-    docValue.length > 0 ? setErrorDocValue(false) : setErrorDocValue(true)
-  }
-
-  function handleValueError() {
-    value.length > 0 ? setErrorValue(false) : setErrorValue(true)
-  }
-
-  function handleCollegeError() {
-    newGraduates.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
-  }
-
-  function handleSpecialtyError() {
-    newExperiences.length > 0 ? setErrorSpecialty(false) : setErrorSpecialty(true)
-  }
-
-  function handleEspecialtiesError() {
-    specialties.length > 0 ? setErrorEspecialties(false) : setErrorEspecialties(true)
-  }
-
-  useEffect(() => {
-    if (emailError) {
-      setErrorEmail(true)
-    }
-    if (!validDoc) {
-      setErrorDoc(true)
-    }
-    if (birthError) {
-      setErrorBirth(true);
-    }
-    if (phoneError) {
-      setErrorPhone(true);
-    }
-  }, [emailError, validDoc, birthError, phoneError])
-
-  useEffect(() => {
-    if (errorName || errorEmail || errorDoc || errorBirth || errorPhone || errorDescription || errorDocDescription || errorDocValue || errorValue || errorCollege || errorSpecialty || errorEspecialties) {
-      setDisableSubmit(true)
-      dispatch(cancelLoading())
-    } else {
-      setDisableSubmit(false)
-    }
-  }, [
-    errorName,
-    errorEmail,
-    errorDoc,
-    errorBirth,
-    errorPhone,
-    errorDescription,
-    errorDocValue,
-    errorDocDescription,
-    errorValue,
-    errorCollege,
-    errorSpecialty,
-    errorEspecialties,
-  ])
+  // }, [avatar])
 
   return (
-    // <Formik
-    //   initialValues={initialValues}
-    //   validationSchema={validationSchema}
-    //   onSubmit={onSubmit}
-    //   enableReinitialize={false}
-    //   >
-    //   {({ values, handleChange, handleBlur, handleSubmit, setFieldTouched, isSubmitting, errors ,isValid}) => (
-        <form onSubmit={onSubmit}>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      enableReinitialize={false}
+      >
+      {({ values, handleChange, handleBlur, handleSubmit, setFieldTouched, isSubmitting, errors ,isValid}) => (
+        <Form onSubmit={handleSubmit}>
           <Grid
             templateColumns="1fr 1fr 1fr "
             // gridAutoRows="150px"
@@ -445,110 +363,106 @@ export default function Content() {
               <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
                 Nome
               </Heading>
-              <FormControl isInvalid={errorName}>
-              <Input
+              <ChakraInput
                 name="name"
                 id="name"
-                onChange={(t) => setName(t.target.value)}
-                value={name}
+                onChange={handleChange}
+                value={values.name}
                 type="text"
                 placeholder="Nome Completo"
                 errorBorderColor="crimson"
                 align="center"
-                onBlur={() => handleNameError()}
+                onBlur={() => setFieldTouched('name')}
                 width="400px"
-                mt="15px"
               />
-              <FormErrorMessage>Nome é obrigatório</FormErrorMessage>
-              </FormControl>
             </Flex>
             <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
               E-mail
             </Heading>
-            <FormControl isInvalid={errorEmail}>
-              <Input
-                name="email"
-                id="email"
-                align="center"
-                onBlur={handleEmailError}
-                onChange={(t) => setEmail(t.target.value)}
-                value={email}
-                type="email"
-                placeholder="E-mail"
-                errorBorderColor="crimson"
-                width="400px"
-                mt="15px"
-              />
-              <FormErrorMessage>{emailError ? 'E-mail já cadastrado na nossa base de dados' : 'Preencha um e-mail válido.'}</FormErrorMessage>
-            </FormControl>
+
+            <ChakraInput
+              name="email"
+              id="email"
+              align="center"
+              onBlur={() => (
+                setFieldTouched('email'), dispatch(clearEmailError())
+              )}
+              onChange={handleChange}
+              value={values.email}
+              type="text"
+              placeholder="E-mail"
+              errorBorderColor="crimson"
+              width="400px"
+            />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
              CPF
             </Heading>
-            <FormControl isInvalid={errorDoc}>
-              <Input
-                name="doc"
-                align="center"
-                onBlur={handleDocError}
-                onChange={handleCpf}
-                value={doc}
-                type="text"
-                placeholder="555.555.555-55"
-                errorBorderColor="crimson"
-                width="400px"
-                mt="15px"
-              />
-              <FormErrorMessage>{!validDoc ? 'CPF já cadastrado na nossa base de dados' : 'Preencha um CPF válido.'}</FormErrorMessage>
-            </FormControl>
+
+            <ChakraInput
+              name="doc"
+              align="center"
+              onBlur={() => (
+                setFieldTouched('doc'), dispatch(clearDocError())
+              )}
+              onChange={handleChange}
+              value={() => handleCpf(values.doc)}
+              // onChange={handleCpf}
+              // value={doc}
+              type="text"
+              placeholder="555.555.555-55"
+              errorBorderColor="crimson"
+              width="400px"
+              mt="15px"
+            />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
               Data de nascimento
             </Heading>
 
-            <FormControl isInvalid={errorBirth}>
-              <Input
-                name="birthDate"
-                align="center"
-                onBlur={handleBirthError}
-                onChange={(t) => setBirthDate(t.target.value)}
-                value={birthDate}
-                type="date"
-                placeholder="11/11/1111"
-                errorBorderColor="crimson"
-                width="400px"
-                mt="15px"
-              />
-              <FormErrorMessage>{birthError ? 'O profissional deve ser maior de 18 anos' : 'Preencha a data de nascimento.'}</FormErrorMessage>
-            </FormControl>
+            <ChakraInput
+              name="birthDate"
+              align="center"
+              onBlur={() => (
+                setFieldTouched('birthDate'), dispatch(clearBirthError())
+              )}
+              onChange={handleChange}
+              value={values.birthDate}
+              type="date"
+              placeholder="11/11/1111"
+              errorBorderColor="crimson"
+              width="400px"
+            />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
               Telefone
             </Heading>
-            <FormControl isInvalid={errorPhone}>
-              <Input
-                name="phone"
-                align="center"
-                onBlur={handlePhoneError}
-                onChange={handlePhone}
-                value={phone}
-                type="phone"
-                placeholder="DD-XXXXX-XXXX"
-                errorBorderColor="crimson"
-                width="400px"
-                mt="15px"
-              />
-              <FormErrorMessage>{phoneError ? 'Telefone já cadastrado na nossa base de dados' : 'Preencha um telefone válido.'}</FormErrorMessage>
-            </FormControl>
+
+            <Input
+              name="phone"
+              align="center"
+              error={errors.phone}
+              onBlur={() => (
+                setFieldTouched('phoneNumber'), dispatch(clearPhoneError())
+              )}
+              onChange={handlePhone}
+              value={values.phone}
+              type="phone"
+              placeholder="DD-XXXXX-XXXX"
+              errorBorderColor="crimson"
+              width="400px"
+              mt="15px"
+            />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
               Avatar
             </Heading>
-            
+
             <Input
               name="avatar"
               align="center"
@@ -582,21 +496,18 @@ export default function Content() {
               <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
                 Sobre
               </Heading>
-              <FormControl isInvalid={errorDescription}>
-                <Textarea
-                  name="description"
-                  onBlur={handleDescriptionError}
-                  onChange={(t) => setDescription(t.target.value)}
-                  value={description}
-                  placeholder="Sobre o profissional"
-                  size="sm"
-                  height="50px"
-                  errorBorderColor="crimson"
-                  mt="15px"
-                  width="1460px"
-                />
-                <FormErrorMessage>Escreva sobre o profissonal</FormErrorMessage>
-            </FormControl>
+
+              <ChakraTextarea
+                name="about"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.about}
+                placeholder="Sobre o profissional"
+                size="sm"
+                height="50px"
+                errorBorderColor="crimson"
+                width="770%"
+              />
             </Flex>
           </Grid>
           <Grid
@@ -609,62 +520,52 @@ export default function Content() {
               <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
                 Tipo de documento
               </Heading>
-              <FormControl isInvalid={errorDocDescription}>
-                <Input
-                  name="docDescription"
-                  align="center"
-                  onBlur={handleDocDescriptionError}
-                  onChange={(t) => setDocDescription(t.target.value)}
-                  value={docDescription}
-                  type="text"
-                  placeholder="CRP"
-                  errorBorderColor="crimson"
-                  width="400px"
-                  mt="15px"
-                />
-                <FormErrorMessage>Preencha o tipo do documento</FormErrorMessage>
-              </FormControl>
+
+              <ChakraInput
+                name="docDescription"
+                align="center"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.docDescription}
+                type="text"
+                placeholder="CRP"
+                errorBorderColor="crimson"
+                width="400px"
+              />
             </Flex>
             <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
               Número do documento
             </Heading>
-            <FormControl isInvalid={errorDocValue}>
-              <Input
-                name="docValue"
-                align="center"
-                onBlur={handleDocValueError}
-                onChange={(t) => setDocValue(t.target.value)}
-                value={docValue}
-                type="text"
-                placeholder="1234/6"
-                errorBorderColor="crimson"
-                width="400px"
-                mt="15px"
 
-              />
-              <FormErrorMessage>Preencha o número do documento</FormErrorMessage>
-            </FormControl>
+            <ChakraInput
+              name="docValue"
+              align="center"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.docValue}
+              type="text"
+              placeholder="1234/6"
+              errorBorderColor="crimson"
+              width="400px"
+            />
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">
             <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
              Valor por consulta
             </Heading>
-            <FormControl isInvalid={errorValue}>
-            <Input
+
+            <ChakraInput
               name="value"
               align="center"
-              onBlur={handleValueError}
-              onChange={(v) => setValue(v.target.value)}
-              value={value}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.value}
               type="number"
               placeholder="R$ 150,00"
               errorBorderColor="crimson"
               width="400px"
-              mt="15px"
             />
-            <FormErrorMessage>Preencha o valor por consulta</FormErrorMessage>
-            </FormControl>
           </Flex>
           </Grid>
           <Grid
@@ -678,17 +579,16 @@ export default function Content() {
                 Link da página pessoal
               </Heading>
 
-              <Input
+              <ChakraInput
                 name="pageUrl"
                 align="center"
-                onChange={(p) => setPageUrl(p.target.value)}
-                value={pageUrl}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.pageUrl}
                 type="text"
                 placeholder="https://www.linkedin.com/"
                 errorBorderColor="crimson"
                 width="650px"
-                mt="15px"
-
               />
             </Flex>
             <Flex direction="column" align="flex-start" width="650px" padding="10px">
@@ -696,17 +596,16 @@ export default function Content() {
             Link do vídeo de apresentação
             </Heading>
 
-            <Input
+            <ChakraInput
               name="videoUrl"
               align="center"
-              onChange={(v) => setVideoUrl(v.target.value)}
-              value={videoUrl}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.videoUrl}
               type="text"
               placeholder="https://www.youtube.com/"
               errorBorderColor="crimson"
               width="650px"
-              mt="15px"
-
             />
           </Flex>
           </Grid>
@@ -720,27 +619,23 @@ export default function Content() {
               <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
                 Graduação ou curso
               </Heading>
-                <Flex direction="row">
-                  <FormControl isInvalid={errorCollege}> 
-                      <Input
-                        name="college"
-                        align="center"
-                        onBlur={handleCollegeError}
-                        onChange={(c) => setCollege(c.target.value)}
-                        value={college}
-                        type="text"
-                        placeholder="Faculdade Federal de SP"
-                        errorBorderColor="crimson"
-                        width="600px"
-                      mt="15px"
 
-                      />
-                    <FormErrorMessage>Preencha a formação</FormErrorMessage>
-                  </FormControl>
-                  <Button onClick={() => hanldeGraduate(college)} background="#6E8BC6" variant="solid" color="#fff" mt="15px" ml="10px">
-                    + 
-                  </Button>
-                </Flex>
+              <Flex direction="row">
+                <ChakraInput
+                  name="college"
+                  align="center"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.college}
+                  type="text"
+                  placeholder="Faculdade Federal de SP"
+                  errorBorderColor="crimson"
+                  width="600px"
+                />
+                <Button onClick={() => hanldeGraduate(values.college)} background="#6E8BC6" variant="solid" color="#fff" mt="15px" ml="10px">
+                  + 
+                </Button>
+              </Flex>
 
               <Flex direction="column" p="5px">
                 {graduates.map((graduate, index) => (
@@ -762,23 +657,18 @@ export default function Content() {
             </Heading>
 
             <Flex direction="row">
-              <FormControl isInvalid={errorSpecialty}> 
-                <Input
-                  name="specialty"
-                  align="center"
-                  onBlur={handleSpecialtyError}
-                  onChange={(e) => setSpecialty(e.target.value)}
-                  value={specialty}
-                  type="text"
-                  placeholder="5 anos de experiência na área organizacional"
-                  errorBorderColor="crimson"
-                  width="600px"
-                  mt="15px"
-
-                />
-                <FormErrorMessage>Preencha a experiência profissional</FormErrorMessage>
-              </FormControl>
-              <Button onClick={() => handleExperience(specialty)} background="#6E8BC6" variant="solid" color="#fff" mt="15px" ml="10px">
+              <ChakraInput
+                name="especialty"
+                align="center"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.especialty}
+                type="text"
+                placeholder="5 anos de experiência na área organizacional"
+                errorBorderColor="crimson"
+                width="600px"
+              />
+              <Button onClick={() => handleExperience(values.especialty)} background="#6E8BC6" variant="solid" color="#fff" mt="15px" ml="10px">
                 + 
               </Button>
             </Flex>
@@ -807,21 +697,18 @@ export default function Content() {
               <Heading marginBottom={-5} color="gray.600" fontWeight="500" size="md"padding="5px" mb="-15px">
                 Especialidades
               </Heading>
-              <FormControl isInvalid={errorEspecialties}> 
-                <Input
-                  name="specialties"
-                  align="center"
-                  onBlur={handleEspecialtiesError}
-                  onChange={(s) => setSearch(s.target.value)}
-                  value={search}
-                  type="text"
-                  placeholder="Ansiedade"
-                  errorBorderColor="crimson"
-                  width="650px"
-                  mt="15px"
-                />
-                <FormErrorMessage>Escolha ao menos uma especialidade</FormErrorMessage>
-              </FormControl>
+
+              <ChakraInput
+                name="specialties"
+                align="center"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={search}
+                type="text"
+                placeholder="Ansiedade"
+                errorBorderColor="crimson"
+                width="650px"
+              />
             </Flex>
 
             {display && (
@@ -862,42 +749,24 @@ export default function Content() {
           
           </Grid>
           <Flex backgroundColor="#f1f0ef" justifyContent="center" pb="15px">
-            {/* <button
-              style={{
-                width: 400,
-                background: theme.colors.purple[600],
-                color: theme.colors.white,
-                marginTop: 4,
-                height: 45,
-                borderRadius: 8,
-                fontSize: 16,
-                fontWeight: 500
-              }}
-              // isLoading={isSubmitting}
-              // type="submit"
-              onClick={onSubmit}
-              disabled={disabledSubmit}
-            >
-              Cadastrar
-            </button> */}
-
             <Button
               width="400px"
               mt={4}
-              isLoading={loading}
-              onClick={onSubmit}
+              isLoading={isSubmitting}
+              type="submit"
+              onClick={handleSubmit}
               background={theme.colors.purple[600]}
               color={theme.colors.white}
-              isDisabled={disabledSubmit}
             >
               Cadastrar
             </Button>
             
           </Flex>
           
-        </form>
-    //   )}
-    // </Formik>
+        </Form>
+      )}
+    </Formik>
+    
   );
 }
 
