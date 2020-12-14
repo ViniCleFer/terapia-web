@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put } from "redux-saga/effects";
+import { all, takeLatest, call, put, select } from "redux-saga/effects";
 import { toast } from "react-toastify";
 // import qs from "qs-stringify";
 import axios from "axios";
@@ -107,7 +107,7 @@ export function* signIn({ payload }) {
 // }
 
 export function* requestCreateProfile({payload}) {
-  let uid = null;
+  // let uid = null;
 
   const domainId = 1;
   const tenantId = 1;
@@ -439,6 +439,167 @@ export function* requestCreateProfile({payload}) {
   //   });
 }
 
+export function* requestUpdateProfile({payload}) {
+  // const birthdateValid = DateHelper.formatDateToPersist(birthDate);
+
+  const tokenn = (state) => state.auth.token;
+  const token = yield select(tokenn);
+
+  const avatarr = (state) => state.auth.profile.photoUrl;
+  let avatar = yield select(avatarr);
+
+  if (avatar === null) {
+    avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.data.name}`;
+  }
+
+  try {
+    const responseEmail = yield call(
+      axios.get,
+      `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email?email=${payload.email}`,
+    );
+    if (responseEmail.status === 200) {
+      try {
+        const responseDoc = yield call(
+          axios.get,
+          `${baseUrl.BELLA}/profile/register/verify-non-existent-doc/${payload.data.doc}`,
+        );
+        if (responseDoc.status === 200) {
+          try {
+            axios.defaults.headers.Authorization = `Bearer ${token}`;
+            // yield put(setUserId(token, userId));
+
+            if (responseDoc.status === 200) {
+              try {
+                axios.defaults.headers.Authorization = `Bearer ${token}`;
+                const res = yield call(
+                  // nome, doc, email, userId, activationCodeId
+                  axios.put,
+                  `${baseUrl.BELLA}/profile/${payload.data.userId}`,
+                  {
+                    id: payload.data.userId,
+                    name: payload.data.name,
+                    doc: payload.data.doc,
+                    email: payload.data.email,
+                    birthDate: payload.data.birthdateValid,
+                    phoneNumber: payload.data.phoneNumber,
+                    photoUrl: avatar,
+                    address: [
+                      {
+                        address: payload.data.address,
+                        number: payload.data.number,
+                        complement: payload.data.complement,
+                        neighborhood: payload.data.neighborhood,
+                        state: payload.data.state,
+                        city: payload.data.city,
+                        zipCode: payload.data.cep,
+                      },
+                    ],
+                  },
+                );
+                if (res) {
+                  const profile = res.data;
+                  yield put(saveProfile(profile));
+                  yield put(signInSuccess(token));
+                  // const status = yield call(
+                  //   axios.put,
+                  //   `${baseUrl.AUTH}/user/register-status/${payload.data.userId}`,
+                  //   {
+                  //     registerStatus: 'COMPLETE',
+                  //   },
+                  // );
+                }
+                yield put(availableButtons(true));
+                yield put(setSigned());
+                // yield put(profileComplete());
+              } catch (error) {
+                yield put(availableButtons(true));
+                if (error.response) {
+                  console.tron.log(error.response);
+                  switch (error.response.status) {
+                    case 500:
+                      break;
+                    case 404:
+                      break;
+                    case 400:
+                      break;
+                    default:
+                      break;
+                  }
+                }
+              }
+            }
+            yield put(setUserId(token, payload.data.userId));
+            yield put(signInSuccess(token));
+            yield put(setSigned());
+            yield put(cancelLoading());
+            yield put(availableButtons(true));
+          } catch (error) {
+            yield put(availableButtons(true));
+            yield put(cancelLoading());
+            console.tron.log(error, 'API AUTH requestSetRegisterUser');
+            if (error.response) {
+              yield put(availableButtons(true));
+
+              switch (error.response.status) {
+                case 500:
+                  break;
+                case 404:
+                  break;
+                case 400:
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        yield put(availableButtons(true));
+        yield put(cancelLoading());
+        console.tron.log(error, 'API SIGNUP');
+        if (error.response) {
+          switch (error.response.status) {
+            case 500:
+              break;
+            case 404:
+              break;
+            case 400:
+              break;
+            case 409:
+              yield put(docError());
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+  } catch (error) {
+    yield put(availableButtons(true));
+    if (error.response) {
+      switch (error.response.status) {
+        case 500:
+          break;
+        case 404:
+          yield put(failureAutenticationCode('404'));
+          break;
+        case 400:
+          yield put(failureAutenticationCode('400'));
+          break;
+        case 409:
+          yield put(cancelLoading());
+          yield put(docError());
+          break;
+        case 401:
+          yield put(failureAutenticationCode('401'));
+          break;
+        default:
+          break;
+      }
+    }
+  }
+}
+
 export function signOut() {
   history.push("/");
 }
@@ -447,6 +608,7 @@ export default all([
   // takeLatest("persist/REHYDRATE", setToken),
   takeLatest("@auth/SIGN_IN_REQUEST", signIn),
   takeLatest('@auth/REQUEST_CREATE_PROFILE', requestCreateProfile),
+  takeLatest('@auth/REQUEST_UPDATE_PROFILE', requestUpdateProfile),
   // takeLatest("@auth/SIGN_UP_REQUEST", signUp),
   takeLatest("@auth/SIGN_OUT", signOut),
 ]);

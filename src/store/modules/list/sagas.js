@@ -66,12 +66,12 @@ export function* getProfileById({ payload }) {
   try {
     const response = yield call(
       axios.get,
-      `${baseUrl.BELLA}/profile/${payload.userId}`
+      `${baseUrl.TERAPIA_BELLA}/profile/${payload.userId}`
     );
 
     if (response.status === 200) {
-      console.tron.log(response, payload);
       yield put(setProfileById(response.data));
+      history.push('/professionals/contacts/add');
     }
   } catch (err) {}
 }

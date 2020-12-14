@@ -105,6 +105,13 @@ export function requestCreateProfile({
   };
 }
 
+export function requestUpdateProfile(profile) {
+  return {
+    type: '@auth/REQUEST_UPDATE_PROFILE',
+    payload: { profile },
+  };
+}
+
 export function clearDocError() {
   return {
     type: '@auth/CLEAR_DOC_ERROR',

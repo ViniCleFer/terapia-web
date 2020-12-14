@@ -11,7 +11,9 @@ import { mask } from 'remask'
 // import * as yup from 'yup';
 // import {v4 as uuid} from 'uuid';
 
-import { requestCreateProfile,
+import { 
+  requestCreateProfile,
+  requestUpdateProfile,
   clearDocError,
   setBirthError,
   clearEmailError,
@@ -51,6 +53,59 @@ export default function Content() {
   const dispatch = useDispatch();
 
   const userId = useSelector((state) => state.auth.userId);
+  const profProfile = useSelector((state) => state.list.clientProfile);
+
+  const [birthDateValid, setBirthDateValid] = useState({});
+  const [phoneProf, setPhoneProf] = useState('');
+
+  useEffect(() => {
+    if (profProfile.length > 0) {
+      const regex = /,/gi;
+
+      const date = profProfile?.birthDate?.map(item => (
+        Number(item) < 10 ? `0${item}` : item
+      )).toString().replace(regex, '-');
+      
+      setBirthDate(date);
+      setBirthDateValid(date);
+    }
+  }, [profProfile]);
+
+  useEffect(() => {
+    if (profProfile?.phoneNumber?.length > 0) {
+      const telProf = `(${profProfile?.phoneNumber?.substr(3, 2)}) ${profProfile?.phoneNumber?.substr(5, 5)}-${profProfile?.phoneNumber?.substr(10, 4)}`;
+      setPhoneProf(telProf.trim());
+      setPhone(telProf.trim())
+    }
+  }, [profProfile]);
+
+  useEffect(() => {
+    if (profProfile?.professional?.graduations?.length > 0) {
+      const gradds = profProfile?.professional?.graduations?.map(
+        gg => gg.college
+      );
+      setGraduates(gradds);
+    }
+  }, [profProfile]);
+
+  useEffect(() => {
+    if (profProfile?.professional?.experiences?.length > 0) {
+      const expss = profProfile?.professional?.experiences?.map(
+        exp => exp.especialty
+      );
+      setExperiences(expss);
+    }
+  }, [profProfile]);
+
+  useEffect(() => {
+    if (profProfile?.professional?.especialties?.length > 0) {
+      const expss = profProfile?.professional?.especialties?.map(
+        espec => espec
+      );
+      setSpecialties(expss);
+    }
+  }, [profProfile]);
+
 
   const phoneError = useSelector(state => state.auth.phoneError);
   const emailError = useSelector(state => state.auth.emailError);
@@ -62,19 +117,19 @@ export default function Content() {
   //   state => state.commons.availableButtons,
   // );
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [doc, setDoc] = useState('');
-  const [birthDate, setBirthDate] = useState({});
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState(profProfile && profProfile.name !== null ? profProfile.name : '');
+  const [email, setEmail] = useState(profProfile && profProfile.email !== null ? profProfile.email : '');
+  const [doc, setDoc] = useState(profProfile && profProfile.doc !== null ? profProfile.doc : '');
+  const [birthDate, setBirthDate] = useState(profProfile ? birthDateValid : {});
+  const [phone, setPhone] = useState(profProfile && phoneProf !== null ? phoneProf : '');
   const [phoneValid, setPhoneValid] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [description, setDescription] = useState('');
-  const [docValue, setDocValue] = useState('');
-  const [docDescription, setDocDescription] = useState('');
-  const [value, setValue] = useState('');
-  const [pageUrl, setPageUrl] = useState('');
-  const [videoUrl, setVideoUrl] = useState('');
+  const [avatar, setAvatar] = useState(profProfile && profProfile.photoUrl !== null ? profProfile.photoUrl : '');
+  const [description, setDescription] = useState(profProfile && profProfile?.professional?.description !== null ? profProfile?.professional?.description : '');
+  const [docValue, setDocValue] = useState(profProfile && profProfile?.professional?.docValue !== null ? profProfile?.professional?.docValue : '');
+  const [docDescription, setDocDescription] = useState(profProfile && profProfile?.professional?.docDescription !== null ? profProfile?.professional?.docDescription : '');
+  const [value, setValue] = useState(profProfile && profProfile?.professional?.docDescription !== null ? profProfile?.professional?.value : '');
+  const [pageUrl, setPageUrl] = useState(profProfile && profProfile?.professional?.pageUrl !== null ? profProfile?.professional?.pageUrl : '');
+  const [videoUrl, setVideoUrl] = useState(profProfile && profProfile?.professional?.videoUrl !== null ? profProfile?.professional?.videoUrl : '');
   const [college, setCollege] = useState('');
   const [specialty, setSpecialty] = useState('');
 
@@ -92,6 +147,7 @@ export default function Content() {
   // const [city, setCity] = useState('');
   // const [cep, setCep] = useState('');
   const [graduates, setGraduates] = useState([]);
+  // const [graduates, setGraduates] = useState(profProfile ? profProfile?.professional?.graduations : []);
   const [experiences, setExperiences] = useState([]);
   const [specialties, setSpecialties] = useState([]);
 
@@ -126,7 +182,7 @@ export default function Content() {
 
   useEffect(() => {
     setSubjects(subjectsReducer);
-  }, [subjectsReducer]);
+  }, [subjectsReducer, phoneProf]);
 
   async function validateCpf(document) {
     const validDoc = DocHelper.validateDoc(document);
@@ -150,37 +206,39 @@ export default function Content() {
     handleSpecialtyError();
     handleEspecialtiesError();
 
-    console.log('clicou função OnSunmit', {
-    name,
-    doc,
-    email,
-    birthDate,
-    phoneNumber: phoneValid,
-    avatar,
-    address: '',
-    number: '',
-    complement: '',
-    neighborhood: '',
-    state: '',
-    city: '',
-    cep: '',
-    description,
-    docValue,
-    docDescription,
-    value,
-    pageUrl,
-    videoUrl,
-    graduates: newGraduates,
-    experiences: newExperiences,
-    specialties: newSpecialties,
-    });
-
-    if (!disabledSubmit &&
+    if (profProfile?.length > 1 && !disabledSubmit &&
         !errorName && !errorEmail && !errorDoc &&
         !errorBirth && !errorPhone && !errorDescription &&
         !errorDocDescription && !errorDocValue && !errorValue &&
         !errorCollege && !errorSpecialty && !errorEspecialties
       ) {
+      dispatch(
+        requestUpdateProfile({
+          name,
+          doc,
+          email,
+          birthDate,
+          phoneNumber: phoneValid,
+          avatar,
+          address: '',
+          number: '',
+          complement: '',
+          neighborhood: '',
+          state: '',
+          city: '',
+          cep: '',
+          description,
+          docValue,
+          docDescription,
+          value,
+          pageUrl,
+          videoUrl,
+          graduates: newGraduates,
+          experiences: newExperiences,
+          specialties: newSpecialties,
+        })
+      );
+    } else {
       dispatch(
         requestCreateProfile({
           name,
@@ -296,7 +354,7 @@ export default function Content() {
   };
 
   useEffect(() => {
-    if (phone.length === 15) {
+    if (phone?.length === 15) {
       const newTel = `+55${phone.substr(1, 2)}${phone.substr(
         5,
         12,
@@ -353,7 +411,7 @@ export default function Content() {
   function handleBirthError() {
     dispatch(clearBirthError())
     const birthString = JSON.stringify(birthDate);
-    if (birthString.length === 12) {
+    if (birthString?.length === 12) {
       if (DateHelper.limitBornDateMayoritValidation(birthDate)) {
         setErrorBirth(false);
       } else {
@@ -367,7 +425,7 @@ export default function Content() {
 
   function handlePhoneError() {
     dispatch(clearPhoneError());
-    if (phone.length === 15) {
+    if (phone?.length === 15) {
       setErrorPhone(false)
     } else {
       setErrorPhone(true)
@@ -375,31 +433,31 @@ export default function Content() {
   }
 
   function handleDescriptionError() {
-    description.length > 0 ? setErrorDescription(false) : setErrorDescription(true)
+    description?.length > 0 ? setErrorDescription(false) : setErrorDescription(true)
   }
 
   function handleDocDescriptionError() {
-    docDescription.length > 0 ? setErrorDocDescription(false) : setErrorDocDescription(true)
+    docDescription?.length > 0 ? setErrorDocDescription(false) : setErrorDocDescription(true)
   }
 
   function handleDocValueError() {
-    docValue.length > 0 ? setErrorDocValue(false) : setErrorDocValue(true)
+    docValue?.length > 0 ? setErrorDocValue(false) : setErrorDocValue(true)
   }
 
   function handleValueError() {
-    value.length > 0 ? setErrorValue(false) : setErrorValue(true)
+    value?.length > 0 ? setErrorValue(false) : setErrorValue(true)
   }
 
   function handleCollegeError() {
-    newGraduates.length > 0 && college.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
+    newGraduates?.length > 0 && college?.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
   }
 
   function handleSpecialtyError() {
-    newExperiences.length > 0 ? setErrorSpecialty(false) : setErrorSpecialty(true)
+    newExperiences?.length > 0 ? setErrorSpecialty(false) : setErrorSpecialty(true)
   }
 
   function handleEspecialtiesError() {
-    specialties.length > 0 ? setErrorEspecialties(false) : setErrorEspecialties(true)
+    specialties?.length > 0 ? setErrorEspecialties(false) : setErrorEspecialties(true)
   }
 
   useEffect(() => {
@@ -437,7 +495,11 @@ export default function Content() {
     errorCollege,
     errorSpecialty,
     errorEspecialties,
-  ])
+  ]);
+
+  useEffect(() => {
+    console.tron.log('specialty.description', specialties?.map(ll => ll.description));
+  }, [])
 
   return (
     // <Formik
@@ -756,7 +818,7 @@ export default function Content() {
                 </Flex>
 
               <Flex direction="column" p="5px">
-                {graduates.map((graduate, index) => (
+                {graduates?.map((graduate, index) => (
                   <Flex key={index} direction="row" p="5px" align="center">
                     <Text>{graduate}</Text>
                     <button style={{
@@ -797,7 +859,7 @@ export default function Content() {
             </Flex>
 
             <Flex direction="column" p="5px">
-              {experiences.map((experience, index) => (
+              {experiences?.map((experience, index) => (
                 <Flex key={index} direction="row" p="5px" align="center">
                   <Text>{experience}</Text>
                   <button style={{
@@ -863,7 +925,7 @@ export default function Content() {
             )}
 
             <Flex direction="row" pl="15px" mt="-5px">
-              {specialties.map((specialty, index) => (
+              {specialties?.map((specialty, index) => (
                   <Flex key={index} direction="row" p="5px" align="center" border="1px" borderColor="gray.400" borderRadius="4px" mr="5px" justifyContent="flex-start" >
                     <Text>{specialty.description}</Text>
                     <button style={{
