@@ -55,11 +55,11 @@ export default function Content() {
   const userId = useSelector((state) => state.auth.userId);
   const profProfile = useSelector((state) => state.list.clientProfile);
 
-  const [birthDateValid, setBirthDateValid] = useState({});
+  const [birthDateValid, setBirthDateValid] = useState();
   const [phoneProf, setPhoneProf] = useState('');
 
   useEffect(() => {
-    if (profProfile.length > 0) {
+    if (profProfile?.birthDate?.length > 0) {
       const regex = /,/gi;
 
       const date = profProfile?.birthDate?.map(item => (
@@ -68,6 +68,8 @@ export default function Content() {
       
       setBirthDate(date);
       setBirthDateValid(date);
+      // console.tron.log('useE', birthDate);
+      // console.tron.log('useE', birthDateValid);
     }
   }, [profProfile]);
 
@@ -106,7 +108,6 @@ export default function Content() {
     }
   }, [profProfile]);
 
-
   const phoneError = useSelector(state => state.auth.phoneError);
   const emailError = useSelector(state => state.auth.emailError);
   const validDoc = useSelector(state => state.auth.validDoc);
@@ -120,14 +121,14 @@ export default function Content() {
   const [name, setName] = useState(profProfile && profProfile.name !== null ? profProfile.name : '');
   const [email, setEmail] = useState(profProfile && profProfile.email !== null ? profProfile.email : '');
   const [doc, setDoc] = useState(profProfile && profProfile.doc !== null ? profProfile.doc : '');
-  const [birthDate, setBirthDate] = useState(profProfile ? birthDateValid : {});
+  const [birthDate, setBirthDate] = useState(profProfile && profProfile.birthDate !== null ? birthDateValid : {});
   const [phone, setPhone] = useState(profProfile && phoneProf !== null ? phoneProf : '');
   const [phoneValid, setPhoneValid] = useState('');
   const [avatar, setAvatar] = useState(profProfile && profProfile.photoUrl !== null ? profProfile.photoUrl : '');
   const [description, setDescription] = useState(profProfile && profProfile?.professional?.description !== null ? profProfile?.professional?.description : '');
   const [docValue, setDocValue] = useState(profProfile && profProfile?.professional?.docValue !== null ? profProfile?.professional?.docValue : '');
   const [docDescription, setDocDescription] = useState(profProfile && profProfile?.professional?.docDescription !== null ? profProfile?.professional?.docDescription : '');
-  const [value, setValue] = useState(profProfile && profProfile?.professional?.docDescription !== null ? profProfile?.professional?.value : '');
+  const [value, setValue] = useState(profProfile && profProfile?.professional?.value !== null ? Number(profProfile?.professional?.value) : '');
   const [pageUrl, setPageUrl] = useState(profProfile && profProfile?.professional?.pageUrl !== null ? profProfile?.professional?.pageUrl : '');
   const [videoUrl, setVideoUrl] = useState(profProfile && profProfile?.professional?.videoUrl !== null ? profProfile?.professional?.videoUrl : '');
   const [college, setCollege] = useState('');
@@ -206,39 +207,43 @@ export default function Content() {
     handleSpecialtyError();
     handleEspecialtiesError();
 
-    if (profProfile?.length > 1 && !disabledSubmit &&
+    if (profProfile?.id !== undefined && !disabledSubmit &&
+      !errorName && !errorEmail && !errorDoc &&
+      !errorBirth && !errorPhone && !errorDescription &&
+      !errorDocDescription && !errorDocValue && !errorValue &&
+      !errorCollege && !errorSpecialty && !errorEspecialties
+    ) {
+      console.tron.log('UPDATE');
+        dispatch(
+          requestUpdateProfile({
+            ...profProfile,
+            name,
+            doc,
+            email,
+            birthDate,
+            phoneNumber: phoneValid,
+            photoUrl: avatar,
+            description,
+            docValue,
+            docDescription,
+            value,
+            pageUrl,
+            videoUrl,
+            graduates: newGraduates,
+            experiences: newExperiences,
+            specialties: newSpecialties,
+          }),
+        );
+    }
+
+    if (profProfile?.id === undefined && !profProfile && !disabledSubmit &&
         !errorName && !errorEmail && !errorDoc &&
         !errorBirth && !errorPhone && !errorDescription &&
         !errorDocDescription && !errorDocValue && !errorValue &&
         !errorCollege && !errorSpecialty && !errorEspecialties
       ) {
-      dispatch(
-        requestUpdateProfile({
-          name,
-          doc,
-          email,
-          birthDate,
-          phoneNumber: phoneValid,
-          avatar,
-          address: '',
-          number: '',
-          complement: '',
-          neighborhood: '',
-          state: '',
-          city: '',
-          cep: '',
-          description,
-          docValue,
-          docDescription,
-          value,
-          pageUrl,
-          videoUrl,
-          graduates: newGraduates,
-          experiences: newExperiences,
-          specialties: newSpecialties,
-        })
-      );
-    } else {
+      console.tron.log('CREATE');
+
       dispatch(
         requestCreateProfile({
           name,
@@ -295,9 +300,24 @@ export default function Content() {
 
   useEffect(() => {
     if (experiences) {
-      const kk = experiences.map(espec => (
-        {especialty: espec}
-      ))
+      const kk = experiences.map((espec, index) => {
+        if (espec.id) {
+          return ({
+            id: espec.id,
+            especialty: espec.especialty
+          })
+        } else {
+          return ({
+            id: 0,
+            especialty: espec
+          })
+        }
+      })
+
+      // {
+      //   id: `${espec.id}` ? espec.id : 0,
+      //   especialty: espec
+      // }
       
       setNewExperiences(kk)
     }
@@ -445,11 +465,11 @@ export default function Content() {
   }
 
   function handleValueError() {
-    value?.length > 0 ? setErrorValue(false) : setErrorValue(true)
+    value ? setErrorValue(false) : setErrorValue(true)
   }
 
   function handleCollegeError() {
-    newGraduates?.length > 0 && college?.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
+    newGraduates?.length > 0 || college?.length > 0 ? setErrorCollege(false) : setErrorCollege(true)
   }
 
   function handleSpecialtyError() {
@@ -498,8 +518,8 @@ export default function Content() {
   ]);
 
   useEffect(() => {
-    console.tron.log('specialty.description', specialties?.map(ll => ll.description));
-  }, [])
+    console.tron.log({birthDate});
+  }, [birthDate]);
 
   return (
     // <Formik
@@ -731,7 +751,7 @@ export default function Content() {
               align="center"
               onBlur={handleValueError}
               onChange={(v) => setValue(v.target.value)}
-              value={value}
+              value={String(value)}
               type="number"
               placeholder="R$ 150,00"
               errorBorderColor="crimson"

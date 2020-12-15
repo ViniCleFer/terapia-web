@@ -9,7 +9,9 @@ import apiTerapia from '../../../services/apiTerapia';
 import history from "../../../services/history";
 import baseUrl from "../../../services/baseUrl";
 
-import firebase from '../../../config/firebase';
+import {handleAvatar} from "../../../helpers/uploadAvatar";
+
+// import firebase from '../../../config/firebase';
 
 import { signInSuccess,
   // signFailure,
@@ -117,15 +119,15 @@ export function* requestCreateProfile({payload}) {
 
   console.tron.log({payload});
 
-  const handleAvatar = async (fileImage) => {
-    const file = fileImage.target.files[0];
-    const id = uuid();
-    const handleImage = firebase.storage().ref('avatar').child(id);
-    await handleImage.put(file);
-    handleImage.getDownloadURL().then(url => {
-      return payload.avatar = url;
-    })
-  };
+  // const handleAvatar = async (fileImage) => {
+  //   const file = fileImage.target.files[0];
+  //   const id = uuid();
+  //   const handleImage = firebase.storage().ref('avatar').child(id);
+  //   await handleImage.put(file);
+  //   handleImage.getDownloadURL().then(url => {
+  //     return payload.avatar = url;
+  //   })
+  // };
 
   // const specialties = payload.specialties.map(specialty => {
   //   id: specialty.id
@@ -240,16 +242,6 @@ export function* requestCreateProfile({payload}) {
                                 ],
                               },
                             );
-        
-                            // if (responseProfile) {
-                            //   yield call(
-                            //     axios.put,
-                            //     `${baseUrl.TERAPIA_AUTH}/user/register-status/${userId}`,
-                            //     {
-                            //       registerStatus: 'COMPLETE',
-                            //     },
-                            //   );
-                            // }
 
                             yield put(availableButtons(true));
 
@@ -274,9 +266,11 @@ export function* requestCreateProfile({payload}) {
                                   },
                                 );
   
-                                if (responseProfProfile.status === 200) {
+                                if (responseProfProfile.status === 202) {
                                   yield put(cancelLoading());
-                                  toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
+                                  setTimeout(() => {
+                                    toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
+                                  }, 3000);
                                   window.location.reload();
                                 }
                                 yield put(availableButtons(true));
@@ -442,121 +436,216 @@ export function* requestCreateProfile({payload}) {
 export function* requestUpdateProfile({payload}) {
   // const birthdateValid = DateHelper.formatDateToPersist(birthDate);
 
+  console.tron.log(payload, 'requestUpdateProfile');
+
+
   const tokenn = (state) => state.auth.token;
   const token = yield select(tokenn);
 
-  const avatarr = (state) => state.auth.profile.photoUrl;
-  let avatar = yield select(avatarr);
+  const profAvatar = (state) => state.list.clientProfile.photoUrl;
+  const oldAvatar = yield select(profAvatar);
 
-  if (avatar === null) {
-    avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.data.name}`;
+  const profPhone = (state) => state.list.clientProfile.phoneNumber;
+  const oldPhone = yield select(profPhone);
+
+  const profDoc = (state) => state.list.clientProfile.doc;
+  const oldDoc = yield select(profDoc);
+
+  const profEmail = (state) => state.list.clientProfile.email;
+  const oldEmail = yield select(profEmail);
+
+  let avatar = payload.profile.photoUrl;
+  let phone = payload.profile.phoneNumber;
+  let email = payload.profile.email;
+  let docActual = payload.profile.doc;
+
+  if (oldPhone === payload.profile.phoneNumber) {
+    phone = payload.profile.phoneNumber
+  } else {
+    try {
+      const responsePhone = yield call(
+        axios.get,
+        `${baseUrl.TERAPIA_BELLA}/profile/phone/${payload.profile.phoneNumber}`,
+      );
+  
+      if (responsePhone.status === 200) {
+        yield put(setPhoneError());
+        toast.error("Falha no cadastro, Telefone já cadastrado na nossa base de dados");
+      }
+    } catch (error) {
+      yield put(cancelLoading());
+      console.tron.log(error.response, 'UPDATE responsePhone');
+
+      if (error.response) {
+        switch (error.response.status) {
+          case 500:
+            break;
+          case 404:
+            console.tron.log(error.response, 'erro 404, bora');
+            phone = payload.profile.phoneNumber;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  if (oldDoc === payload.profile.doc) {
+    docActual = payload.profile.doc
+  } else {
+    try {
+      const responseDoc = yield call(
+        axios.get,
+        `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc?doc=${payload.profile.doc}`,
+      );
+
+      if (responseDoc.status === 200) {
+        docActual = payload.profile.doc
+      }
+    } catch (error) {
+      console.tron.log(error.response, 'UPDATE responseDoc');
+      yield put(cancelLoading());
+
+      if (error.response) {
+        switch (error.response.status) {
+          case 500:
+            break;
+          case 404:
+            yield put(failureAutenticationCode('404'));
+            break;
+          case 400:
+            yield put(failureAutenticationCode('400'));
+            break;
+          case 409:
+            toast.error("Falha no Cadastro, CPF já cadastrado na nossa base de dados.");
+            yield put(cancelLoading());
+            yield put(docError());
+            break;
+          case 401:
+            yield put(failureAutenticationCode('401'));
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  if (oldEmail === payload.profile.email) {
+    email = payload.profile.email
+  } else {
+    try {
+      const responseEmail = yield call(
+        axios.get,
+        `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email?email=${payload.profile.email}`,
+      );
+
+      if (responseEmail.status === 200) {
+        email = payload.profile.email
+      }
+    } catch (error) {
+      console.tron.log(error.response, 'UPDATE responseEmail');
+      yield put(cancelLoading());
+
+      if (error.response) {
+        switch (error.response.status) {
+          case 500:
+            break;
+          case 404:
+            yield put(failureAutenticationCode('404'));
+            break;
+          case 400:
+            yield put(failureAutenticationCode('400'));
+            break;
+          case 409:
+            yield put(cancelLoading());
+            yield put(emailError());
+            toast.error("Falha no Cadastro, E-mail já cadastrado na nossa base de dados.");
+            break;
+          case 401:
+            yield put(failureAutenticationCode('401'));
+            break;
+          default:
+            break;
+        }
+      }
+    }
   }
 
   try {
-    const responseEmail = yield call(
-      axios.get,
-      `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email?email=${payload.email}`,
+    axios.defaults.headers.Authorization = `Bearer ${token}`;
+
+    if (payload.profile.photoUrl !== oldAvatar) {
+      avatar = handleAvatar(payload.profile.avatar);
+      console.tron.log(avatar, 'avatar retornado da função')
+    } else {
+      avatar = oldAvatar;
+      console.tron.log(avatar, 'avatar velho')
+    }
+
+    const responseProfileUpdate = yield call(
+      // nome, doc, email, userId, activationCodeId
+      axios.put,
+      `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
+      {
+        id: payload.profile.userId,
+        name: payload.profile.name,
+        doc: docActual,
+        email,
+        birthDate: payload.profile.birthDate,
+        phoneNumber: phone,
+        photoUrl: avatar,
+        // address: [
+        //   {
+        //     address: payload.profile.address.address,
+        //     number: payload.profile.address.number,
+        //     complement: payload.profile.address.complement,
+        //     neighborhood: payload.profile.address.neighborhood,
+        //     state: payload.profile.address.state,
+        //     city: payload.profile.address.city,
+        //     zipCode: payload.profile.address.cep,
+        //   },
+        // ],
+      },
     );
-    if (responseEmail.status === 200) {
+
+    console.tron.log({responseProfileUpdate});
+    console.log({responseProfileUpdate});
+
+    if (responseProfileUpdate.status === 201) {
       try {
-        const responseDoc = yield call(
-          axios.get,
-          `${baseUrl.BELLA}/profile/register/verify-non-existent-doc/${payload.data.doc}`,
+        const responseProfProfileUpdate = yield call(
+          axios.put,
+          `${baseUrl.TERAPIA_BELLA}/professional`,
+          {
+            description: payload.profile.description,
+            docValue: payload.profile.docValue,
+            docDescription: payload.profile.docDescription,
+            value: Number(payload.profile.value),
+            pageUrl: payload.profile.pageUrl,
+            videoUrl: payload.profile.videoUrl,
+            id: payload.profile.professional.id,
+            graduates: payload.profile.graduates,
+            experiences: payload.profile.experiences,
+            specialties: payload.profile.specialties,
+          },
         );
-        if (responseDoc.status === 200) {
-          try {
-            axios.defaults.headers.Authorization = `Bearer ${token}`;
-            // yield put(setUserId(token, userId));
+        
+        console.tron.log({responseProfProfileUpdate});
+        console.log({responseProfProfileUpdate});
 
-            if (responseDoc.status === 200) {
-              try {
-                axios.defaults.headers.Authorization = `Bearer ${token}`;
-                const res = yield call(
-                  // nome, doc, email, userId, activationCodeId
-                  axios.put,
-                  `${baseUrl.BELLA}/profile/${payload.data.userId}`,
-                  {
-                    id: payload.data.userId,
-                    name: payload.data.name,
-                    doc: payload.data.doc,
-                    email: payload.data.email,
-                    birthDate: payload.data.birthdateValid,
-                    phoneNumber: payload.data.phoneNumber,
-                    photoUrl: avatar,
-                    address: [
-                      {
-                        address: payload.data.address,
-                        number: payload.data.number,
-                        complement: payload.data.complement,
-                        neighborhood: payload.data.neighborhood,
-                        state: payload.data.state,
-                        city: payload.data.city,
-                        zipCode: payload.data.cep,
-                      },
-                    ],
-                  },
-                );
-                if (res) {
-                  const profile = res.data;
-                  yield put(saveProfile(profile));
-                  yield put(signInSuccess(token));
-                  // const status = yield call(
-                  //   axios.put,
-                  //   `${baseUrl.AUTH}/user/register-status/${payload.data.userId}`,
-                  //   {
-                  //     registerStatus: 'COMPLETE',
-                  //   },
-                  // );
-                }
-                yield put(availableButtons(true));
-                yield put(setSigned());
-                // yield put(profileComplete());
-              } catch (error) {
-                yield put(availableButtons(true));
-                if (error.response) {
-                  console.tron.log(error.response);
-                  switch (error.response.status) {
-                    case 500:
-                      break;
-                    case 404:
-                      break;
-                    case 400:
-                      break;
-                    default:
-                      break;
-                  }
-                }
-              }
-            }
-            yield put(setUserId(token, payload.data.userId));
-            yield put(signInSuccess(token));
-            yield put(setSigned());
-            yield put(cancelLoading());
-            yield put(availableButtons(true));
-          } catch (error) {
-            yield put(availableButtons(true));
-            yield put(cancelLoading());
-            console.tron.log(error, 'API AUTH requestSetRegisterUser');
-            if (error.response) {
-              yield put(availableButtons(true));
-
-              switch (error.response.status) {
-                case 500:
-                  break;
-                case 404:
-                  break;
-                case 400:
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
+        if (responseProfProfileUpdate.status === 202) {
+          yield put(cancelLoading());
+          toast.success("Parabéns, Profissional Editado com Sucesso.");
+          // window.location.reload();
         }
-      } catch (error) {
         yield put(availableButtons(true));
         yield put(cancelLoading());
-        console.tron.log(error, 'API SIGNUP');
+      } catch(error) {
+        console.tron.log(error.response, 'Error responseProfProfile');
+        yield put(cancelLoading());
+        yield put(availableButtons(true));
         if (error.response) {
           switch (error.response.status) {
             case 500:
@@ -565,33 +654,26 @@ export function* requestUpdateProfile({payload}) {
               break;
             case 400:
               break;
-            case 409:
-              yield put(docError());
-              break;
             default:
               break;
           }
         }
       }
     }
+    yield put(availableButtons(true));
+    // yield put(setSigned());
+    // yield put(profileComplete());
   } catch (error) {
+    console.tron.log(error.response, 'UPDATE responseProfileUpdate');
     yield put(availableButtons(true));
     if (error.response) {
+      console.tron.log(error.response);
       switch (error.response.status) {
         case 500:
           break;
         case 404:
-          yield put(failureAutenticationCode('404'));
           break;
         case 400:
-          yield put(failureAutenticationCode('400'));
-          break;
-        case 409:
-          yield put(cancelLoading());
-          yield put(docError());
-          break;
-        case 401:
-          yield put(failureAutenticationCode('401'));
           break;
         default:
           break;

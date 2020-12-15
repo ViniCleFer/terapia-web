@@ -65,15 +65,10 @@ export function* changeProfessionalsStatus({ payload }) {
 
     console.tron.log(payload, 'PAYLOAD');
 
-    const response = yield call(
+    yield call(
       axios.put,
       `${baseUrl.TERAPIA_BELLA}/professional/status?professionalId=${payload.professionalId}&active=${payload.professionalStatus}`,
     );
-
-    if (response.status === 200) {
-      const professionals = response.data;
-      yield put(getAllProfessionalsSuccess(professionals));
-    }
   } catch (error) {
     if (error.response) {
       console.tron.log(error.response, 'Erro getProfessionals');
