@@ -42,7 +42,7 @@ export const CardPeriod = styled.div`
 `;
 
 export const CardPeriodTitle = styled.h1`
-  /* @import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap"); */
+  /* @import url("https://fonts.googleapis.com/css2?family='Rubik'&display=swap"); */
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
@@ -263,7 +263,7 @@ export const HeaderDiv = styled.div`
 `;
 
 export const TextButton = styled.h1`
-  font-family: Rubik, sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   font-weight: normal;
@@ -282,7 +282,7 @@ export const TextButton = styled.h1`
 // `;
 
 export const HeaderModal = styled.h1`
-  font-family: Rubik, sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   font-weight: bold;
@@ -291,7 +291,7 @@ export const HeaderModal = styled.h1`
   color: black;
 `;
 export const Title = styled.h1`
-  font-family: Rubik, sans-serif;
+  font-family: 'Rubik', sans-serif;
   -webkit-font-smoothing: antialiased;
   font-style: normal;
   font-weight: bold;

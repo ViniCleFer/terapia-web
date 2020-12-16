@@ -106,7 +106,7 @@ function CardUserCall({ data }) {
             as={Button}
             // variantColor="purple.600"
             border="0px"
-            _hover={{ bg: "gray.900" }}
+            _hover={{ bg: "gray.310" }}
             rounded="0px"
             backgroundColor="white"
             width="22px"

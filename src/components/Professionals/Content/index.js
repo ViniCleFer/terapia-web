@@ -28,6 +28,8 @@ import { getSubjectsRequest } from '../../../store/modules/specialty/actions';
 import DocHelper from '../../../helpers/docValidate';
 import DateHelper from '../../../helpers/dateValidate';
 
+import {handleAvatar as uploadAvavatar} from "../../../helpers/uploadAvatar";
+
 import theme from '../../../styles/theme';
 
 // import ChakraInput from "../../ChakraInput";
@@ -84,7 +86,7 @@ export default function Content() {
   useEffect(() => {
     if (profProfile?.professional?.graduations?.length > 0) {
       const gradds = profProfile?.professional?.graduations?.map(
-        gg => gg.college
+        gg => gg
       );
       setGraduates(gradds);
     }
@@ -93,7 +95,7 @@ export default function Content() {
   useEffect(() => {
     if (profProfile?.professional?.experiences?.length > 0) {
       const expss = profProfile?.professional?.experiences?.map(
-        exp => exp.especialty
+        exp => exp
       );
       setExperiences(expss);
     }
@@ -222,7 +224,7 @@ export default function Content() {
             email,
             birthDate,
             phoneNumber: phoneValid,
-            photoUrl: avatar,
+            avatar,
             description,
             docValue,
             docDescription,
@@ -284,9 +286,12 @@ export default function Content() {
 
   useEffect(() => {
     if (graduates) {
-      const kk = graduates.map(it => (
-        {college: it}
-      ))
+      const kk = graduates.map((grad) => {
+        return ({
+          id: grad.id ? grad.id: 0,
+          college: grad.college ? grad.college : grad
+        })
+    });
       
       setNewGraduates(kk)
     }
@@ -300,24 +305,12 @@ export default function Content() {
 
   useEffect(() => {
     if (experiences) {
-      const kk = experiences.map((espec, index) => {
-        if (espec.id) {
+      const kk = experiences.map((espec) => {
           return ({
-            id: espec.id,
-            especialty: espec.especialty
+            id: espec.id ? espec.id: 0,
+            especialty: espec.especialty ? espec.especialty : espec
           })
-        } else {
-          return ({
-            id: 0,
-            especialty: espec
-          })
-        }
-      })
-
-      // {
-      //   id: `${espec.id}` ? espec.id : 0,
-      //   especialty: espec
-      // }
+      });
       
       setNewExperiences(kk)
     }
@@ -357,8 +350,9 @@ export default function Content() {
     setGraduates(graduats);
   };
 
-  const handleCancelExperience = (expiriences) => {
-    setExperiences(experiences.filter(special => special !== expiriences));
+  const handleCancelExperience = (expiriencesIndex) => {
+    const exper = experiences.findIndex((special, index) => console.log(expiriencesIndex, special[index] === expiriencesIndex));
+    // setExperiences(exper);
   };
 
   const handleCancelSpecialty = (especialtyId) => {
@@ -383,12 +377,13 @@ export default function Content() {
     }
   }, [phone]);
 
-  const handleAvatar = (fileImage) => {
-    setAvatar(fileImage);
+  const handleAvatar = async (fileImage) => {
+    const upImage = await uploadAvavatar(fileImage);
+
+    setAvatar(upImage);
   };
 
   useEffect(() => {
-    // console.log(JSON.stringify(birthDate))
     if (search.length > 0) {
       setDisplay(true)
     }
@@ -396,7 +391,7 @@ export default function Content() {
   }, [search])
 
   function handleNameError() {
-    name.length > 0 ? setErrorName(false) : setErrorName(true)
+    name?.length > 0 ? setErrorName(false) : setErrorName(true)
   }
 
   function handleEmailError() {
@@ -406,7 +401,7 @@ export default function Content() {
       return re.test(text);
     }
 
-    if (email.length > 0 && validateEmail(email)) {
+    if (email?.length > 0 && validateEmail(email)) {
       setErrorEmail(false)
     } else {
       setErrorEmail(true)
@@ -415,7 +410,7 @@ export default function Content() {
 
   async function handleDocError() {
     dispatch(clearDocError())
-    if (doc.length === 14) {
+    if (doc?.length === 14) {
       const existDoc = await validateCpf(doc);
 
       if (existDoc) {
@@ -473,7 +468,7 @@ export default function Content() {
   }
 
   function handleSpecialtyError() {
-    newExperiences?.length > 0 ? setErrorSpecialty(false) : setErrorSpecialty(true)
+    newExperiences?.length > 0 || specialty?.length > 0 ? setErrorSpecialty(false) : setErrorSpecialty(true)
   }
 
   function handleEspecialtiesError() {
@@ -517,9 +512,9 @@ export default function Content() {
     errorEspecialties,
   ]);
 
-  useEffect(() => {
-    console.tron.log({birthDate});
-  }, [birthDate]);
+  // useEffect(() => {
+  //   console.tron.log({avatar});
+  // }, [avatar]);
 
   return (
     // <Formik
@@ -609,7 +604,7 @@ export default function Content() {
                 align="center"
                 onBlur={handleBirthError}
                 onChange={(t) => setBirthDate(t.target.value)}
-                value={birthDate}
+                value={String(birthDate)}
                 type="date"
                 placeholder="11/11/1111"
                 errorBorderColor="crimson"
@@ -840,7 +835,7 @@ export default function Content() {
               <Flex direction="column" p="5px">
                 {graduates?.map((graduate, index) => (
                   <Flex key={index} direction="row" p="5px" align="center">
-                    <Text>{graduate}</Text>
+                    <Text>{graduate.id ? graduate.college : graduate}</Text>
                     <button style={{
                       background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
                     }} onClick={() => handleCancelGraduate(graduate)} type="button">
@@ -881,10 +876,10 @@ export default function Content() {
             <Flex direction="column" p="5px">
               {experiences?.map((experience, index) => (
                 <Flex key={index} direction="row" p="5px" align="center">
-                  <Text>{experience}</Text>
+                  <Text>{experience.id ? experience.especialty : experience}</Text>
                   <button style={{
                       background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
-                    }} onClick={() => handleCancelExperience(experience)}>
+                    }} onClick={() => handleCancelExperience(index)}>
                     x
                   </button>
                 </Flex>
