@@ -719,15 +719,10 @@ export function* requestUpdateProfile({payload}) {
   }
 }
 
-export function signOut() {
-  history.push("/");
-}
-
 export default all([
   // takeLatest("persist/REHYDRATE", setToken),
   takeLatest("@auth/SIGN_IN_REQUEST", signIn),
   takeLatest('@auth/REQUEST_CREATE_PROFILE', requestCreateProfile),
   takeLatest('@auth/REQUEST_UPDATE_PROFILE', requestUpdateProfile),
   // takeLatest("@auth/SIGN_UP_REQUEST", signUp),
-  takeLatest("@auth/SIGN_OUT", signOut),
 ]);

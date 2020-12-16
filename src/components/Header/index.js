@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // import logo from "../../assets/logoBella.png";
 import {
@@ -21,8 +21,12 @@ import { signOut } from "../../store/modules/auth/actions";
 export default function Header() {
   const dispatch = useDispatch();
 
+  const avatar = useSelector((state) => state.auth.profile.photoUrl);
+  const name = useSelector((state) => state.auth.profile.name);
+  const userId = useSelector((state) => state.auth.profile.userId);
+
   function handleSignOut() {
-    dispatch(signOut());
+    dispatch(signOut(userId));
   }
 
   return (
@@ -42,20 +46,20 @@ export default function Header() {
           rounded="0px"
         >
           <Image
-            src="https://bit.ly/sage-adebayo"
-            alt="Segun Adebayo"
+            src={avatar}
+            alt={name}
             rounded="full"
             size="40px"
           />
         </MenuButton>
         <MenuList backgroundColor="white">
-          <MenuItem>
+          {/* <MenuItem>
             <Icon as={MdSettings} size="20px" color="gray.700" mr="10px" />
             <Heading fontSize="16px" color="black" fontWeight="normal">
               Configurações
             </Heading>
           </MenuItem>
-          <MenuDivider />
+          <MenuDivider /> */}
           <MenuItem onClick={() => handleSignOut()}>
             <Icon as={MdExitToApp} size="20px" color="gray.700" mr="10px" />
             <Heading fontSize="16px" color="black" fontWeight="normal">

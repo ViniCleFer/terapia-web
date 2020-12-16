@@ -25,9 +25,10 @@ export function signFailure() {
   };
 }
 
-export function signOut() {
+export function signOut(userId) {
   return {
     type: "@auth/SIGN_OUT",
+    payload: { userId }
   };
 }
 

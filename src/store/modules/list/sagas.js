@@ -76,10 +76,6 @@ export function* getProfileById({ payload }) {
   } catch (err) {}
 }
 
-export function signOut() {
-  history.push("/");
-}
-
 export default all([
   takeLatest("@lists/GET_USERS_HIGH_RISK", getUsersHighRisk),
   takeLatest("@lists/GET_USERS_WITHOUT_MONITORING", getUsersWithoutMonitoring),

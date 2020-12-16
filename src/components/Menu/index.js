@@ -9,11 +9,21 @@ import {
   Tabs,
   TabList,
   Tab,
+  // Image,
   // TabPanel,
   // TabPanels,
 } from "@chakra-ui/core";
-import { MdNotifications, MdCall, MdEventNote } from "react-icons/md";
+import { 
+  // MdNotifications,
+  // MdCall,
+  // MdEventNote,
+  MdPerson } from "react-icons/md";
+// import { FaUserMd } from "react-icons/fa";
+
+// import logo from "../../assets/ic.svg";
+
 import history from "../../services/history";
+
 // import ButtonLeftMenu from "../../components/ButtonLeftMenu";
 
 function Menu({ children }) {
@@ -42,12 +52,13 @@ function Menu({ children }) {
             }}
             onClick={() => history.push("/professionals")}
           >
-            <Icon as={MdCall} size="24px" color="white" />
+            {/* <Image src={logo} color="#fff" /> */}
+            <Icon as={MdPerson} size="30px" color="white" />
             <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
-              Chamadas
+              Profissionais
             </Heading>
           </Tab>
-          <Tab
+          {/* <Tab
             height="64px"
             width="65px"
             flexDirection="column"
@@ -83,7 +94,7 @@ function Menu({ children }) {
             <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
               Calendario
             </Heading>
-          </Tab>
+          </Tab> */}
         </TabList>
       </Tabs>
     </Flex>

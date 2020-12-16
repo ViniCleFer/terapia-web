@@ -1453,16 +1453,33 @@ export function* requestUpdateProfile({payload}) {
       }
     }
   }
-
-  
-
-  
-
-
 }
 
-export function signOut() {
-  history.push("/");
+// export function signOut() {
+//   history.push("/");
+// }
+
+export function* signOut({payload}) {
+  try {
+    yield call(axios.put, `${baseUrl.REQUEST}/available/${payload.userId}`, {
+      available: false,
+    });
+    history.push("/");
+  } catch (error) {
+    console.tron.log(error, 'Error signOut');
+    if (error.response) {
+      switch (error.response.status) {
+        case 500:
+          break;
+        case 404:
+          break;
+        case 400:
+          break;
+        default:
+          break;
+      }
+    }
+  }
 }
 
 export default all([
