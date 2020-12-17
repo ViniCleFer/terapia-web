@@ -61,7 +61,7 @@ function CardUserCall({ data }) {
       height="140px"
       width="276px"
       p="20px"
-      flex="1"
+      // flex="1"
     >
       <Flex flexDirection="rows">
         <Avatar src={data.photoUrl} width="64px" height="64px" rounded="32px">

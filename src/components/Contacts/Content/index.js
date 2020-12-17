@@ -32,8 +32,8 @@ function Content() {
   }, [professionals]);
 
   return (
-    <Accordion defaultIndex={[0]} allowMultiple={true}>
-      <AccordionItem>
+    <Accordion className="accordionprimeiro" defaultIndex={[0]} allowMultiple={true} backgroundColor="#f1f0ef">
+      <AccordionItem border="0">
         {/* <AccordionHeader>
           <Box flex="1" textAlign="left">
             Usuários Alto Risco
