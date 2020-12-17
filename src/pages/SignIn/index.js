@@ -36,8 +36,8 @@ export default function Signin() {
       </ImgContainer>
       <div>
         <Form schema={schema} onSubmit={handleSubmit}>
-          <Input name="email" type="email" placeholder="Seu e-mail" style={{borderColor: theme.colors.gray[310]}} />
-          <Input name="password" type="password" placeholder="Sua senha" style={{borderColor: theme.colors.gray[310]}}/>
+          <Input name="email" type="email" placeholder="Seu e-mail" />
+          <Input name="password" type="password" placeholder="Sua senha" />
 
           <button type="submit">Entrar</button>
           {/* <Link to="/register">Criar conta gratuita</Link> */}
