@@ -55,6 +55,7 @@ export default function Content() {
   const dispatch = useDispatch();
 
   const userId = useSelector((state) => state.auth.userId);
+  const docError = useSelector((state) => state.auth.docError);
   const profProfile = useSelector((state) => state.list.clientProfile);
 
   const [birthDateValid, setBirthDateValid] = useState();
@@ -483,7 +484,7 @@ export default function Content() {
     if (emailError) {
       setErrorEmail(true)
     }
-    if (!validDoc) {
+    if (!validDoc || docError) {
       setErrorDoc(true)
     }
     if (birthError) {
@@ -495,7 +496,7 @@ export default function Content() {
   }, [emailError, validDoc, birthError, phoneError])
 
   useEffect(() => {
-    if (errorName || errorEmail || errorDoc || errorBirth || errorPhone || errorDescription || errorDocDescription || errorDocValue || errorValue || errorCollege || errorSpecialty || errorEspecialties) {
+    if (errorName || errorEmail || errorDoc || docError || errorBirth || errorPhone || errorDescription || errorDocDescription || errorDocValue || errorValue || errorCollege || errorSpecialty || errorEspecialties) {
       setDisableSubmit(true)
       dispatch(cancelLoading())
     } else {
@@ -505,6 +506,7 @@ export default function Content() {
     errorName,
     errorEmail,
     errorDoc,
+    docError,
     errorBirth,
     errorPhone,
     errorDescription,
@@ -583,6 +585,7 @@ export default function Content() {
             <FormControl isInvalid={errorDoc}>
               <Input
                 name="doc"
+                id="doc"
                 align="center"
                 onBlur={handleDocError}
                 onChange={handleCpf}
@@ -593,7 +596,7 @@ export default function Content() {
                 width="400px"
                 mt="15px"
               />
-              <FormErrorMessage>{!validDoc ? 'CPF já cadastrado na nossa base de dados' : 'Preencha um CPF válido.'}</FormErrorMessage>
+              <FormErrorMessage>{docError ? 'CPF já cadastrado na nossa base de dados' : 'Preencha um CPF válido.'}</FormErrorMessage>
             </FormControl>
           </Flex>
           <Flex direction="column" align="flex-start" width="400px" padding="10px">

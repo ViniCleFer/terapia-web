@@ -75,7 +75,7 @@ export function* signIn({ payload }) {
   } catch (error) {
     if (error.response) {
       console.tron.log(error.response);
-      toast.error("Falha na autenticaçao, verifique seus dados");
+      toast.error("Falha na autenticação, verifique seus dados");
     }
   }
 }

@@ -4,7 +4,7 @@ import produce from "immer";
 
 const INITIAL_STATE = {
   token: null,
-  signed: true,
+  signed: false,
   loading: false,
   uid: "",
   FCMToken: "",
