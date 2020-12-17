@@ -9,7 +9,7 @@ import { signInRequest } from "../../store/modules/auth/actions";
 
 import logo from "../../assets/logo.png";
 
-import theme from "../../styles/theme";
+// import theme from "../../styles/theme";
 
 import { ImgContainer, Image } from "./styles";
 
