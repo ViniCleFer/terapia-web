@@ -64,6 +64,7 @@ export function* signIn({ payload }) {
           yield put(setSigned());
           yield put(saveProfile(res.data));
           history.push("/professionals/contacts");
+          window.location.reload();
         }
       } catch (error) {
         // console.tron.log(error);
