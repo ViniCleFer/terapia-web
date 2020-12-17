@@ -53,6 +53,7 @@ export function* signIn({ payload }) {
     axios.defaults.headers.Authorization = `Bearer ${token}`;
 
     if (response.status === 200) {
+      alert('ok')
       try {
         const res = yield call(axios.get, `${baseUrl.TERAPIA_BELLA}/profile/${userId}`);
 
