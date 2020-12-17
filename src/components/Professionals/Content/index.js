@@ -485,7 +485,8 @@ export default function Content() {
       setErrorEmail(true)
     }
     if (!validDoc || docError) {
-      setErrorDoc(true)
+      console.tron.log(!validDoc || docError)
+      setErrorDoc(true);
     }
     if (birthError) {
       setErrorBirth(true);
@@ -493,10 +494,10 @@ export default function Content() {
     if (phoneError) {
       setErrorPhone(true);
     }
-  }, [emailError, validDoc, birthError, phoneError])
+  }, [emailError, validDoc, docError, birthError, phoneError])
 
   useEffect(() => {
-    if (errorName || errorEmail || errorDoc || docError || errorBirth || errorPhone || errorDescription || errorDocDescription || errorDocValue || errorValue || errorCollege || errorSpecialty || errorEspecialties) {
+    if (errorName || errorEmail || errorDoc || docError || errorBirth || birthError || errorPhone || errorDescription || errorDocDescription || errorDocValue || errorValue || errorCollege || errorSpecialty || errorEspecialties) {
       setDisableSubmit(true)
       dispatch(cancelLoading())
     } else {
@@ -508,6 +509,7 @@ export default function Content() {
     errorDoc,
     docError,
     errorBirth,
+    birthError,
     errorPhone,
     errorDescription,
     errorDocValue,

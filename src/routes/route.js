@@ -19,6 +19,10 @@ export default function RouterWrapper({
     return <Redirect to="/" />;
   }
 
+  if (!signed && !isPrivate) {
+    return <Redirect to="/" />;
+  }
+
   if (signed && !isPrivate) {
     return <Redirect to="/professionals/contacts" />;
   }

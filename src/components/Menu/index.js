@@ -9,7 +9,6 @@ import {
   Tabs,
   TabList,
   Tab,
-  // Image,
   // TabPanel,
   // TabPanels,
 } from "@chakra-ui/core";
@@ -20,7 +19,7 @@ import {
   MdPerson } from "react-icons/md";
 // import { FaUserMd } from "react-icons/fa";
 
-// import logo from "../../assets/ic.svg";
+// import logo from "../../assets/logo-p.png";
 
 import history from "../../services/history";
 
@@ -52,7 +51,9 @@ function Menu({ children }) {
             }}
             onClick={() => history.push("/professionals")}
           >
-            {/* <Image src={logo} color="#fff" /> */}
+            {/* <div style={{height: 30, width: 30, backgroundColor: 'white'}}>
+              <img src={logo} alt="#fff" style={{width:'100%', height: '100%'}} />
+            </div> */}
             <Icon as={MdPerson} size="30px" color="white" />
             <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
               Profissionais
