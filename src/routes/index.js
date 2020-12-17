@@ -13,36 +13,36 @@ import Call from "../pages/Call";
 import CallHistory from "../pages/CallHistory";
 
 // import { useToasts } from "react-toast-notifications";
-import VComm from "../../src/services/vcoom";
-import NotificationCard from "../components/NotificationCallCard";
-import { toast } from "react-toastify";
+// import VComm from "../../src/services/vcoom";
+// import NotificationCard from "../components/NotificationCallCard";
+// import { toast } from "react-toastify";
 
-import { setActiveCallData } from "../store/modules/auth/actions.js";
+// import { setActiveCallData } from "../store/modules/auth/actions.js";
 
 // import Profile from '~/pages/Profile';
 
 export default function Routes() {
-  const dispatch = useDispatch();
-  const vcomm = VComm.getInstance();
-  // const { addToast } = useToasts();
+  // const dispatch = useDispatch();
+  // const vcomm = VComm.getInstance();
+  // // const { addToast } = useToasts();
 
-  function onDataReceived(data) {
-    dispatch(setActiveCallData(data));
-  }
+  // function onDataReceived(data) {
+  //   dispatch(setActiveCallData(data));
+  // }
 
-  useEffect(() => {
-    vcomm.on(VComm.Events.CallStatus, async (status) => {
-      console.log(status, "teste");
-      if (status === "RINGING") {
-        setTimeout(() => {
-          toast(<NotificationCard />, {
-            autoClose: false,
-          });
-        }, 1000);
-      }
-    });
-    vcomm.on(VComm.Events.DataReceived, onDataReceived);
-  }, []);
+  // useEffect(() => {
+  //   vcomm.on(VComm.Events.CallStatus, async (status) => {
+  //     console.log(status, "teste");
+  //     if (status === "RINGING") {
+  //       setTimeout(() => {
+  //         toast(<NotificationCard />, {
+  //           autoClose: false,
+  //         });
+  //       }, 1000);
+  //     }
+  //   });
+  //   vcomm.on(VComm.Events.DataReceived, onDataReceived);
+  // }, []);
 
   return (
     <Switch>
