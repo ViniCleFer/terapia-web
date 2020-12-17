@@ -13,7 +13,7 @@ export default function RouterWrapper({
   ...rest
 }) {
   const { signed, user } = store.getState().auth;
-  console.log(user);
+  console.log(signed, user);
 
   if (!signed && isPrivate) {
     console.log(!signed && isPrivate, '!signed && isPrivate');
