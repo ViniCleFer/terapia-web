@@ -31,7 +31,6 @@ import { signInSuccess,
 import {availableButtons} from '../commons/actions';
 
 export function* signIn({ payload }) {
-  console.log("paypay", payload);
   // yield spawn(codePushSaga);
   try {
     const data = {
@@ -47,7 +46,7 @@ export function* signIn({ payload }) {
       data
     );
 
-    console.tron.log(response);
+    // console.tron.log(response);
 
     const { access_token: token, refresh_token, userId } = response.data;
 
@@ -59,13 +58,14 @@ export function* signIn({ payload }) {
 
         console.tron.log(res.data);
         if (res.status === 200) {
+          yield put(availableButtons(true));
           yield put(signInSuccess(token, refresh_token));
           yield put(setSigned());
           yield put(saveProfile(res.data));
           history.push("/professionals/contacts");
         }
       } catch (error) {
-        console.tron.log(error);
+        // console.tron.log(error);
       }
       // const profile = res.data;
       // yield put(availableButtons(true));
@@ -117,7 +117,7 @@ export function* requestCreateProfile({payload}) {
   // const activationCodeIdReducer = (state) => state.auth.activationCodeId;
   // const activationCodeId = yield select(activationCodeIdReducer);
 
-  console.tron.log({payload});
+  // console.tron.log({payload});
 
   // const handleAvatar = async (fileImage) => {
   //   const file = fileImage.target.files[0];
@@ -497,7 +497,7 @@ export function* requestUpdateProfile({payload}) {
           axios.defaults.headers.Authorization = `Bearer ${token}`;
       
           if (payload.profile.avatar !== oldAvatar) {
-            console.log(avatar);
+            avatar = payload.profile.avatar;
           } else {
             avatar = oldAvatar;
           }
@@ -528,8 +528,8 @@ export function* requestUpdateProfile({payload}) {
             },
           );
       
-          console.tron.log({responseProfileUpdate});
-          console.log({responseProfileUpdate});
+          // console.tron.log({responseProfileUpdate});
+          // console.log({responseProfileUpdate});
       
           if (responseProfileUpdate.status === 201) {
             try {
@@ -550,8 +550,8 @@ export function* requestUpdateProfile({payload}) {
                 },
               );
               
-              console.tron.log({responseProfProfileUpdate});
-              console.log({responseProfProfileUpdate});
+              // console.tron.log({responseProfProfileUpdate});
+              // console.log({responseProfProfileUpdate});
       
               if (responseProfProfileUpdate.status === 202) {
                 yield put(cancelLoading());
@@ -618,7 +618,7 @@ export function* requestUpdateProfile({payload}) {
               axios.defaults.headers.Authorization = `Bearer ${token}`;
           
               if (payload.profile.avatar !== oldAvatar) {
-                console.log(avatar);
+                avatar = payload.profile.avatar;
               } else {
                 avatar = oldAvatar;
               }
@@ -649,8 +649,8 @@ export function* requestUpdateProfile({payload}) {
                 },
               );
           
-              console.tron.log({responseProfileUpdate});
-              console.log({responseProfileUpdate});
+              // console.tron.log({responseProfileUpdate});
+              // console.log({responseProfileUpdate});
           
               if (responseProfileUpdate.status === 201) {
                 try {
@@ -671,8 +671,8 @@ export function* requestUpdateProfile({payload}) {
                     },
                   );
                   
-                  console.tron.log({responseProfProfileUpdate});
-                  console.log({responseProfProfileUpdate});
+                  // console.tron.log({responseProfProfileUpdate});
+                  // console.log({responseProfProfileUpdate});
           
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
@@ -774,7 +774,7 @@ export function* requestUpdateProfile({payload}) {
               axios.defaults.headers.Authorization = `Bearer ${token}`;
           
               if (payload.profile.avatar !== oldAvatar) {
-                console.log(avatar);
+                avatar = payload.profile.avatar;
               } else {
                 avatar = oldAvatar;
               }
@@ -805,8 +805,8 @@ export function* requestUpdateProfile({payload}) {
                 },
               );
           
-              console.tron.log({responseProfileUpdate});
-              console.log({responseProfileUpdate});
+              // console.tron.log({responseProfileUpdate});
+              // console.log({responseProfileUpdate});
           
               if (responseProfileUpdate.status === 201) {
                 try {
@@ -827,8 +827,8 @@ export function* requestUpdateProfile({payload}) {
                     },
                   );
                   
-                  console.tron.log({responseProfProfileUpdate});
-                  console.log({responseProfProfileUpdate});
+                  // console.tron.log({responseProfProfileUpdate});
+                  // console.log({responseProfProfileUpdate});
           
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
@@ -895,7 +895,7 @@ export function* requestUpdateProfile({payload}) {
                   axios.defaults.headers.Authorization = `Bearer ${token}`;
               
                   if (payload.profile.avatar !== oldAvatar) {
-                    console.log(avatar);
+                    avatar = payload.profile.avatar;
                   } else {
                     avatar = oldAvatar;
                   }
@@ -926,8 +926,8 @@ export function* requestUpdateProfile({payload}) {
                     },
                   );
               
-                  console.tron.log({responseProfileUpdate});
-                  console.log({responseProfileUpdate});
+                  // console.tron.log({responseProfileUpdate});
+                  // console.log({responseProfileUpdate});
               
                   if (responseProfileUpdate.status === 201) {
                     try {
@@ -948,8 +948,8 @@ export function* requestUpdateProfile({payload}) {
                         },
                       );
                       
-                      console.tron.log({responseProfProfileUpdate});
-                      console.log({responseProfProfileUpdate});
+                      // console.tron.log({responseProfProfileUpdate});
+                      // console.log({responseProfProfileUpdate});
               
                       if (responseProfProfileUpdate.status === 202) {
                         yield put(cancelLoading());
@@ -1111,7 +1111,7 @@ export function* requestUpdateProfile({payload}) {
                       axios.defaults.headers.Authorization = `Bearer ${token}`;
                   
                       if (payload.profile.avatar !== oldAvatar) {
-                        console.log(avatar);
+                        avatar = payload.profile.avatar;
                       } else {
                         avatar = oldAvatar;
                       }
@@ -1142,8 +1142,8 @@ export function* requestUpdateProfile({payload}) {
                         },
                       );
                   
-                      console.tron.log({responseProfileUpdate});
-                      console.log({responseProfileUpdate});
+                      // console.tron.log({responseProfileUpdate});
+                      // console.log({responseProfileUpdate});
                   
                       if (responseProfileUpdate.status === 201) {
                         try {
@@ -1164,8 +1164,8 @@ export function* requestUpdateProfile({payload}) {
                             },
                           );
                           
-                          console.tron.log({responseProfProfileUpdate});
-                          console.log({responseProfProfileUpdate});
+                          // console.tron.log({responseProfProfileUpdate});
+                          // console.log({responseProfProfileUpdate});
                   
                           if (responseProfProfileUpdate.status === 202) {
                             yield put(cancelLoading());
@@ -1276,7 +1276,7 @@ export function* requestUpdateProfile({payload}) {
                           axios.defaults.headers.Authorization = `Bearer ${token}`;
                       
                           if (payload.profile.avatar !== oldAvatar) {
-                            console.log(avatar);
+                            avatar = payload.profile.avatar;
                           } else {
                             avatar = oldAvatar;
                           }
@@ -1307,8 +1307,8 @@ export function* requestUpdateProfile({payload}) {
                             },
                           );
                       
-                          console.tron.log({responseProfileUpdate});
-                          console.log({responseProfileUpdate});
+                          // console.tron.log({responseProfileUpdate});
+                          // console.log({responseProfileUpdate});
                       
                           if (responseProfileUpdate.status === 201) {
                             try {
@@ -1329,8 +1329,8 @@ export function* requestUpdateProfile({payload}) {
                                 },
                               );
                               
-                              console.tron.log({responseProfProfileUpdate});
-                              console.log({responseProfProfileUpdate});
+                              // console.tron.log({responseProfProfileUpdate});
+                              // console.log({responseProfProfileUpdate});
                       
                               if (responseProfProfileUpdate.status === 202) {
                                 yield put(cancelLoading());

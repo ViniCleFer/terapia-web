@@ -678,7 +678,7 @@ export default class VComm {
       this.emit(VoxImplant.Events.VideoRejected, true);
     } else if (data.body.startsWith("data:")) {
       const _data = JSON.parse(data.body.substr(5));
-      console.log(_data);
+      // console.log(_data);
       this.emit(VComm.Events.DataReceived, _data);
     }
   };

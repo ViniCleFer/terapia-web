@@ -31,7 +31,7 @@ import { signInSuccess,
 import {availableButtons} from '../commons/actions';
 
 export function* signIn({ payload }) {
-  console.log("paypay", payload);
+  // console.log("paypay", payload);
   // yield spawn(codePushSaga);
   try {
     const data = {
@@ -610,7 +610,7 @@ export function* requestUpdateProfile({payload}) {
     axios.defaults.headers.Authorization = `Bearer ${token}`;
 
     if (payload.profile.avatar !== oldAvatar) {
-      console.log(avatar);
+      // console.log(avatar);
     } else {
       avatar = oldAvatar;
     }
@@ -641,8 +641,8 @@ export function* requestUpdateProfile({payload}) {
       },
     );
 
-    console.tron.log({responseProfileUpdate});
-    console.log({responseProfileUpdate});
+    // console.tron.log({responseProfileUpdate});
+    // console.log({responseProfileUpdate});
 
     if (responseProfileUpdate.status === 201) {
       try {
@@ -663,8 +663,8 @@ export function* requestUpdateProfile({payload}) {
           },
         );
         
-        console.tron.log({responseProfProfileUpdate});
-        console.log({responseProfProfileUpdate});
+        // console.tron.log({responseProfProfileUpdate});
+        // console.log({responseProfProfileUpdate});
 
         if (responseProfProfileUpdate.status === 202) {
           yield put(cancelLoading());

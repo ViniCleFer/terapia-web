@@ -163,11 +163,11 @@ export function* startTreatment({ payload }) {
 }
 
 export function* createTank({ payload }) {
-  console.log(payload);
+  // console.log(payload);
   try {
     const { tankId, companyId } = payload;
     const response = yield call(api.get, `/companies/${companyId}`);
-    console.log(response);
+    // console.log(response);
 
     if (response.status === 200) {
       try {
@@ -187,7 +187,7 @@ export function* createTank({ payload }) {
           ],
         });
 
-        console.log(res);
+        // console.log(res);
       } catch (err) {
         console.log(err.data);
       }
@@ -358,7 +358,7 @@ export function* createContract({ payload }) {
           ],
           tanks: [...response.data.tanks],
         });
-        console.log(res.data);
+        // console.log(res.data);
       } catch (err) {
         console.log(err.data);
       }

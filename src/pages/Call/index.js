@@ -64,7 +64,7 @@ export default function Call() {
   }, []);
 
   useEffect(() => {
-    console.log(callStatus, "useEffect");
+    // console.log(callStatus, "useEffect");
   }, [callStatus]);
 
   const handleMic = () => {
