@@ -171,7 +171,7 @@ export function* createTank({ payload }) {
 
     if (response.status === 200) {
       try {
-        const res = yield call(api.put, `/companies/${companyId}`, {
+        yield call(api.put, `/companies/${companyId}`, {
           id: response.data.id,
           name: response.data.name,
           doc: response.data.doc,
@@ -339,7 +339,7 @@ export function* createContract({ payload }) {
 
     if (response.status === 200) {
       try {
-        const res = yield call(api.put, `/companies/${companyId}`, {
+        yield call(api.put, `/companies/${companyId}`, {
           id: response.data.id,
           name: response.data.name,
           doc: response.data.doc,
