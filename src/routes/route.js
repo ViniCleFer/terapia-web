@@ -16,14 +16,14 @@ export default function RouterWrapper({
   console.log(user);
 
   if (!signed && isPrivate) {
-    return <Redirect to="/" />;
-  }
+    console.log(!signed && isPrivate, '!signed && isPrivate');
 
-  if (!signed && !isPrivate) {
     return <Redirect to="/" />;
   }
 
   if (signed && !isPrivate) {
+    console.log(signed && !isPrivate, 'signed && !isPrivate');
+
     return <Redirect to="/professionals/contacts" />;
   }
 
