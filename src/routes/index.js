@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+// import { useDispatch } from "react-redux";
 import { Switch } from "react-router-dom";
 import Route from "./route";
 
