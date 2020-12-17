@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +29,7 @@ function Content() {
 
   useEffect(() => {
     dispatch(getAllProfessionalsRequest());
-  }, [dispatch]);
+  }, [professionals]);
 
   return (
     <Accordion defaultIndex={[0]} allowMultiple={true}>

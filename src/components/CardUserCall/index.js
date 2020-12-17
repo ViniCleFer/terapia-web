@@ -51,7 +51,7 @@ function CardUserCall({ data }) {
   }
 
   function handleProfessionalStatus(professionalProfile) {
-    dispatch(setChangeProfessionalStatus(professionalProfile.id, !professionalProfile.active));
+    dispatch(setChangeProfessionalStatus(professionalProfile.professional.id, !professionalProfile.professional.active));
   }
 
   return (
@@ -79,7 +79,7 @@ function CardUserCall({ data }) {
             </AvatarBadge>
             <MenuList backgroundColor="white">
               <MenuItem 
-                onClick={() => handleProfessionalStatus(data.professional)}
+                onClick={() => handleProfessionalStatus(data)}
               >
                 <Icon as={data.professional.active ? MdClose : MdCheck} size="20px" color="gray.700" mr="10px" />
                 <Heading fontSize="16px" color="black" fontWeight="normal">

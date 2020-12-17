@@ -9,13 +9,13 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
+  // MenuDivider,
   Button,
   Image,
   Icon,
 } from "@chakra-ui/core";
 
-import { MdSettings, MdExitToApp } from "react-icons/md";
+import { MdExitToApp } from "react-icons/md";
 import { signOut } from "../../store/modules/auth/actions";
 
 export default function Header() {
@@ -23,10 +23,9 @@ export default function Header() {
 
   const avatar = useSelector((state) => state.auth.profile.photoUrl);
   const name = useSelector((state) => state.auth.profile.name);
-  const userId = useSelector((state) => state.auth.profile.userId);
 
   function handleSignOut() {
-    dispatch(signOut(userId));
+    dispatch(signOut());
   }
 
   return (

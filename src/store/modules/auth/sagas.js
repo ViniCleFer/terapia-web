@@ -9,7 +9,7 @@ import apiTerapia from '../../../services/apiTerapia';
 import history from "../../../services/history";
 import baseUrl from "../../../services/baseUrl";
 
-import {handleAvatar, removeAvatar} from "../../../helpers/uploadAvatar";
+import {removeAvatar} from "../../../helpers/uploadAvatar";
 
 // import firebase from '../../../config/firebase';
 
@@ -139,8 +139,6 @@ export function* requestCreateProfile({payload}) {
   //   }
   // });
 
-  let avatar = payload.avatar;
-
   try {
     const responsePhone = yield call(
       axios.get,
@@ -150,6 +148,9 @@ export function* requestCreateProfile({payload}) {
     if (responsePhone.status === 200) {
       yield put(setPhoneError());
       toast.error("Falha no cadastro, Telefone já cadastrado na nossa base de dados");
+      if (payload.avatar !== '') {
+        removeAvatar(payload.avatar);
+      }
     }
   } catch (error) {
     console.tron.log(error.response, 'getProfileByPhoneNumber');
@@ -210,8 +211,10 @@ export function* requestCreateProfile({payload}) {
                         if (responseToken.status === 200) {
                           yield put(setFCMToken(payload.fmcToken, userId));
 
-                          if (avatar === '') {
-                            avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.name}`;
+                          console.tron.log(payload.avatar);
+
+                          if (payload.avatar === '') {
+                            payload.avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.name}`;
                           }
 
                           try {
@@ -226,20 +229,20 @@ export function* requestCreateProfile({payload}) {
                                 email: payload.email,
                                 birthDate: payload.birthDate,
                                 phoneNumber: payload.phoneNumber,
-                                photoUrl: avatar,
+                                photoUrl: payload.avatar,
                                 domainId,
                                 tenantId,
-                                address: [
-                                  {
-                                    address: payload.address,
-                                    number: payload.number,
-                                    complement: payload.complement,
-                                    neighborhood: payload.neighborhood,
-                                    state: payload.state,
-                                    city: payload.city,
-                                    zipCode: payload.cep,
-                                  },
-                                ],
+                                // address: [
+                                //   {
+                                //     address: payload.address,
+                                //     number: payload.number,
+                                //     complement: payload.complement,
+                                //     neighborhood: payload.neighborhood,
+                                //     state: payload.state,
+                                //     city: payload.city,
+                                //     zipCode: payload.cep,
+                                //   },
+                                // ],
                               },
                             );
 
@@ -266,18 +269,16 @@ export function* requestCreateProfile({payload}) {
                                   },
                                 );
   
-                                if (responseProfProfile.status === 202) {
+                                if (responseProfProfile.status === 200) {
                                   yield put(cancelLoading());
-                                  setTimeout(() => {
-                                    toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
-                                  }, 3000);
-                                  window.location.reload();
+                                  toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
+                                  history.push('/professionals/contacts');
                                 }
                                 yield put(availableButtons(true));
                                 yield put(cancelLoading());
                               } catch(error) {
                                 if (payload.avatar !== '') {
-                                  removeAvatar(avatar);
+                                  removeAvatar(payload.avatar);
                                 }
                                 console.tron.log(error.response, 'Error responseProfProfile');
                                 yield put(cancelLoading());
@@ -298,7 +299,7 @@ export function* requestCreateProfile({payload}) {
                             }
                           } catch (error) {
                             if (payload.avatar !== '') {
-                              removeAvatar(avatar);
+                              removeAvatar(payload.avatar);
                             }
                             console.tron.log(error, 'Error responseProfile');
                             yield put(availableButtons(true));
@@ -320,7 +321,7 @@ export function* requestCreateProfile({payload}) {
                         }
                       } catch (error) {
                         if (payload.avatar !== '') {
-                          removeAvatar(avatar);
+                          removeAvatar(payload.avatar);
                         }
                         console.tron.log(error, 'Error responseToken');
                         console.log(error, 'Error responseToken');
@@ -342,7 +343,7 @@ export function* requestCreateProfile({payload}) {
                     }
                   } catch (error) {
                     if (payload.avatar !== '') {
-                      removeAvatar(avatar);
+                      removeAvatar(payload.avatar);
                     }
                     console.tron.log(error.response, 'Error responseSignUp');
                     yield put(cancelLoading());
@@ -368,7 +369,7 @@ export function* requestCreateProfile({payload}) {
                 }
               } catch (error) {
                 if (payload.avatar !== '') {
-                  removeAvatar(avatar);
+                  removeAvatar(payload.avatar);
                 }
                 yield put(cancelLoading());
                 yield put(availableButtons(true));
@@ -400,7 +401,7 @@ export function* requestCreateProfile({payload}) {
             }
           } catch (error) {
             if (payload.avatar !== '') {
-              removeAvatar(avatar);
+              removeAvatar(payload.avatar);
             }
             yield put(availableButtons(true));
             yield put(cancelLoading());
@@ -1455,31 +1456,8 @@ export function* requestUpdateProfile({payload}) {
   }
 }
 
-// export function signOut() {
-//   history.push("/");
-// }
-
-export function* signOut({payload}) {
-  try {
-    yield call(axios.put, `${baseUrl.REQUEST}/available/${payload.userId}`, {
-      available: false,
-    });
-    history.push("/");
-  } catch (error) {
-    console.tron.log(error, 'Error signOut');
-    if (error.response) {
-      switch (error.response.status) {
-        case 500:
-          break;
-        case 404:
-          break;
-        case 400:
-          break;
-        default:
-          break;
-      }
-    }
-  }
+export function signOut() {
+  history.push("/");
 }
 
 export default all([

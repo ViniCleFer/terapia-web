@@ -209,6 +209,9 @@ export default function Content() {
     handleSpecialtyError();
     handleEspecialtiesError();
 
+    console.tron.log( profProfile?.id === undefined, 'profProfile?.id === undefined');
+    console.tron.log(!profProfile , '!profProfile');
+
     if (profProfile?.id !== undefined && !disabledSubmit &&
       !errorName && !errorEmail && !errorDoc &&
       !errorBirth && !errorPhone && !errorDescription &&
@@ -238,7 +241,7 @@ export default function Content() {
         );
     }
 
-    if (profProfile?.id === undefined && !profProfile && !disabledSubmit &&
+    if (profProfile?.id === undefined && !disabledSubmit &&
         !errorName && !errorEmail && !errorDoc &&
         !errorBirth && !errorPhone && !errorDescription &&
         !errorDocDescription && !errorDocValue && !errorValue &&
@@ -350,9 +353,10 @@ export default function Content() {
     setGraduates(graduats);
   };
 
-  const handleCancelExperience = (expiriencesIndex) => {
-    const exper = experiences.findIndex((special, index) => console.log(expiriencesIndex, special[index] === expiriencesIndex));
-    // setExperiences(exper);
+  const handleCancelExperience = (expirience) => {
+    const exper = experiences.filter((special) => (special !== expirience));
+    setExperiences(exper);
+    // console.log('apertou')
   };
 
   const handleCancelSpecialty = (especialtyId) => {
@@ -472,7 +476,7 @@ export default function Content() {
   }
 
   function handleEspecialtiesError() {
-    specialties?.length > 0 ? setErrorEspecialties(false) : setErrorEspecialties(true)
+    specialties?.length > 0 || search?.length > 0 ? setErrorEspecialties(false) : setErrorEspecialties(true)
   }
 
   useEffect(() => {
@@ -538,7 +542,6 @@ export default function Content() {
               <FormControl isInvalid={errorName}>
               <Input
                 name="name"
-                id="name"
                 onChange={(t) => setName(t.target.value)}
                 value={name}
                 type="text"
@@ -879,7 +882,7 @@ export default function Content() {
                   <Text>{experience.id ? experience.especialty : experience}</Text>
                   <button style={{
                       background: "#6E8BC6", height: 16, width: 16, borderRadius: 8, alignItems: 'center', color: '#FFF', marginLeft: 10, justifyContent: 'center'
-                    }} onClick={() => handleCancelExperience(index)}>
+                    }} onClick={() => handleCancelExperience(experience)} type="button">
                     x
                   </button>
                 </Flex>

@@ -28,6 +28,10 @@ export default function list(state = INITIAL_STATE, action) {
         draft.clientProfile = action.payload.data;
         break;
       }
+      case "@lists/CLEAR_PROFILE_BY_ID": {
+        draft.clientProfile = '';
+        break;
+      }
 
       default:
     }

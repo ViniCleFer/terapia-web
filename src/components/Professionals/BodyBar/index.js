@@ -1,9 +1,19 @@
 import React from "react";
 import { Flex, Heading, Button } from "@chakra-ui/core";
+import {useDispatch} from 'react-redux'
 
 import history from "../../../services/history";
 
+import {clearProfileById} from '../../../store/modules/list/actions';
+
 function BodyBar() {
+  const dispatch = useDispatch();
+
+  function handleGoBack() {
+    dispatch(clearProfileById());
+    history.push("/professionals/contacts");
+  }
+
   return (
     <Flex
       gridArea="bodybar"
@@ -26,7 +36,7 @@ function BodyBar() {
       </Heading>
 
 
-      <Button onClick={() => history.push("/professionals/contacts")} background="#6E8BC6" variant="solid" color="#fff">
+      <Button onClick={() => handleGoBack()} background="#6E8BC6" variant="solid" color="#fff">
         Voltar 
       </Button>
 

@@ -53,3 +53,9 @@ export function setProfileById(data) {
     payload: { data },
   };
 }
+
+export function clearProfileById(data) {
+  return {
+    type: "@lists/CLEAR_PROFILE_BY_ID",
+  };
+}
