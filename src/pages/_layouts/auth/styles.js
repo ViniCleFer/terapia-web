@@ -37,7 +37,7 @@ export const Content = styled.div`
 
     input {
       background: #fff;
-      border: 1px solid #801857;
+      border: 1px solid ${theme.colors.gray[310]};
       border-radius: 4px;
       height: 44px;
       padding: 0 15px;
