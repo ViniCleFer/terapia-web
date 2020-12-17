@@ -1,15 +1,17 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import { Form, Input } from "@rocketseat/unform";
 import * as Yup from "yup";
 // import { Heading } from "@chakra-ui/core";
 
 import { signInRequest } from "../../store/modules/auth/actions";
 
-import logo from "../../assets/logoBella.png";
+import logo from "../../assets/logo.png";
 
-// import { Container } from "./styles";
+import theme from "../../styles/theme";
+
+import { ImgContainer, Image } from "./styles";
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -28,17 +30,19 @@ export default function Signin() {
   }
 
   return (
-    <>
-      <img src={logo} alt="grower" />
+    <div style={{display: 'flex', flexDirection: "column"}}>
+      <ImgContainer>
+        <Image src={logo} alt="grower" style={{marginLeft: 0}}/>
+      </ImgContainer>
       <div>
         <Form schema={schema} onSubmit={handleSubmit}>
-          <Input name="email" type="email" placeholder="Seu e-mail" />
-          <Input name="password" type="password" placeholder="Sua senha" />
+          <Input name="email" type="email" colorPlaceholder="red" placeholder="Seu e-mail" style={{borderColor: theme.colors.gray[310]}} />
+          <Input name="password" type="password" placeholder="Sua senha" style={{borderColor: theme.colors.gray[310]}}/>
 
           <button type="submit">Entrar</button>
-          <Link to="/register">Criar conta gratuita</Link>
+          {/* <Link to="/register">Criar conta gratuita</Link> */}
         </Form>
       </div>
-    </>
+    </div>
   );
 }

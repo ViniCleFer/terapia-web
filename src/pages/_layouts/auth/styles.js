@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { darken } from "polished";
 
+import theme from "../../../styles/theme";
+
 export const Wrapper = styled.div`
   height: 100%;
   background: #fff;
@@ -39,10 +41,10 @@ export const Content = styled.div`
       border-radius: 4px;
       height: 44px;
       padding: 0 15px;
-      color: black;
+      color: ${theme.colors.gray[600]};
       margin: 0 0 10px;
       &::placeholder {
-        color: black;
+        color: gray;
       }
     }
     span {
@@ -54,15 +56,16 @@ export const Content = styled.div`
     button {
       margin: 5px 0 0;
       height: 44px;
-      background: #a92765;
+      background-color: ${theme.colors.purple[600]};
       font-weight: bold;
       color: #fff;
       border: 0;
       border-radius: 4px;
       font-size: 16px;
-      transition: background 0.2s;
+      transition: background-color 0.2s;
+
       &:hover {
-        background: ${darken(0.03, "#801857")};
+        background-color: ${darken(0.03, theme.colors.purple[500])};
       }
     }
     a {

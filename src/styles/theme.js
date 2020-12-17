@@ -25,6 +25,8 @@ const customTheme = {
     ...theme.colors,
     purple: {
       ...theme.colors.purple,
+      200: '#B4CBEB',
+      300: '#9ab1df',
       500: "#315395",
       600: "#6E8BC6",
     },
@@ -50,7 +52,6 @@ export default customTheme;
 
 // export default {
 //   background: '#fff',
-
 //   primary: '#6E8BC6',
 //   primary1: '#9ab1df',
 //   primary2: '#315395',
