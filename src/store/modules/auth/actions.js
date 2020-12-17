@@ -34,7 +34,6 @@ export function signOut() {
 export function setSigned() {
   return {
     type: "@auth/SET_SIGNED",
-    payload: {},
   };
 }
 
