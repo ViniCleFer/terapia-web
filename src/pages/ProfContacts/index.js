@@ -28,6 +28,7 @@ import {
 export default function ProfContacts() {
   const dispatch = useDispatch();
   useEffect(() => {
+    alert('ProfContacts')
     dispatch(getAllProfessionalsRequest());
   }, []);
 
