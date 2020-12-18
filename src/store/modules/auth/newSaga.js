@@ -62,7 +62,7 @@ export function* signIn({ payload }) {
           yield put(signInSuccess(token, refresh_token));
           yield put(setSigned());
           yield put(saveProfile(res.data));
-          history.push("/professionals/contacts");
+          history.push("/professionals");
         }
       } catch (error) {
         console.tron.log(error);

@@ -26,7 +26,7 @@ function BodyBar() {
       </Heading>
 
 
-      <Button onClick={() => history.push("/professionals/add-contacts")} background="#6E8BC6" variant="solid" color="#fff">
+      <Button onClick={() => history.push("/add-contacts")} background="#6E8BC6" variant="solid" color="#fff">
         Adicionar +
       </Button>
 

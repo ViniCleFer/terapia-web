@@ -24,7 +24,7 @@ export default function RouterWrapper({
   if (signed && !isPrivate) {
     console.log(signed && !isPrivate, 'signed && !isPrivate');
 
-    return <Redirect to="/professionals/contacts" />;
+    return <Redirect to="/professionals" />;
   }
 
   const Layout = signed ? DefaultLayout : AuthLayout;

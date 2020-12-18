@@ -64,7 +64,7 @@ export function* signIn({ payload }) {
           yield put(signInSuccess(token, refresh_token));
           yield put(setSigned());
           yield put(saveProfile(res.data));
-          history.push("/professionals/contacts");
+          history.push("/professionals");
           // window.location.reload();
         // } else {
         //   alert('Não entrou no IF')
@@ -277,7 +277,7 @@ export function* requestCreateProfile({payload}) {
                                 if (responseProfProfile.status === 200) {
                                   yield put(cancelLoading());
                                   toast.success("Parabéns, Profissional Cadastrado com Sucesso.");
-                                  history.push('/professionals/contacts');
+                                  history.push('/professionals');
                                 }
                                 yield put(availableButtons(true));
                                 yield put(cancelLoading());
@@ -561,7 +561,7 @@ export function* requestUpdateProfile({payload}) {
               if (responseProfProfileUpdate.status === 202) {
                 yield put(cancelLoading());
                 toast.success("Parabéns, Profissional Editado com Sucesso.");
-                history.push('/professionals/contacts');
+                history.push('/professionals');
               }
               yield put(availableButtons(true));
               yield put(cancelLoading());
@@ -682,7 +682,7 @@ export function* requestUpdateProfile({payload}) {
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
                     toast.success("Parabéns, Profissional Editado com Sucesso.");
-                    history.push('/professionals/contacts');
+                    history.push('/professionals');
                   }
                   yield put(availableButtons(true));
                   yield put(cancelLoading());
@@ -838,7 +838,7 @@ export function* requestUpdateProfile({payload}) {
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
                     toast.success("Parabéns, Profissional Editado com Sucesso.");
-                    history.push('/professionals/contacts');
+                    history.push('/professionals');
                   }
                   yield put(availableButtons(true));
                   yield put(cancelLoading());
@@ -959,7 +959,7 @@ export function* requestUpdateProfile({payload}) {
                       if (responseProfProfileUpdate.status === 202) {
                         yield put(cancelLoading());
                         toast.success("Parabéns, Profissional Editado com Sucesso.");
-                        history.push('/professionals/contacts');
+                        history.push('/professionals');
                       }
                       yield put(availableButtons(true));
                       yield put(cancelLoading());
@@ -1175,7 +1175,7 @@ export function* requestUpdateProfile({payload}) {
                           if (responseProfProfileUpdate.status === 202) {
                             yield put(cancelLoading());
                             toast.success("Parabéns, Profissional Editado com Sucesso.");
-                            history.push('/professionals/contacts');
+                            history.push('/professionals');
                           }
                           yield put(availableButtons(true));
                           yield put(cancelLoading());
@@ -1340,7 +1340,7 @@ export function* requestUpdateProfile({payload}) {
                               if (responseProfProfileUpdate.status === 202) {
                                 yield put(cancelLoading());
                                 toast.success("Parabéns, Profissional Editado com Sucesso.");
-                                history.push('/professionals/contacts');
+                                history.push('/professionals');
                               }
                               yield put(availableButtons(true));
                               yield put(cancelLoading());

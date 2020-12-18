@@ -48,8 +48,8 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
       {/* <Route path="/calls" exact component={Calls} isPrivate /> */}
-      <Route path="/professionals/contacts" component={ProfContacts} isPrivate />
-      <Route path="/professionals/add-contacts" component={AddProfessionals} isPrivate />
+      <Route path="/professionals" component={ProfContacts} isPrivate />
+      <Route path="/add-contacts" component={AddProfessionals} isPrivate />
       <Route path="/calls/incall" component={Call} isPrivate />
       <Route path="/calls/history" component={CallHistory} isPrivate />
 

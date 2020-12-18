@@ -49,7 +49,7 @@ function SideBar({ props }) {
           _focus={{
             bg: "#eae8e6",
           }}
-          onClick={() => history.push("/professionals/contacts")}
+          onClick={() => history.push("/professionals")}
         >
           <Icon as={MdPerson} size="20px" color="black" mr="10px" ml="5px" />
           <Heading fontWeight="400" fontSize="16px" color="black">
