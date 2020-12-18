@@ -1,22 +1,16 @@
 import React from "react";
-import {
-  Flex,
-  Heading,
-  ButtonGroup,
-  Button,
-  Icon,
-} from "@chakra-ui/core";
+import { Flex, Heading, ButtonGroup, Button, Icon } from "@chakra-ui/core";
 import history from "../../../services/history";
 
 import { MdPerson} from "react-icons/md";
 
 function SideBar() {
   return (
-    <Flex gridArea="sidebar" bg="red" flex="1" backgroundColor="white">
-      <ButtonGroup spacing={4} width="260px">
+    <Flex gridArea="sidebar" bg="red" flex="1" backgroundColor="#white">
+      <ButtonGroup spacing={4} width="180px">
         <Button
           as="button"
-          width="260px"
+          width="180px"
           rounded="0"
           justifyContent="flex-start"
           backgroundColor="white"

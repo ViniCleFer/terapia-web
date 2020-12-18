@@ -16,9 +16,9 @@ function Menu() {
   return (
     <Flex
       bg="red"
-      backgroundColor="purple.500"
+      backgroundColor="purple.600"
       flexDirection="column"
-      height="100vh"
+      flex="1"
       width="65px"
     >
       <Tabs orientation="vertical">

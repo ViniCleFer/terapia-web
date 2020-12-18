@@ -28,7 +28,7 @@ function Content() {
       <AccordionItem border="0">
         <AccordionPanel pb={4} pt="20px" backgroundColor="#f1f0ef">
           <Grid
-            templateColumns="1fr 1fr 1fr 1fr 1fr"
+            templateColumns="1fr 1fr 1fr 1fr"
             gap={3}
             backgroundColor="#f1f0ef"
           >

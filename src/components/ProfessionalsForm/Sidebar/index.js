@@ -13,10 +13,10 @@ import { MdPerson } from "react-icons/md";
 function SideBar() {
   return (
     <Flex gridArea="sidebar" bg="red" flex="1" backgroundColor="white">
-      <ButtonGroup spacing={4} width="260px">
+      <ButtonGroup spacing={4} width="180px">
         <Button
           as="button"
-          width="260px"
+          width="180px"
           rounded="0"
           justifyContent="flex-start"
           backgroundColor="white"

@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   Flex,
   Heading,
@@ -12,8 +11,8 @@ import {
   Image,
   Icon,
 } from "@chakra-ui/core";
-
 import { MdExitToApp } from "react-icons/md";
+
 import { signOut } from "../../store/modules/auth/actions";
 
 export default function Header() {

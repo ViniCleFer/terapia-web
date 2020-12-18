@@ -10,9 +10,9 @@ import SidebarProfessionals from "../../components/ProfessionalsForm/Sidebar";
 export default function AddProfessionals() {
   return (
     <Grid
-      height="100vh"
-      width="100vw"
-      templateColumns="260px 1fr"
+      height="10vh"
+      width="100%"
+      templateColumns="180px 1fr"
       templateRows="60px 1fr"
       templateAreas="
       ' topsidebar bodybar'
