@@ -71,7 +71,7 @@ export function* getProfileById({ payload }) {
 
     if (response.status === 200) {
       yield put(setProfileById(response.data));
-      history.push('/professionals/contacts/add');
+      history.push('/professionals/add-contacts');
     }
   } catch (err) {}
 }

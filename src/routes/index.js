@@ -48,10 +48,10 @@ export default function Routes() {
     <Switch>
       <Route path="/" exact component={SignIn} />
       {/* <Route path="/calls" exact component={Calls} isPrivate /> */}
-      <Route path="/professionals/contacts" exact component={ProfContacts} isPrivate />
-      <Route path="/professionals/contacts/add" exact component={AddProfessionals} isPrivate />
-      <Route path="/calls/incall" exact component={Call} isPrivate />
-      <Route path="/calls/history" exact component={CallHistory} isPrivate />
+      <Route path="/professionals/contacts" component={ProfContacts} isPrivate />
+      <Route path="/professionals/add-contacts" component={AddProfessionals} isPrivate />
+      <Route path="/calls/incall" component={Call} isPrivate />
+      <Route path="/calls/history" component={CallHistory} isPrivate />
 
       {/* <Route path="/register" component={Signup} /> */}
       {/* Todo Falta colocar private nas rotas */}
