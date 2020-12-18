@@ -23,7 +23,7 @@ import SideBar from "../../components/Contacts/Sidebar";
 
 import {
   getAllProfessionalsRequest,
-} from "../../../store/modules/professionals/actions";
+} from "../../store/modules/professionals/actions";
 
 export default function ProfContacts() {
   const dispatch = useDispatch();
