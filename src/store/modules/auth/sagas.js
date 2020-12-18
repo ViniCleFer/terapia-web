@@ -56,19 +56,19 @@ export function* signIn({ payload }) {
       try {
         const res = yield call(axios.get, `${baseUrl.TERAPIA_BELLA}/profile/${userId}`);
 
-        console.tron.log(res.data);
-        if (res.status === 200) {
-          alert('ok');
+        // console.tron.log(res.data);
+        // if (res.status === 200) {
+          console.log(res);
 
           yield put(availableButtons(true));
           yield put(signInSuccess(token, refresh_token));
           yield put(setSigned());
           yield put(saveProfile(res.data));
           history.push("/professionals/contacts");
-          window.location.reload();
-        } else {
-          alert('Não entrou no IF')
-        }
+          // window.location.reload();
+        // } else {
+        //   alert('Não entrou no IF')
+        // }
       } catch (error) {
         console.log(error);
       }
