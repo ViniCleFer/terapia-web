@@ -415,7 +415,7 @@ export default class VComm {
 
       this.callInfo = null;
 
-      console.error("\n[makeCall]\n" + JSON.stringify(error, null, 4) + "\n");
+      // console.error("\n[makeCall]\n" + JSON.stringify(error, null, 4) + "\n");
     }
   };
 
