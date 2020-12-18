@@ -1,35 +1,12 @@
 import { all, takeLatest, call, put, select } from "redux-saga/effects";
 import { toast } from "react-toastify";
-// import qs from "qs-stringify";
 import axios from "axios";
-// import {v4 as uuid} from 'uuid';
 
-// import api from '../../../services/api';
-// import apiTerapia from '../../../services/apiTerapia';
-// import history from "../../../services/history";
 import baseUrl from "../../../services/baseUrl";
 
-// import firebase from '../../../config/firebase';
+import { getAllProfessionalsSuccess } from "./actions";
 
-import { 
-  getAllProfessionalsSuccess,
-  // signFailure,
-  // setSigned,
-  // saveProfile,
-  // setUserId,
-  // setFCMToken,
-  // cancelLoading,
-  // docError,
-  // emailError,
-  // failureAutenticationCode,
-  // setPhoneError,
- } from "./actions";
-
-// import { getCompanyInfo } from "../company/actions";
-
-// import {availableButtons} from '../commons/actions';
-
-export function* getProfessionals({ payload }) {
+export function* getProfessionals() {
 
   try {
     const tokenn = (state) => state.auth.token;
@@ -77,11 +54,7 @@ export function* changeProfessionalsStatus({ payload }) {
   }
 }
 
-
-// PUT URL: {{urlBella}}/professional/status?professionalId=8343&active=true
-
 export default all([
-  // takeLatest("persist/REHYDRATE", setToken),
   takeLatest("@professionals/GET_ALL_PROFESSIONALS_REQUEST", getProfessionals),
   takeLatest("@professionals/SET_CHANGE_PROFESSIONAL_STATUS", changeProfessionalsStatus),
 ]);

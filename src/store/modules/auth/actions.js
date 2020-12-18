@@ -146,35 +146,6 @@ export function setValidEmail(status) {
   };
 }
 
-// export function requestCreateProfessionalProfile({
-//   description,
-//   docValue,
-//   docDescription,
-//   value,
-//   pageUrl,
-//   videoUrl,
-//   profileId,
-//   graduates,
-//   experiences,
-//   specialties,
-// }) {
-//   return {
-//     type: '@auth/REQUEST_CREATE_PROFESSIONAL_PROFILE',
-//     payload: {
-//       description,
-//       docValue,
-//       docDescription,
-//       value,
-//       pageUrl,
-//       videoUrl,
-//       profileId,
-//       graduates,
-//       experiences,
-//       specialties,
-//     },
-//   };
-// }
-
 export function clearEmailError() {
   return {
     type: '@auth/CLEAR_EMAIL_ERROR',

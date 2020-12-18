@@ -2,24 +2,12 @@
 import React, {useEffect} from "react";
 import { useDispatch } from "react-redux";
 
-import {} from "./styles";
+import { Grid } from "@chakra-ui/core";
 
-// import Modal from "react-modal";
-import {
-  Grid,
-  // Flex,
-  // Heading,
-  // TabPanels,
-  // TabPanel,
-  // Divider,
-} from "@chakra-ui/core";
-
-// import Header from "../../components/Header";
-// import Menu from "../../components/Menu";
-import TopSidebar from "../../components/Contacts/TopSideBar";
-import Content from "../../components/Contacts/Content";
-import BodyBar from "../../components/Contacts/BodyBar";
-import SideBar from "../../components/Contacts/Sidebar";
+import TopSidebar from "../../components/ProfessionalsList/TopSideBar";
+import Content from "../../components/ProfessionalsList/Content";
+import BodyBar from "../../components/ProfessionalsList/BodyBar";
+import SideBar from "../../components/ProfessionalsList/Sidebar";
 
 import {
   getAllProfessionalsRequest,
@@ -28,14 +16,10 @@ import {
 export default function ProfContacts() {
   const dispatch = useDispatch();
   useEffect(() => {
-    alert('ProfContacts')
     dispatch(getAllProfessionalsRequest());
   }, []);
 
   return (
-    // <Flex backgroundColor="white" flex="1">
-    //   <Heading color="black">teste</Heading>
-    // </Flex>
     <Grid
       height="100vh"
       width="100vw"
@@ -47,10 +31,8 @@ export default function ProfContacts() {
       "
     >
       <TopSidebar />
-
       <SideBar />
       <Content />
-
       <BodyBar />
     </Grid>
   );

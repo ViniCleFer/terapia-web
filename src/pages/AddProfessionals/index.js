@@ -1,43 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import {
-  Grid,
-  // Flex,
-  // Heading,
-  // TabPanels,
-  // TabPanel,
-  // Divider,
-} from "@chakra-ui/core";
+import React from "react";
+import { Grid } from "@chakra-ui/core";
 
-// import Header from "../../components/Header";
-// import Menu from "../../components/Menu";
-import TopSidebar from "../../components/Professionals/TopSideBar";
-import Content from "../../components/Professionals/Content";
-import BodyBar from "../../components/Professionals/BodyBar";
-import SidebarProfessionals from "../../components/Professionals/Sidebar";
-
-import Vcomm, { API } from "../../services/vcoom";
+import TopSidebar from "../../components/ProfessionalsForm/TopSideBar";
+import Content from "../../components/ProfessionalsForm/Content";
+import BodyBar from "../../components/ProfessionalsForm/BodyBar";
+import SidebarProfessionals from "../../components/ProfessionalsForm/Sidebar";
 
 export default function AddProfessionals() {
-  const profile = useSelector((state) => state.auth.profile);
-
-  const vcomm = Vcomm.getInstance();
-
-  useEffect(() => {
-    vcomm.on(Vcomm.Events.Connected, async (isConnected) => {
-      if (isConnected) {
-        console.log("CONNECTED");
-
-        API.login(profile.userId, profile.name);
-      }
-    });
-
-    vcomm.on(Vcomm.Events.Logged, async () => {
-      console.log("logado");
-    });
-  }, []);
-
   return (
     <Grid
       height="100vh"
@@ -50,11 +20,8 @@ export default function AddProfessionals() {
       "
     >
       <TopSidebar />
-
       <SidebarProfessionals />
-
       <Content />
-
       <BodyBar />
     </Grid>
   );

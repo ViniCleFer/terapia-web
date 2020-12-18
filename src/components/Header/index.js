@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-// import logo from "../../assets/logoBella.png";
 import {
   Flex,
   Heading,
@@ -9,7 +8,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  // MenuDivider,
   Button,
   Image,
   Icon,
@@ -52,13 +50,6 @@ export default function Header() {
           />
         </MenuButton>
         <MenuList backgroundColor="white">
-          {/* <MenuItem>
-            <Icon as={MdSettings} size="20px" color="gray.700" mr="10px" />
-            <Heading fontSize="16px" color="black" fontWeight="normal">
-              Configurações
-            </Heading>
-          </MenuItem>
-          <MenuDivider /> */}
           <MenuItem onClick={() => handleSignOut()}>
             <Icon as={MdExitToApp} size="20px" color="gray.700" mr="10px" />
             <Heading fontSize="16px" color="black" fontWeight="normal">

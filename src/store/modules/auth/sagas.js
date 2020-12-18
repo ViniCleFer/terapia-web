@@ -1,20 +1,15 @@
 import { all, takeLatest, call, put, select } from "redux-saga/effects";
 import { toast } from "react-toastify";
-// import qs from "qs-stringify";
 import axios from "axios";
-// import {v4 as uuid} from 'uuid';
 
-// import api from '../../../services/api';
 import apiTerapia from '../../../services/apiTerapia';
 import history from "../../../services/history";
 import baseUrl from "../../../services/baseUrl";
 
 import {removeAvatar} from "../../../helpers/uploadAvatar";
 
-// import firebase from '../../../config/firebase';
-
-import { signInSuccess,
-  // signFailure,
+import { 
+  signInSuccess,
   setSigned,
   saveProfile,
   setUserId,
@@ -26,16 +21,11 @@ import { signInSuccess,
   setPhoneError,
  } from "./actions";
 
-// import { getCompanyInfo } from "../company/actions";
-
 import {availableButtons} from '../commons/actions';
 
 export function* signIn({ payload }) {
-  // yield spawn(codePushSaga);
   try {
     const data = {
-      // grant_type: "password",
-      // username: 'user1@teste.com',
       email: payload.email,
       password: payload.password,
     };
@@ -46,8 +36,6 @@ export function* signIn({ payload }) {
       data
     );
 
-    // console.tron.log(response);
-
     const { access_token: token, refresh_token, userId } = response.data;
 
     axios.defaults.headers.Authorization = `Bearer ${token}`;
@@ -56,8 +44,7 @@ export function* signIn({ payload }) {
       try {
         const res = yield call(axios.get, `${baseUrl.TERAPIA_BELLA}/profile/${userId}`);
 
-        // console.tron.log(res.data);
-        // if (res.status === 200) {
+        if (res.status === 200) {
           console.log(res);
 
           yield put(availableButtons(true));
@@ -65,17 +52,10 @@ export function* signIn({ payload }) {
           yield put(setSigned());
           yield put(saveProfile(res.data));
           history.push("/professionals");
-          // window.location.reload();
-        // } else {
-        //   alert('Não entrou no IF')
-        // }
+        }
       } catch (error) {
         console.log(error);
       }
-      // const profile = res.data;
-      // yield put(availableButtons(true));
-      // yield put(saveProfile(profile[0]));
-      // yield put(saveAllProfile(profile));
     }
   } catch (error) {
     if (error.response) {
@@ -85,64 +65,9 @@ export function* signIn({ payload }) {
   }
 }
 
-// export function* signUp({ payload }) {
-//   try {
-//     const { name, email, password } = payload;
-
-//     yield call(api.post, "users", {
-//       name,
-//       email,
-//       password,
-//       provider: true,
-//     });
-
-//     history.push("/");
-//   } catch (error) {
-//     toast.error("Falha no cadastro, verifique seus dados");
-//     yield put(signFailure());
-//   }
-// }
-
-// export function setToken({ payload }) {
-//   if (!payload) return;
-
-//   const { token } = payload.auth;
-
-//   if (token) {
-//     api.defaults.headers.Authorization = `Bearer ${token}`;
-//   }
-// }
-
 export function* requestCreateProfile({payload}) {
-  // let uid = null;
-
   const domainId = 1;
   const tenantId = 1;
-
-  // const activationCodeIdReducer = (state) => state.auth.activationCodeId;
-  // const activationCodeId = yield select(activationCodeIdReducer);
-
-  // console.tron.log({payload});
-
-  // const handleAvatar = async (fileImage) => {
-  //   const file = fileImage.target.files[0];
-  //   const id = uuid();
-  //   const handleImage = firebase.storage().ref('avatar').child(id);
-  //   await handleImage.put(file);
-  //   handleImage.getDownloadURL().then(url => {
-  //     return payload.avatar = url;
-  //   })
-  // };
-
-  // const specialties = payload.specialties.map(specialty => {
-  //   id: specialty.id
-  // });
-
-  // firebase.auth().onAuthStateChanged((user) => {
-  //   if (user) {
-  //     uid = user.uid;
-  //   }
-  // });
 
   try {
     const responsePhone = yield call(
@@ -158,28 +83,23 @@ export function* requestCreateProfile({payload}) {
       }
     }
   } catch (error) {
-    console.tron.log(error.response, 'getProfileByPhoneNumber');
-
     if (error.response) {
       switch (error.response.status) {
         case 500:
           yield put(cancelLoading());
           break;
         case 404:
-          console.tron.log(error.response, 'erro 404, bora');
           try {
             const responseEmail = yield call(
               axios.get,
               `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-email?email=${payload.email}`,
             );
-            console.tron.log({responseEmail});
             if (responseEmail.status === 200) {
               try {
                 const responseDoc = yield call(
                   axios.get,
                   `${baseUrl.TERAPIA_BELLA}/profile/register/verify-non-existent-doc?doc=${payload.doc}`,
                 );
-                console.tron.log({responseDoc});
                 if (responseDoc.status === 200) {
                   try {
                     const responseSignUp = yield call(apiTerapia.post, `${baseUrl.TERAPIA_AUTH}/signup`, {
@@ -200,8 +120,6 @@ export function* requestCreateProfile({payload}) {
                           }
                         );
 
-                        console.tron.log(responseToken, 'response');
-        
                         const {
                           access_token: token, userId,
                         } = responseToken.data;
@@ -210,13 +128,8 @@ export function* requestCreateProfile({payload}) {
         
                         yield put(setUserId(token, userId));
         
-                        // const fcmId = (state) => state.auth.FCMToken;
-                        // const fcm = yield select(fcmId);
-        
                         if (responseToken.status === 200) {
                           yield put(setFCMToken(payload.fmcToken, userId));
-
-                          console.tron.log(payload.avatar);
 
                           if (payload.avatar === '') {
                             payload.avatar = `https://ui-avatars.com/api/?background=6B8BC8&color=fff&&name=${payload.name}`;
@@ -237,17 +150,6 @@ export function* requestCreateProfile({payload}) {
                                 photoUrl: payload.avatar,
                                 domainId,
                                 tenantId,
-                                // address: [
-                                //   {
-                                //     address: payload.address,
-                                //     number: payload.number,
-                                //     complement: payload.complement,
-                                //     neighborhood: payload.neighborhood,
-                                //     state: payload.state,
-                                //     city: payload.city,
-                                //     zipCode: payload.cep,
-                                //   },
-                                // ],
                               },
                             );
 
@@ -328,8 +230,6 @@ export function* requestCreateProfile({payload}) {
                         if (payload.avatar !== '') {
                           removeAvatar(payload.avatar);
                         }
-                        console.tron.log(error, 'Error responseToken');
-                        console.log(error, 'Error responseToken');
                         yield put(cancelLoading());
                         yield put(availableButtons(true));
                         if (error.response) {
@@ -410,8 +310,6 @@ export function* requestCreateProfile({payload}) {
             }
             yield put(availableButtons(true));
             yield put(cancelLoading());
-            console.tron.log(error.response, 'API AUTH EMAIL requestCreateProfile');
-        
             if (error.response) {
               switch (error.response.status) {
                 case 500:
@@ -446,23 +344,9 @@ export function* requestCreateProfile({payload}) {
       }
     }
   }
-
-  // firebase
-  //   .auth()
-  //   .signInWithEmailAndPassword(payload.email, payload.password)
-  //   .catch((error) => {
-  //     if (error.code === 'auth/user-not-found') {
-  //       uid = null;
-  //     }
-  //   });
 }
 
 export function* requestUpdateProfile({payload}) {
-  // const birthdateValid = DateHelper.formatDateToPersist(birthDate);
-
-  console.tron.log(payload, 'requestUpdateProfile');
-
-
   const tokenn = (state) => state.auth.token;
   const token = yield select(tokenn);
 
@@ -483,12 +367,6 @@ export function* requestUpdateProfile({payload}) {
   let email = payload.profile.email;
   let docActual = payload.profile.doc;
 
-  // const kkkk = avatar.target.files[0];
-  // const hhhh = newAvavatr.target.files[0];
-
-  // console.tron.log(kkkk, 'kkkk');
-  // console.tron.log(hhhh, 'hhhh');
-
   if (oldPhone === payload.profile.phoneNumber) {
     phone = payload.profile.phoneNumber;
 
@@ -508,7 +386,6 @@ export function* requestUpdateProfile({payload}) {
           }
       
           const responseProfileUpdate = yield call(
-            // nome, doc, email, userId, activationCodeId
             axios.put,
             `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
             {
@@ -519,22 +396,8 @@ export function* requestUpdateProfile({payload}) {
               birthDate: payload.profile.birthDate,
               phoneNumber: phone,
               photoUrl: avatar,
-              // address: [
-              //   {
-              //     address: payload.profile.address.address,
-              //     number: payload.profile.address.number,
-              //     complement: payload.profile.address.complement,
-              //     neighborhood: payload.profile.address.neighborhood,
-              //     state: payload.profile.address.state,
-              //     city: payload.profile.address.city,
-              //     zipCode: payload.profile.address.cep,
-              //   },
-              // ],
             },
           );
-      
-          // console.tron.log({responseProfileUpdate});
-          // console.log({responseProfileUpdate});
       
           if (responseProfileUpdate.status === 201) {
             try {
@@ -554,9 +417,6 @@ export function* requestUpdateProfile({payload}) {
                   specialties: payload.profile.specialties,
                 },
               );
-              
-              // console.tron.log({responseProfProfileUpdate});
-              // console.log({responseProfProfileUpdate});
       
               if (responseProfProfileUpdate.status === 202) {
                 yield put(cancelLoading());
@@ -587,13 +447,10 @@ export function* requestUpdateProfile({payload}) {
             }
           }
           yield put(availableButtons(true));
-          // yield put(setSigned());
-          // yield put(profileComplete());
         } catch (error) {
           if (payload.profile.avatar !== oldAvatar) {
             removeAvatar(avatar);
           }
-          console.tron.log(error.response, 'UPDATE responseProfileUpdate');
           yield put(availableButtons(true));
           if (error.response) {
             console.tron.log(error.response);
@@ -629,7 +486,6 @@ export function* requestUpdateProfile({payload}) {
               }
           
               const responseProfileUpdate = yield call(
-                // nome, doc, email, userId, activationCodeId
                 axios.put,
                 `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
                 {
@@ -640,22 +496,8 @@ export function* requestUpdateProfile({payload}) {
                   birthDate: payload.profile.birthDate,
                   phoneNumber: phone,
                   photoUrl: avatar,
-                  // address: [
-                  //   {
-                  //     address: payload.profile.address.address,
-                  //     number: payload.profile.address.number,
-                  //     complement: payload.profile.address.complement,
-                  //     neighborhood: payload.profile.address.neighborhood,
-                  //     state: payload.profile.address.state,
-                  //     city: payload.profile.address.city,
-                  //     zipCode: payload.profile.address.cep,
-                  //   },
-                  // ],
                 },
               );
-          
-              // console.tron.log({responseProfileUpdate});
-              // console.log({responseProfileUpdate});
           
               if (responseProfileUpdate.status === 201) {
                 try {
@@ -675,9 +517,6 @@ export function* requestUpdateProfile({payload}) {
                       specialties: payload.profile.specialties,
                     },
                   );
-                  
-                  // console.tron.log({responseProfProfileUpdate});
-                  // console.log({responseProfProfileUpdate});
           
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
@@ -690,7 +529,6 @@ export function* requestUpdateProfile({payload}) {
                   if (payload.profile.avatar !== oldAvatar) {
                     removeAvatar(avatar);
                   }
-                  console.tron.log(error.response, 'Error responseProfProfile');
                   yield put(cancelLoading());
                   yield put(availableButtons(true));
                   if (error.response) {
@@ -708,8 +546,6 @@ export function* requestUpdateProfile({payload}) {
                 }
               }
               yield put(availableButtons(true));
-              // yield put(setSigned());
-              // yield put(profileComplete());
             } catch (error) {
               if (payload.profile.avatar !== oldAvatar) {
                 removeAvatar(avatar);
@@ -785,7 +621,6 @@ export function* requestUpdateProfile({payload}) {
               }
           
               const responseProfileUpdate = yield call(
-                // nome, doc, email, userId, activationCodeId
                 axios.put,
                 `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
                 {
@@ -796,22 +631,8 @@ export function* requestUpdateProfile({payload}) {
                   birthDate: payload.profile.birthDate,
                   phoneNumber: phone,
                   photoUrl: avatar,
-                  // address: [
-                  //   {
-                  //     address: payload.profile.address.address,
-                  //     number: payload.profile.address.number,
-                  //     complement: payload.profile.address.complement,
-                  //     neighborhood: payload.profile.address.neighborhood,
-                  //     state: payload.profile.address.state,
-                  //     city: payload.profile.address.city,
-                  //     zipCode: payload.profile.address.cep,
-                  //   },
-                  // ],
                 },
               );
-          
-              // console.tron.log({responseProfileUpdate});
-              // console.log({responseProfileUpdate});
           
               if (responseProfileUpdate.status === 201) {
                 try {
@@ -831,9 +652,6 @@ export function* requestUpdateProfile({payload}) {
                       specialties: payload.profile.specialties,
                     },
                   );
-                  
-                  // console.tron.log({responseProfProfileUpdate});
-                  // console.log({responseProfProfileUpdate});
           
                   if (responseProfProfileUpdate.status === 202) {
                     yield put(cancelLoading());
@@ -864,8 +682,6 @@ export function* requestUpdateProfile({payload}) {
                 }
               }
               yield put(availableButtons(true));
-              // yield put(setSigned());
-              // yield put(profileComplete());
             } catch (error) {
               if (payload.profile.avatar !== oldAvatar) {
                 removeAvatar(avatar);
@@ -906,7 +722,6 @@ export function* requestUpdateProfile({payload}) {
                   }
               
                   const responseProfileUpdate = yield call(
-                    // nome, doc, email, userId, activationCodeId
                     axios.put,
                     `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
                     {
@@ -917,22 +732,8 @@ export function* requestUpdateProfile({payload}) {
                       birthDate: payload.profile.birthDate,
                       phoneNumber: phone,
                       photoUrl: avatar,
-                      // address: [
-                      //   {
-                      //     address: payload.profile.address.address,
-                      //     number: payload.profile.address.number,
-                      //     complement: payload.profile.address.complement,
-                      //     neighborhood: payload.profile.address.neighborhood,
-                      //     state: payload.profile.address.state,
-                      //     city: payload.profile.address.city,
-                      //     zipCode: payload.profile.address.cep,
-                      //   },
-                      // ],
                     },
                   );
-              
-                  // console.tron.log({responseProfileUpdate});
-                  // console.log({responseProfileUpdate});
               
                   if (responseProfileUpdate.status === 201) {
                     try {
@@ -952,9 +753,6 @@ export function* requestUpdateProfile({payload}) {
                           specialties: payload.profile.specialties,
                         },
                       );
-                      
-                      // console.tron.log({responseProfProfileUpdate});
-                      // console.log({responseProfProfileUpdate});
               
                       if (responseProfProfileUpdate.status === 202) {
                         yield put(cancelLoading());
@@ -985,8 +783,6 @@ export function* requestUpdateProfile({payload}) {
                     }
                   }
                   yield put(availableButtons(true));
-                  // yield put(setSigned());
-                  // yield put(profileComplete());
                 } catch (error) {
                   if (payload.profile.avatar !== oldAvatar) {
                     removeAvatar(avatar);
@@ -1122,7 +918,6 @@ export function* requestUpdateProfile({payload}) {
                       }
                   
                       const responseProfileUpdate = yield call(
-                        // nome, doc, email, userId, activationCodeId
                         axios.put,
                         `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
                         {
@@ -1133,22 +928,8 @@ export function* requestUpdateProfile({payload}) {
                           birthDate: payload.profile.birthDate,
                           phoneNumber: phone,
                           photoUrl: avatar,
-                          // address: [
-                          //   {
-                          //     address: payload.profile.address.address,
-                          //     number: payload.profile.address.number,
-                          //     complement: payload.profile.address.complement,
-                          //     neighborhood: payload.profile.address.neighborhood,
-                          //     state: payload.profile.address.state,
-                          //     city: payload.profile.address.city,
-                          //     zipCode: payload.profile.address.cep,
-                          //   },
-                          // ],
                         },
                       );
-                  
-                      // console.tron.log({responseProfileUpdate});
-                      // console.log({responseProfileUpdate});
                   
                       if (responseProfileUpdate.status === 201) {
                         try {
@@ -1168,9 +949,6 @@ export function* requestUpdateProfile({payload}) {
                               specialties: payload.profile.specialties,
                             },
                           );
-                          
-                          // console.tron.log({responseProfProfileUpdate});
-                          // console.log({responseProfProfileUpdate});
                   
                           if (responseProfProfileUpdate.status === 202) {
                             yield put(cancelLoading());
@@ -1201,8 +979,6 @@ export function* requestUpdateProfile({payload}) {
                         }
                       }
                       yield put(availableButtons(true));
-                      // yield put(setSigned());
-                      // yield put(profileComplete());
                     } catch (error) {
                       if (payload.profile.avatar !== oldAvatar) {
                         removeAvatar(avatar);
@@ -1287,7 +1063,6 @@ export function* requestUpdateProfile({payload}) {
                           }
                       
                           const responseProfileUpdate = yield call(
-                            // nome, doc, email, userId, activationCodeId
                             axios.put,
                             `${baseUrl.TERAPIA_BELLA}/profile/${payload.profile.userId}`,
                             {
@@ -1298,22 +1073,8 @@ export function* requestUpdateProfile({payload}) {
                               birthDate: payload.profile.birthDate,
                               phoneNumber: phone,
                               photoUrl: avatar,
-                              // address: [
-                              //   {
-                              //     address: payload.profile.address.address,
-                              //     number: payload.profile.address.number,
-                              //     complement: payload.profile.address.complement,
-                              //     neighborhood: payload.profile.address.neighborhood,
-                              //     state: payload.profile.address.state,
-                              //     city: payload.profile.address.city,
-                              //     zipCode: payload.profile.address.cep,
-                              //   },
-                              // ],
                             },
                           );
-                      
-                          // console.tron.log({responseProfileUpdate});
-                          // console.log({responseProfileUpdate});
                       
                           if (responseProfileUpdate.status === 201) {
                             try {
@@ -1333,9 +1094,6 @@ export function* requestUpdateProfile({payload}) {
                                   specialties: payload.profile.specialties,
                                 },
                               );
-                              
-                              // console.tron.log({responseProfProfileUpdate});
-                              // console.log({responseProfProfileUpdate});
                       
                               if (responseProfProfileUpdate.status === 202) {
                                 yield put(cancelLoading());
@@ -1366,8 +1124,6 @@ export function* requestUpdateProfile({payload}) {
                             }
                           }
                           yield put(availableButtons(true));
-                          // yield put(setSigned());
-                          // yield put(profileComplete());
                         } catch (error) {
                           if (payload.profile.avatar !== oldAvatar) {
                             removeAvatar(avatar);
@@ -1466,10 +1222,8 @@ export function signOut() {
 }
 
 export default all([
-  // takeLatest("persist/REHYDRATE", setToken),
   takeLatest("@auth/SIGN_IN_REQUEST", signIn),
   takeLatest('@auth/REQUEST_CREATE_PROFILE', requestCreateProfile),
   takeLatest('@auth/REQUEST_UPDATE_PROFILE', requestUpdateProfile),
-  // takeLatest("@auth/SIGN_UP_REQUEST", signUp),
   takeLatest("@auth/SIGN_OUT", signOut),
 ]);

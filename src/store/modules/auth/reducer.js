@@ -1,7 +1,5 @@
 import produce from "immer";
 
-// import TokenSchema from "../../../schemas/TokenSchema";
-
 const INITIAL_STATE = {
   token: null,
   signed: null,
@@ -74,7 +72,6 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.signed = false;
         draft.autorizationCode = null;
         draft.userId = "";
-        // draft.profile = '';
         draft.FCMToken = "";
         draft.uid = "";
         break;
@@ -83,12 +80,10 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.uid = action.payload.uid;
         break;
       }
-
       case "@auth/SET_SIGNED": {
         draft.signed = true;
         break;
       }
-
       case "@auth/SET_ACTIVE_CALL_DATA": {
         draft.activeCallData = action.payload.data;
         break;
@@ -115,7 +110,6 @@ export default function auth(state = INITIAL_STATE, action) {
         draft.passwordError = false;
         draft.docError = false;
         draft.loading = false;
-
         break;
       }
       case "@auth/SUCCESS_AUTENTICATION_CODE": {

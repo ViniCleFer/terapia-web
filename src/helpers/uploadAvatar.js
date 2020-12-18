@@ -1,5 +1,4 @@
 import {v4 as uuid} from 'uuid';
-// import { toast } from "react-toastify";
 
 import firebase from '../config/firebase';
 
@@ -17,7 +16,6 @@ export const handleAvatar = async (fileImage) => {
 
 export const removeAvatar = async (file) => {
   console.tron.log('removeAvatar', file);
-  // const file = fileImage.target.files[0];
   const handleImage = firebase.storage().refFromURL(file);
   handleImage.delete().then(function() {
     return console.log("Imagem deletada com sucesso!");

@@ -1,15 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-// import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Input } from "@rocketseat/unform";
 import * as Yup from "yup";
-// import { Heading } from "@chakra-ui/core";
+import { Spinner } from "@chakra-ui/core";
 
 import { signInRequest } from "../../store/modules/auth/actions";
 
 import logo from "../../assets/logo.png";
-
-// import theme from "../../styles/theme";
 
 import { ImgContainer, Image } from "./styles";
 
@@ -23,7 +20,7 @@ const schema = Yup.object().shape({
 export default function Signin() {
   const dispatch = useDispatch();
 
-  // const loading = useSelector((state) => state.auth.loading);
+  const loading = useSelector((state) => state.auth.loading);
 
   function handleSubmit({ email, password }) {
     dispatch(signInRequest(email, password));
@@ -39,8 +36,11 @@ export default function Signin() {
           <Input name="email" type="email" placeholder="Seu e-mail" />
           <Input name="password" type="password" placeholder="Sua senha" />
 
-          <button type="submit">Entrar</button>
-          {/* <Link to="/register">Criar conta gratuita</Link> */}
+          <button type="submit">
+            {loading ? (
+              <Spinner size="sm" color="white" />
+            ) : 'Entrar'}
+          </button>
         </Form>
       </div>
     </div>

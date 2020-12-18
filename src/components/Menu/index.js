@@ -1,31 +1,18 @@
 import React from "react";
 import {
-  // Grid,
   Flex,
-  // ButtonGroup,
-  // Button,
   Icon,
   Heading,
   Tabs,
   TabList,
   Tab,
-  // TabPanel,
-  // TabPanels,
 } from "@chakra-ui/core";
 import { 
-  // MdNotifications,
-  // MdCall,
-  // MdEventNote,
   MdPerson } from "react-icons/md";
-// import { FaUserMd } from "react-icons/fa";
-
-// import logo from "../../assets/logo-p.png";
 
 import history from "../../services/history";
 
-// import ButtonLeftMenu from "../../components/ButtonLeftMenu";
-
-function Menu({ children }) {
+function Menu() {
   return (
     <Flex
       bg="red"
@@ -51,51 +38,11 @@ function Menu({ children }) {
             }}
             onClick={() => history.push("/professionals")}
           >
-            {/* <div style={{height: 30, width: 30, backgroundColor: 'white'}}>
-              <img src={logo} alt="#fff" style={{width:'100%', height: '100%'}} />
-            </div> */}
             <Icon as={MdPerson} size="30px" color="white" />
             <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
               Profissionais
             </Heading>
           </Tab>
-          {/* <Tab
-            height="64px"
-            width="65px"
-            flexDirection="column"
-            _selected={{
-              borderColor: "white",
-              boxShadow: "none",
-              border: "none",
-              borderBottom: "0px",
-              bg: "purple.600",
-              shadow: "none",
-            }}
-            // onClick={() => history.push("/chat")}
-          >
-            <Icon as={MdNotifications} size="24px" color="white" />
-            <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
-              Notificações
-            </Heading>
-          </Tab>
-          <Tab
-            height="64px"
-            width="65px"
-            flexDirection="column"
-            _selected={{
-              borderColor: "white",
-              boxShadow: "none",
-              border: "none",
-              borderBottom: "0px",
-              bg: "purple.600",
-              shadow: "none",
-            }}
-          >
-            <Icon as={MdEventNote} size="24px" color="white" />
-            <Heading fontWeight="500" fontSize="10px" mt="6px" color="white">
-              Calendario
-            </Heading>
-          </Tab> */}
         </TabList>
       </Tabs>
     </Flex>
