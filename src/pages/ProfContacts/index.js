@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, {useEffect} from "react";
+import { useDispatch } from "react-redux";
 
 import {} from "./styles";
 
@@ -20,7 +21,16 @@ import Content from "../../components/Contacts/Content";
 import BodyBar from "../../components/Contacts/BodyBar";
 import SideBar from "../../components/Contacts/Sidebar";
 
+import {
+  getAllProfessionalsRequest,
+} from "../../../store/modules/professionals/actions";
+
 export default function ProfContacts() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllProfessionalsRequest());
+  }, []);
+
   return (
     // <Flex backgroundColor="white" flex="1">
     //   <Heading color="black">teste</Heading>
