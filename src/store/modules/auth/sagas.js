@@ -58,7 +58,7 @@ export function* signIn({ payload }) {
 
         console.tron.log(res.data);
         if (res.status === 200) {
-          alert('ok')
+          alert('ok');
 
           yield put(availableButtons(true));
           yield put(signInSuccess(token, refresh_token));
@@ -66,9 +66,11 @@ export function* signIn({ payload }) {
           yield put(saveProfile(res.data));
           history.push("/professionals/contacts");
           window.location.reload();
+        } else {
+          alert('Não entrou no IF')
         }
       } catch (error) {
-        // console.tron.log(error);
+        console.log(error);
       }
       // const profile = res.data;
       // yield put(availableButtons(true));
